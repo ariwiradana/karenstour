@@ -1,6 +1,39 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  // reactStrictMode: true,
+  i18n: {
+    locales: ["en", "id"],
+    defaultLocale: "en",
+    localeDetection: false,
+  },
+  images: {
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "picsum.photos",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "source.unsplash.com",
+        port: "",
+      },
+      {
+        protocol: "https",
+        hostname: "ysjvexz8shjimtfi.public.blob.vercel-storage.com",
+        port: "",
+      },
+    ],
+  },
+  async redirects() {
+    return [
+      {
+        source: "/admin",
+        destination: "/admin/booking",
+        permanent: false,
+      },
+    ];
+  },
 };
 
 export default nextConfig;
