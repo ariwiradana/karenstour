@@ -29,7 +29,15 @@ CREATE TABLE IF NOT EXISTS booking (
     payment_proof VARCHAR(50)
 );
 
-CREATE TABLE IF NOT EXISTS proof_payment(
-    id VARCHAR(255) PRIMARY NOT NULL UNIQUE
+CREATE TABLE IF NOT EXISTS proof_payment (
+    id VARCHAR(255) PRIMARY KEY NOT NULL UNIQUE,
     image_url VARCHAR(255) NOT NULL
-)
+);
+
+CREATE TABLE IF NOT EXISTS reviews (
+    id SERIAL PRIMARY KEY,
+    user_name VARCHAR(255) NOT NULL,
+    created_at VARCHAR(50) NOT NULL,
+    comments TEXT,
+    destination_id INTEGER REFERENCES destination(id) ON DELETE SET NULL
+);

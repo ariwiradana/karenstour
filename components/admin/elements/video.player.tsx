@@ -11,6 +11,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
   className = "",
 }) => {
   const [loading, setLoading] = useState(false);
+
   return (
     <div
       className={`flex justify-center items-center bg-gray-100 rounded overflow-hidden ${className}`}
@@ -24,7 +25,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           onLoadedData={() => setLoading(false)}
           loop
           controls
-        ></video>
+        />
       </div>
     </div>
   );
