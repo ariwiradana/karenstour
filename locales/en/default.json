@@ -1,0 +1,60 @@
+{
+  "details": "Show All",
+  "more": "See More",
+  "home": {
+    "hero": {
+      "title": "Your Bali Dream Awaits!",
+      "desc": "Experience the magic of Bali! Our exclusive tours will take you to the best destinations for an unforgettable getaway."
+    },
+    "services": {
+      "tour": {
+        "title": "Tours",
+        "desc": "Discover a variety of exciting tour packages, curated to offer you unforgettable experiences at the most beautiful destinations."
+      },
+      "transport": {
+        "title": "Transportation",
+        "desc": "Enjoy reliable and comfortable transportation services tailored to ensure a seamless journey throughout your travel adventure."
+      },
+      "airport": {
+        "title": "Airport Shuttle",
+        "desc": "Experience hassle-free airport transfers with our convenient shuttle service, making your arrival and departure stress-free."
+      }
+    },
+    "popularservice": {
+      "title": "Our Popular Services",
+      "desc": "Discover Bali with our top tours, transportation, and airport transfers."
+    },
+    "highlights": {
+      "review": {
+        "title": "Excellent Reviews",
+        "desc": "Highly rated by travelers, our tours guarantee exceptional experiences and satisfied customers."
+      },
+      "cancelation": {
+        "title": "Free Cancelation",
+        "desc": "Plan with confidence, enjoy free cancellation if your plans change."
+      },
+      "expert": {
+        "title": "Tour by Local Expert",
+        "desc": "Experience the destination like a local with tours led by knowledgeable experts."
+      }
+    },
+    "review": {
+      "title": "What Our Guests Are Saying",
+      "desc": "Our guests love their stay. Read their experiences and see why we're a favorite!"
+    },
+    "booknow": {
+      "title": "Book Now",
+      "desc": "Ready to start your adventure? Book today for a seamless journey, whether you're planning a relaxing getaway or an action-packed trip!",
+      "button.wa": "Book by Whatsapp",
+      "button.form": "Book by Form"
+    }
+  },
+  "footer": {
+    "title": "Let's Connect!",
+    "call": "Call us",
+    "address": "Address",
+    "social": "Social media",
+    "caption": "Ready for an unforgettable Bali adventure? Book your travels, excursions, and tickets with us!",
+    "copyright": "© 2024 Karen's Tour & Travel. All Rights Reserved."
+  }
+}

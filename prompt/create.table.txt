@@ -1,0 +1,35 @@
+CREATE TABLE IF NOT EXISTS destination (
+    id SERIAL PRIMARY KEY,
+    images TEXT[],
+    title VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL UNIQUE,
+    minimum_pax INTEGER NOT NULL,
+    description TEXT,
+    duration INTEGER NOT NULL,
+    price INTEGER NOT NULL,
+    inclusions TEXT[],
+    video_url VARCHAR(255)
+);
+
+CREATE TABLE IF NOT EXISTS booking (
+    id VARCHAR(255) PRIMARY KEY NOT NULL,
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    booking_date VARCHAR(50) NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    pax INTEGER NOT NULL,
+    destination_id INTEGER REFERENCES destination(id) ON DELETE SET NULL,
+    pickup_location VARCHAR(255),
+    subtotal INTEGER NOT NULL,
+    tax INTEGER,
+    tax_rate VARCHAR(50),
+    total INTEGER NOT NULL,
+    created_at VARCHAR(50) NOT NULL,
+    updated_at VARCHAR(50) NOT NULL,
+    payment_proof VARCHAR(50)
+);
+
+CREATE TABLE IF NOT EXISTS proof_payment(
+    id VARCHAR(255) PRIMARY NOT NULL UNIQUE
+    image_url VARCHAR(255) NOT NULL
+)
