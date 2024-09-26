@@ -6,6 +6,7 @@ import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import Container from "./container";
 import Title from "./elements/title";
 import usePopularDestination from "@/hooks/client/usePopularDestination";
+import CardShimmer from "./elements/card.shimmer";
 
 interface PopularTourSliderProps {
   title: string;
@@ -29,77 +30,85 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             description={props.description}
           />
         </div>
+        {state.loading ? (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+            <CardShimmer />
+            <CardShimmer />
+            <CardShimmer />
+            <CardShimmer />
+          </div>
+        ) : (
+          <div className="relative">
+            <Swiper
+              autoplay={{
+                disableOnInteraction: false,
+                delay: 4000,
+                pauseOnMouseEnter: true,
+              }}
+              className="group"
+              navigation={{
+                prevEl: ".slidePrev-btn",
+                nextEl: ".slideNext-btn",
+              }}
+              breakpoints={{
+                0: {
+                  slidesPerView: 1,
+                  spaceBetween: 16,
+                },
+                640: {
+                  slidesPerView: 1,
+                  spaceBetween: 16,
+                },
+                768: {
+                  slidesPerView: 2,
+                  spaceBetween: 20,
+                },
+                1024: {
+                  slidesPerView: 4,
+                  spaceBetween: 24,
+                },
+              }}
+              onSlideChange={(swiper) => {
+                if (swiper.activeIndex === 0) {
+                  actions.setFirstSlide(true);
+                } else {
+                  actions.setFirstSlide(false);
+                }
 
-        <div className="relative">
-          <Swiper
-            autoplay={{
-              disableOnInteraction: false,
-              delay: 4000,
-              pauseOnMouseEnter: true,
-            }}
-            className="group"
-            navigation={{
-              prevEl: ".slidePrev-btn",
-              nextEl: ".slideNext-btn",
-            }}
-            breakpoints={{
-              0: {
-                slidesPerView: 1,
-                spaceBetween: 16,
-              },
-              640: {
-                slidesPerView: 1,
-                spaceBetween: 16,
-              },
-              768: {
-                slidesPerView: 2,
-                spaceBetween: 20,
-              },
-              1024: {
-                slidesPerView: 4,
-                spaceBetween: 24,
-              },
-            }}
-            onSlideChange={(swiper) => {
-              if (swiper.activeIndex === 0) {
-                actions.setFirstSlide(true);
-              } else {
-                actions.setFirstSlide(false);
-              }
-
-              if (swiper.activeIndex === swiper.slides.length - 3) {
-                actions.setLastSlide(true);
-              } else {
-                actions.setLastSlide(false);
-              }
-            }}
-            modules={[Autoplay, Navigation, Grid]}
-          >
-            {state.data.map((obj) => {
-              return (
-                <SwiperSlide key={obj.id}>
-                  <DestinationCard data={obj} />
-                </SwiperSlide>
-              );
-            })}
-            <div className="flex justify-start md:justify-center gap-x-4 mt-6 md:mt-10 lg:mt-0">
-              <button
-                className={`${
-                  state.firstSlide ? "lg:hidden" : "lg:flex"
-                } flex slidePrev-btn lg:absolute left-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-r-none lg:rounded-l-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-              >
-                <BsChevronLeft className="text-dark lg:text-white lg:text-2xl" />
-              </button>
-              <button
-                className={`${
-                  state.lastSlide ? "lg:hidden" : "lg:flex"
-                } flex slideNext-btn lg:absolute right-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-l-none lg:rounded-r-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-              >
-                <BsChevronRight className="text-dark lg:text-white lg:text-2xl" />
-              </button>
-            </div>
-          </Swiper>
-        </div>
+                if (swiper.activeIndex === swiper.slides.length - 3) {
+                  actions.setLastSlide(true);
+                } else {
+                  actions.setLastSlide(false);
+                }
+              }}
+              modules={[Autoplay, Navigation, Grid]}
+            >
+              {state.data.map((obj) => {
+                return (
+                  <SwiperSlide key={obj.id}>
+                    <DestinationCard data={obj} />
+                  </SwiperSlide>
+                );
+              })}
+              <div className="flex justify-start md:justify-center gap-x-4 mt-6 md:mt-10 lg:mt-0">
+                <button
+                  className={`${
+                    state.firstSlide ? "lg:hidden" : "lg:flex"
+                  } flex slidePrev-btn lg:absolute left-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-r-none lg:rounded-l-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
+                >
+                  <BsChevronLeft className="text-dark lg:text-white lg:text-2xl" />
+                </button>
+                <button
+                  className={`${
+                    state.lastSlide ? "lg:hidden" : "lg:flex"
+                  } flex slideNext-btn lg:absolute right-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-l-none lg:rounded-r-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
+                >
+                  <BsChevronRight className="text-dark lg:text-white lg:text-2xl" />
+                </button>
+              </div>
+            </Swiper>
+          </div>
+        )}
       </div>
     </Container>
   );

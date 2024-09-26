@@ -133,7 +133,7 @@ const ServiceList: FC<Props> = () => {
           className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
         >
           Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
-          {Math.min(state.page * state.limit, state.totalRows)} of{" "}
+          {Math.min(state.page * state.limit, state.totalRows ?? 0)} of{" "}
           {state.totalRows} results
         </h5>
 

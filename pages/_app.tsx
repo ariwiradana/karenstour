@@ -8,6 +8,7 @@ import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Toaster } from "react-hot-toast";
 import "react-quill/dist/quill.snow.css";
+import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }: AppProps) {
   const router = useRouter();
@@ -17,6 +18,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
+      <NextNProgress color="#81A263" />
       <Component {...pageProps} />
       <Toaster />
     </>

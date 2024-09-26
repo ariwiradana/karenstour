@@ -22,7 +22,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
         props.disabled
           ? "bg-gray-400 pointer-events-none cursor-not-allowed"
           : "bg-primary pointer-events-auto"
-      } rounded`}
+      } rounded-lg`}
     >
       {props.icon && props.icon} <span>{props.title}</span>
     </button>

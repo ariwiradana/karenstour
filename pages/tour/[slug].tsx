@@ -78,11 +78,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
           <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
             <Description />
             <Inclusion state={state} actions={actions} />
-            {state.data && (
-              <div className="max-w-xl hidden lg:block">
-                <ReviewForm destination={state.data} />
-              </div>
-            )}
           </div>
           <div className="col-span-2 flex flex-col gap-6 md:gap-10">
             <div className="flex flex-col gap-y-2">
@@ -106,10 +101,8 @@ const ServiceDetail: FC<PageProps> = (props) => {
               />
             </div>
             <BookingInfo />
+            {state.data && <ReviewForm destination={state.data} />}
           </div>
-        </div>
-        <div className="mt-8 md:mt-8 lg:mt-10 lg:hidden">
-          {state.data && <ReviewForm destination={state.data} />}
         </div>
       </Container>
       {state.data && (
