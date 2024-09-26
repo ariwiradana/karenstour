@@ -14,60 +14,84 @@ export default async function handler(
       slug?: string;
       limit?: number;
       page?: number;
-      sort?: string; // If you want to use different sorting criteria
+      sort?: string;
       order?: string;
       search?: string;
       id?: number;
-      category_names?: string[]
+      category_names?: string;
     }
 
     const {
       slug,
-      limit,
-      page,
+      limit, // Default limit
+      page, // Default page
       sort,
       order,
       search = "",
       id,
-      category_names
+      category_names,
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
     const values: (string | number)[] = [searchTerm];
-    const countValues: (string | number)[] = [searchTerm];
 
+    // Main query
     let text = `
-      SELECT d.*, ROUND(AVG(r.rating), 1) AS average_rating, COUNT(r.id) AS review_count, c.id AS category_id, c.name AS category_name
-      FROM destination d
-      LEFT JOIN reviews r ON d.id = r.destination_id
-      LEFT JOIN category c ON d.category_id = c.id
-      WHERE d.title ILIKE $1
-    `;
+    SELECT 
+      d.*, 
+      ROUND(AVG(r.rating), 1) AS average_rating, 
+      COUNT(r.id) AS review_count, 
+      c.id AS category_id, 
+      c.name AS category_name
+    FROM destination d
+    LEFT JOIN reviews r ON d.id = r.destination_id
+    LEFT JOIN category c ON d.category_id = c.id
+    WHERE d.title ILIKE $1
+  `;
 
-    const countText = `
-      SELECT COUNT(*)
-      FROM destination
-      WHERE title ILIKE $1
-    `;
+    // Count query
+    let countText = `
+    SELECT COUNT(DISTINCT d.id) AS total_count
+    FROM destination d
+    LEFT JOIN reviews r ON d.id = r.destination_id
+    LEFT JOIN category c ON d.category_id = c.id
+    WHERE d.title ILIKE $1
+  `;
 
+    // Add filters based on id, slug, and category_names
     if (id) {
       const valueIndex = values.length + 1;
       text += ` AND d.id = $${valueIndex}`;
+      countText += ` AND d.id = $${valueIndex}`;
       values.push(id);
     }
 
     if (slug) {
       const valueIndex = values.length + 1;
       text += ` AND d.slug = $${valueIndex}`;
+      countText += ` AND d.slug = $${valueIndex}`;
       values.push(slug);
     }
 
     if (category_names) {
-      
+      const categoryArray = category_names
+        .split(",")
+        .map((name) => name.trim());
+      if (categoryArray.length > 0) {
+        const placeholders = categoryArray
+          .map((_, i) => `$${values.length + i + 1}`)
+          .join(", ");
+        text += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
+        countText += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
+        categoryArray.forEach((name) => {
+          values.push(`%${name}%`);
+        });
+      }
     }
 
     text += " GROUP BY d.id, c.id";
 
+    // Sorting logic
     const validSortColumns = ["d.duration", "d.price", "average_rating"];
     const validSortOrders = ["ASC", "DESC"];
 
@@ -92,18 +116,17 @@ export default async function handler(
     }
 
     try {
-      const [{ rows }, { rows: totalRows }] = await Promise.all([
+      const [
+        { rows },
+        {
+          rows: [{ total_count }],
+        },
+      ] = await Promise.all([
         sql.query(text, values),
-        sql.query(countText, countValues),
+        sql.query(countText, values),
       ]);
 
-      return successResponse(
-        response,
-        "GET",
-        "destination",
-        rows,
-        totalRows[0].count
-      );
+      return successResponse(response, "GET", "destination", rows, total_count);
     } catch (error) {
       return errorResponse(response, error);
     }
@@ -118,7 +141,7 @@ export default async function handler(
         price,
         inclusions,
         video_url,
-        category_id
+        category_id,
       }: Destination = request.body;
 
       const query = {

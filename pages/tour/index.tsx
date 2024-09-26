@@ -37,7 +37,7 @@ const ServiceList: FC<Props> = () => {
             action={false}
           />
         </div>
-        <div className="sticky top-12 md:top-24 lg:top-20 z-10 bg-white pt-6 pb-4">
+        <div className="bg-white mt-8 lg:mt-0">
           {state.categories.length > 0 && (
             <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg">
               <h6 className="text-sm font-normal mb-3 text-dark md:hidden">
@@ -118,28 +118,32 @@ const ServiceList: FC<Props> = () => {
             </div> */}
         </div>
 
-        <h5
-          className={`text-base text-dark font-semibold my-4 ${montserrat.className}`}
-        >
-          Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
-          {Math.min(state.page * state.limit, state.totalRows)} of{" "}
-          {state.totalRows} results
-        </h5>
-
-        {state.loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-8">
-            <CardShimmer />
-            <CardShimmer />
-            <CardShimmer />
-            <CardShimmer />
-          </div>
-        ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-5 lg:gap-8 divide-y md:divide-y-0">
-            {state.data.map((obj) => (
-              <DestinationCard key={obj.id} data={obj} />
-            ))}
-          </div>
+        {state.totalRows > 0 && (
+          <h5
+            className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
+          >
+            Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
+            {Math.min(state.page * state.limit, state.totalRows)} of{" "}
+            {state.totalRows} results
+          </h5>
         )}
+
+        <div className="mt-4 md:mt-6">
+          {state.loading ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+              <CardShimmer />
+              <CardShimmer />
+              <CardShimmer />
+              <CardShimmer />
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+              {state.data.map((obj) => (
+                <DestinationCard key={obj.id} data={obj} />
+              ))}
+            </div>
+          )}
+        </div>
 
         {Math.ceil(state.totalRows / state.limit) > 1 && (
           <div className="flex justify-center mt-12">

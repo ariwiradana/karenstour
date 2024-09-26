@@ -47,7 +47,6 @@ const useDestination = (): UseDestination => {
   const [data, setData] = useState<Destination[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [sortBy, setSortBy] = useState<SortBy>("average_rating");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
@@ -112,7 +111,9 @@ const useDestination = (): UseDestination => {
     try {
       const url = `/api/destination?page=${page}&limit=${limit}&sort=${encodeURIComponent(
         sortBy
-      )}&order=${encodeURIComponent(sortOrder)}`;
+      )}&order=${encodeURIComponent(
+        sortOrder
+      )}&category_names=${encodeURIComponent(categoryFilters.join(","))}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -127,7 +128,7 @@ const useDestination = (): UseDestination => {
     } finally {
       setLoading(false);
     }
-  }, [firstLoad, page, limit, sortBy, sortOrder]);
+  }, [page, limit, sortBy, sortOrder, categoryFilters]);
 
   useEffect(() => {
     fetchDestinations();
