@@ -38,50 +38,61 @@ const ServiceList: FC<Props> = () => {
           />
         </div>
         <div className="bg-white mt-8 lg:mt-0">
-          {state.categories.length > 0 && (
-            <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg">
-              <h6 className="text-sm font-normal mb-3 text-dark md:hidden">
-                Category Filter
-              </h6>
-              <div
-                className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
-              >
-                <div className="md:flex items-center hidden">
-                  <BsFilter className="text-2xl text-dark" />
-                </div>
-                {state.categories.map((category: Category) => (
-                  <div
-                    key={category.name}
-                    className={`flex items-center justify-start gap-x-1 p-2 rounded-lg ${
-                      (state.categoryFilters as string[]).includes(
-                        category.name
-                      )
-                        ? "bg-primary text-white border-primary"
-                        : "bg-white text-dark border-gray-100"
-                    }`}
-                  >
-                    <BiCheck
-                      className={`text-xs md:text-sm ${
+          <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg">
+            <h6 className="text-sm font-normal mb-3 text-dark md:hidden">
+              Category Filter
+            </h6>
+            <div
+              className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
+            >
+              <div className="md:flex items-center hidden">
+                <BsFilter className="text-2xl text-dark" />
+              </div>
+              {state.categories.length === 0 ? (
+                <>
+                  {[0, 1, 2, 3].map((item) => (
+                    <div
+                      key={`shimmer-${item}`}
+                      className={`flex items-center md:min-w-36 lg:min-w-48 justify-start gap-x-1 p-2 h-8 lg:h-9 rounded-lg bg-darkgray shine`}
+                    ></div>
+                  ))}
+                </>
+              ) : (
+                <>
+                  {state.categories.map((category: Category) => (
+                    <div
+                      key={category.name}
+                      className={`flex items-center justify-start gap-x-1 p-2 rounded-lg ${
                         (state.categoryFilters as string[]).includes(
                           category.name
                         )
-                          ? "text-white"
-                          : "text-darkgray"
+                          ? "bg-primary text-white border-primary"
+                          : "bg-white text-dark border-gray-100"
                       }`}
-                    />
-                    <button
-                      onClick={() =>
-                        actions.handleChangeFilterCategory(category.name)
-                      }
-                      className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left"
                     >
-                      {category.name}
-                    </button>
-                  </div>
-                ))}
-              </div>
+                      <BiCheck
+                        className={`text-xs md:text-sm ${
+                          (state.categoryFilters as string[]).includes(
+                            category.name
+                          )
+                            ? "text-white"
+                            : "text-darkgray"
+                        }`}
+                      />
+                      <button
+                        onClick={() =>
+                          actions.handleChangeFilterCategory(category.name)
+                        }
+                        className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left"
+                      >
+                        {category.name}
+                      </button>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
-          )}
+          </div>
 
           {/* <div className="w-full">
               <CustomSelect
@@ -118,15 +129,13 @@ const ServiceList: FC<Props> = () => {
             </div> */}
         </div>
 
-        {state.totalRows > 0 && (
-          <h5
-            className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
-          >
-            Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
-            {Math.min(state.page * state.limit, state.totalRows)} of{" "}
-            {state.totalRows} results
-          </h5>
-        )}
+        <h5
+          className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
+        >
+          Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
+          {Math.min(state.page * state.limit, state.totalRows)} of{" "}
+          {state.totalRows} results
+        </h5>
 
         <div className="mt-4 md:mt-6">
           {state.loading ? (
