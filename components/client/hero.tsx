@@ -58,8 +58,8 @@ const Hero: FC = () => {
                     <br />
                     of Your Trip
                   </h2>
-                  <div className="max-w-3xl flex items-center gap-x-3 md:gap-x-4">
-                    <div className="ml-1 w-[40px] md:w-[120px] h-[1px] bg-white"></div>
+                  <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
+                    <div className="ml-1 w-[40px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
                     <span className="text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light">
                       {data.title}
                     </span>
