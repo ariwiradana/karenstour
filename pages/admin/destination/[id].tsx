@@ -139,7 +139,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             onChange={(e) =>
               actions.handleChange(Number(e.target.value), "categoryId")
             }
-            value={state.formData.categoryId?.toString()}
+            value={state.formData.categoryId ?? ""}
             error={state.errors.categoryId}
             options={state.categoryOptions}
           />

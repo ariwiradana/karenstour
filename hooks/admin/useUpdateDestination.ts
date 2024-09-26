@@ -74,31 +74,6 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const [destination, setDestination] = useState<Destination | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
-  const fetchCategories = useCallback(async () => {
-    let url = `/api/category`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await response.json();
-
-      if (result.success) {
-        const options: Options[] = result.data.map((category: Category) => ({
-          label: category.name,
-          value: category.id,
-        }));
-        setCategoryOptions(options);
-      }
-    } catch (error: any) {
-      console.log(error);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
-
   const router = useRouter();
 
   const handleToggleLightbox = (index: number) => {
@@ -107,31 +82,66 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     setSlideIndex(index);
   };
 
-  const fetchDestinationBySlug = async () => {
-    const response = await fetch(`/api/destination?id=${id}`);
-    const result = await response.json();
-    if (result.success) {
-      const data = result.data[0];
-      setDestination(data);
-      setFormData((prevData) => ({
-        ...prevData,
-        title: data.title,
-        description: data.description,
-        inclusions: data.inclusions,
-        duration: data.duration,
-        pax: data.minimum_pax,
-        price: data.price,
-        uploaded_images: data.images,
-        uploaded_video: data.video_url,
-        categoryId: data.category_id,
-        thumbnail_image: data.thumbnail_image,
-      }));
+  const fetchDestinationBySlug = useCallback(async () => {
+    const toastFetch = toast.loading("Load destination...");
+    try {
+      const response = await fetch(`/api/destination?id=${id}`);
+      const result = await response.json();
+      if (result.success) {
+        const data = result.data[0];
+        toast.success(result.message, { id: toastFetch });
+        setDestination(data);
+        setFormData((prevData) => ({
+          ...prevData,
+          title: data.title,
+          description: data.description,
+          inclusions: data.inclusions,
+          duration: data.duration,
+          pax: data.minimum_pax,
+          price: data.price,
+          uploaded_images: data.images,
+          uploaded_video: data.video_url,
+          categoryId: data.category_id,
+          thumbnail_image: data.thumbnail_image,
+        }));
+      } else {
+        toast.error(result.message, { id: toastFetch });
+      }
+    } catch (error: any) {
+      toast.error(error.message);
     }
-  };
+  }, []);
+
+  const fetchCategories = useCallback(async () => {
+    if (formData.categoryId) {
+      let url = `/api/category`;
+      try {
+        const response = await fetch(url);
+        if (!response.ok) {
+          throw new Error("Network response was not ok");
+        }
+        const result = await response.json();
+
+        if (result.success) {
+          const options: Options[] = result.data.map((category: Category) => ({
+            label: category.name,
+            value: category.id,
+          }));
+          setCategoryOptions(options);
+        }
+      } catch (error: any) {
+        console.log(error);
+      }
+    }
+  }, [formData]);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   useEffect(() => {
     fetchDestinationBySlug();
-  }, []);
+  }, [fetchDestinationBySlug]);
 
   const schema: ZodSchema = z.object({
     images: z.any().refine((value) => value === null || isFileList(value), {
@@ -381,6 +391,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
           inclusions: formData.inclusions,
           video_url: videoURL ?? formData.uploaded_video,
           category_id: formData.categoryId,
+          thumbnail_image: formData.thumbnail_image,
         };
 
         const updateDestination = await fetch(`/api/destination?id=${id}`, {

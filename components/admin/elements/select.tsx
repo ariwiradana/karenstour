@@ -19,7 +19,7 @@ const InputSelect: FC<InputSelectProps> = (props) => {
         {props.label}
       </label>
       <select
-        onChange={props.onChange}
+        {...props}
         className="mt-1 block w-full border border-gray-300 rounded-md px-2 py-[9.5px]"
       >
         {props.options.map(({ value, label }) => (
