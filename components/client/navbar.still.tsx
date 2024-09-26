@@ -6,8 +6,6 @@ import {
   RiMailLine,
   RiMenu2Line,
 } from "react-icons/ri";
-import SelectInput from "./elements/select.text";
-import { useRouter } from "next/router";
 import Image from "next/image";
 import useNavbar from "@/hooks/client/useNavbar";
 import LeftSide from "./leftside";
@@ -40,7 +38,6 @@ const socials: Social[] = [
 
 const NavbarStill: FC<NavbarProps> = () => {
   const { state, actions } = useNavbar();
-  const router = useRouter();
 
   return (
     <div className="sticky w-full top-0 lg:m-0 z-50 px-6 md:px-8 lg:px-0 transition-all ease-in-out duration-500 delay-200 bg-white">
@@ -56,15 +53,17 @@ const NavbarStill: FC<NavbarProps> = () => {
           </button>
         </li>
         <li className="relative hidden md:block transition-all ease-in-out duration-500 delay-200 w-20 h-20">
-          <Image
-            src="/images/logo.webp"
-            alt="Logo"
-            className="object-contain w-full"
-            fill
-          />
+          <Link href="/">
+            <Image
+              src="/images/logo.webp"
+              alt="Logo"
+              className="object-contain w-full"
+              fill
+            />
+          </Link>
         </li>
         <li className="flex items-center gap-x-8">
-          <div>
+          {/* <div>
             <SelectInput
               className="transition-all ease-in-out duration-500 delay-200"
               id="select-locale"
@@ -80,7 +79,7 @@ const NavbarStill: FC<NavbarProps> = () => {
               ]}
               value={state.locale}
             />
-          </div>
+          </div> */}
           <div className="flex gap-x-4 transition-colors ease-in-out duration-500 delay-200 text-primary">
             {socials?.map(({ icon, path }) => {
               return (

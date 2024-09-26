@@ -1,5 +1,4 @@
 import { unbounded } from "@/constants/font";
-import Image from "next/image";
 import React, { FC, useState } from "react";
 import Container from "./container";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -8,6 +7,7 @@ import usePopularDestination from "@/hooks/client/usePopularDestination";
 import ButtonPrimary from "./elements/button.primary";
 import { BsFillPinMapFill } from "react-icons/bs";
 import Link from "next/link";
+import ImageShimmer from "./elements/image.shimmer";
 
 const Hero: FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
@@ -35,7 +35,7 @@ const Hero: FC = () => {
         {state.data.map((data, index) => (
           <SwiperSlide key={`hero-${data.id}`}>
             <div className="relative w-full h-full">
-              <Image
+              <ImageShimmer
                 priority
                 fill
                 src={data.images.length > 2 ? data.images[1] : data.images[0]}
