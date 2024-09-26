@@ -44,7 +44,11 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <Lightbox
         slideIndex={state.lightboxIndex}
         show={state.lightbox}
-        images={state.data?.images ?? []}
+        images={
+          state.data?.thumbnail_image
+            ? [state.data.thumbnail_image, ...state.data.images.slice(1)]
+            : state.data?.images ?? []
+        }
         video={state.data?.video_url}
       />
       {state.data?.slug && (

@@ -283,6 +283,7 @@ const useDestinationDetail = (
 
   const hasVideo = data?.video_url ? true : false;
   const images = hasVideo ? data?.images ?? [] : data?.images?.slice(1) ?? [];
+
   const slicedImages =
     images.length > gridNumberImage ? images?.slice(0, gridNumberImage) : [];
 
