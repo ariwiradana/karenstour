@@ -1,6 +1,6 @@
 import dynamic from "next/dynamic";
 import React, { FC } from "react";
-// import "react-quill/dist/quill.snow.css";
+import "react-quill/dist/quill.snow.css";
 
 const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
 
@@ -27,7 +27,6 @@ const InputTextEditor: FC<InputTextEditorProps> = ({
     <div className={`${full ? "w-full" : "w-auto"} ${className || ""}`}>
       <label className="block text-sm font-medium text-gray-700">{label}</label>
       <ReactQuill
-      
         theme="snow"
         value={value}
         onChange={onChange}

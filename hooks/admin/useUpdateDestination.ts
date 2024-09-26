@@ -2,7 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 import { z, ZodSchema } from "zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { Destination, Options } from "@/constants/types";
+import { Category, Destination, Options } from "@/constants/types";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
 import useAdminCategory from "./useAdminCategory";
@@ -70,7 +70,30 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const [destination, setDestination] = useState<Destination | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
-  const { state: category } = useAdminCategory();
+  const fetchCategories = useCallback(async () => {
+    let url = `/api/category`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+
+      if (result.success) {
+        const options: Options[] = result.data.map((category: Category) => ({
+          label: category.name,
+          value: category.id,
+        }));
+        setCategoryOptions(options);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const router = useRouter();
 
@@ -104,20 +127,6 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   useEffect(() => {
     fetchDestinationBySlug();
   }, []);
-
-  useEffect(() => {
-    if (category.categories.length > 0) {
-      const options: Options[] = category.categories.map((item) => ({
-        label: item.name,
-        value: item.id.toString(),
-      }));
-      setCategoryOptions(options);
-      setFormData((prevData) => ({
-        ...prevData,
-        categoryId: formData.categoryId ?? category.categories[0].id,
-      }));
-    }
-  }, [category]);
 
   const schema: ZodSchema = z.object({
     images: z.any().refine((value) => value === null || isFileList(value), {

@@ -1,13 +1,10 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { z, ZodSchema } from "zod";
-import { upload } from "@vercel/blob/client";
 import toast from "react-hot-toast";
-import { PutBlobResult } from "@vercel/blob";
 import { useRouter } from "next/router";
-import { generateIds } from "@/utils/generateIds";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
-import { Options } from "@/constants/types";
+import { Category, Options } from "@/constants/types";
 import useAdminCategory from "./useAdminCategory";
 
 interface FormData {
@@ -62,7 +59,31 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
-  const { state: category } = useAdminCategory();
+  const fetchCategories = useCallback(async () => {
+    setLoading(true);
+    let url = `/api/category`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+
+      if (result.success) {
+        const options: Options[] = result.data.map((category: Category) => ({
+          label: category.name,
+          value: category.id,
+        }));
+        setCategoryOptions(options);
+      }
+    } catch (error: any) {
+      console.log(error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const router = useRouter();
 
@@ -93,20 +114,6 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       .optional()
       .nullable(),
   });
-
-  useEffect(() => {
-    if (category.categories.length > 0) {
-      const options: Options[] = category.categories.map((item) => ({
-        label: item.name,
-        value: item.id.toString(),
-      }));
-      setCategoryOptions(options);
-      setFormData((prevData) => ({
-        ...prevData,
-        categoryId: formData.categoryId ?? category.categories[0].id,
-      }));
-    }
-  }, [category]);
 
   const handleChange = (
     value: string | number | string[] | File | FileList | null,

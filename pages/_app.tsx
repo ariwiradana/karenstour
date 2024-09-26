@@ -7,7 +7,6 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import "swiper/css/effect-fade";
 import { Toaster } from "react-hot-toast";
-import "react-quill/dist/quill.snow.css";
 import NextNProgress from "nextjs-progressbar";
 
 export default function App({ Component, pageProps }: AppProps) {

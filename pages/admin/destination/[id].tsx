@@ -47,7 +47,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
 
         <form
           onSubmit={actions.handleSubmit}
-          className="max-w-xl flex flex-col gap-4 mt-12"
+          className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           {state.formData.uploaded_video && (
             <div className="relative w-full h-full">
@@ -134,7 +134,6 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              full
               type="number"
               name="duration"
               label="Duration (eg. Hour)"
@@ -143,7 +142,6 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
               error={state.errors.duration}
             />
             <Input
-              full
               type="number"
               name="pax"
               label="Minimum Pax"

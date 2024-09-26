@@ -73,9 +73,11 @@ const BookingPage: FC<PageProps> = (props) => {
                         <h6 className="text-darkgray text-sm">
                           {booking.email}
                         </h6>
-                        <h6 className="border border-admin-primary px-2 py-1 text-admin-primary rounded font-medium text-xs mt-2">
-                          #{booking.id}
-                        </h6>
+                        <div className="flex">
+                          <h6 className="border border-admin-primary px-2 py-1 text-admin-primary rounded font-medium text-xs mt-2">
+                            #{booking.id}
+                          </h6>
+                        </div>
                       </div>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">

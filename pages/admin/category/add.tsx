@@ -29,7 +29,7 @@ const AdminAddCategoryPage: FC<PageProps> = () => {
 
         <form
           onSubmit={actions.handleSubmit}
-          className="max-w-lg flex flex-col gap-4 mt-12"
+          className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           <Input
             name="name"

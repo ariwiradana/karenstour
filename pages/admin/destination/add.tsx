@@ -17,18 +17,17 @@ const AddDestinationPage: FC = () => {
       <div className="p-2 md:p-6 w-full">
         <h1 className="text-2xl md:text-3xl mb-6">Add New Destination</h1>
         <div className="mb-4 flex items-center gap-2">
-          <Link
-            href="/admin/destination"
-            className="flex items-center text-darkgray transition hover:underline"
-          >
-            <HiChevronLeft className="mr-2 text-lg" />
-            <span>Back</span>
+          <Link href="/admin/destination">
+            <button className="flex items-center text-darkgray transition hover:underline">
+              <HiChevronLeft className="mr-2 text-lg" />
+              <span>Back</span>
+            </button>
           </Link>
         </div>
 
         <form
           onSubmit={actions.handleSubmit}
-          className="max-w-xl flex flex-col gap-4 mt-12"
+          className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           <Input
             type="file"
