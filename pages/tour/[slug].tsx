@@ -47,17 +47,19 @@ const ServiceDetail: FC<PageProps> = (props) => {
         images={state.data?.images ?? []}
         video={state.data?.video_url}
       />
-      <Breadcrumb
-        title="Tour"
-        navigations={[
-          { title: "Home", path: "/" },
-          { title: "Tour", path: "/tour" },
-          {
-            title: state.data?.title ?? "",
-            path: `/tour/${state.data?.slug ?? ""}`,
-          },
-        ]}
-      />
+      {state.data?.slug && (
+        <Breadcrumb
+          title="Tour"
+          navigations={[
+            { title: "Home", path: "/" },
+            { title: "Tour", path: "/tour" },
+            {
+              title: state.data?.title ?? "",
+              path: `/tour/${state.data?.slug ?? ""}`,
+            },
+          ]}
+        />
+      )}
       <Container className="py-10 lg:py-16">
         {state.data && <Title title={state.data?.title ?? ""} action={false} />}
         {state.data?.category_name && (

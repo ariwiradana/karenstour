@@ -27,23 +27,24 @@ const Breadcrumb: FC<BreadcrumbProps> = (props) => {
         <div
           className={`relative z-10 flex items-center h-full ${unbounded.className}`}
         >
-          <nav className="flex items-center gap-x-3 text-xs lg:text-sm capitalize text-white duration-500 transition-colors ease-in-out overflow-hidden whitespace-nowrap overflow-x-auto">
+          <nav
+            className="flex items-center gap-x-3 text-xs lg:text-sm capitalize text-white duration-500 transition-colors ease-in-out overflow-hidden whitespace-nowrap overflow-x-auto"
+            style={{ scrollbarWidth: "none" }}
+          >
             {navigations.map((navigation, index) => (
               <div key={navigation.path} className="flex items-center gap-x-2">
-                {/* Render the home icon only for the home navigation */}
                 {navigation.title === "Home" && (
                   <MdHomeFilled className="text-lg lg:text-xl" />
                 )}
-                {/* Render Link for all except the last navigation */}
                 {index < navigations.length - 1 ? (
                   <Link href={navigation.path} className="text-white">
                     {navigation.title}
                   </Link>
                 ) : (
-                  <span className="text-white">{navigation.title}</span> // Last path as text
+                  <span className="text-white">{navigation.title}</span>
                 )}
                 {index < navigations.length - 1 && (
-                  <span className="mx-2 text-white">/</span> // Separator
+                  <span className="mx-2 text-white">/</span>
                 )}
               </div>
             ))}
