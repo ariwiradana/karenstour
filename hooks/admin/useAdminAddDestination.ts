@@ -78,6 +78,8 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       }
     } catch (error: any) {
       console.log(error);
+    } finally {
+      setLoading(false);
     }
   }, []);
 
