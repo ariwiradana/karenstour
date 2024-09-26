@@ -30,14 +30,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
     props.serviceId
   );
 
-  console.log(state.lightboxIndex);
-
-  console.log(
-    state.slicedImages.length,
-    state.images.length,
-    state.remainingImages.length
-  );
-
   return (
     <Layout still pageTitle={state.data?.title ?? "Karen's Tour & Travel"}>
       <Lightbox
