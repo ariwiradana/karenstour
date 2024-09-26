@@ -2,14 +2,16 @@ import { useCallback, useEffect, useState } from "react";
 import { z, ZodSchema } from "zod";
 import toast from "react-hot-toast";
 import { useRouter } from "next/router";
-import { Destination } from "@/constants/types";
+import { Destination, Options } from "@/constants/types";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
+import useAdminCategory from "./useAdminCategory";
 
 interface FormData {
   uploaded_images?: string[] | [];
   images: FileList | null;
   title: string;
+  categoryId: number | null;
   pax: number;
   description: string;
   duration: number;
@@ -24,6 +26,7 @@ interface UseUpdateDestinationState {
   errors: Record<string, string>;
   loading: boolean;
   destination: Destination | null;
+  categoryOptions: Options[] | [];
 }
 
 interface UseUpdateDestination {
@@ -42,6 +45,7 @@ const initialFormData: FormData = {
   uploaded_images: [],
   images: null,
   title: "",
+  categoryId: null,
   pax: 1,
   description: "",
   duration: 1,
@@ -59,6 +63,9 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [destination, setDestination] = useState<Destination | null>(null);
+  const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
+
+  const { state: category } = useAdminCategory();
 
   const router = useRouter();
 
@@ -78,6 +85,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
         price: data.price,
         uploaded_images: data.images,
         uploaded_video: data.video_url,
+        categoryId: data.category_id,
       }));
     }
   };
@@ -86,11 +94,26 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     fetchDestinationBySlug();
   }, []);
 
+  useEffect(() => {
+    if (category.categories.length > 0) {
+      const options: Options[] = category.categories.map((item) => ({
+        label: item.name,
+        value: item.id.toString(),
+      }));
+      setCategoryOptions(options);
+      setFormData((prevData) => ({
+        ...prevData,
+        categoryId: formData.categoryId ?? category.categories[0].id,
+      }));
+    }
+  }, [category]);
+
   const schema: ZodSchema = z.object({
     images: z.any().refine((value) => value === null || isFileList(value), {
       message: "Please select at least one image file.",
     }),
     title: z.string().min(5, "The title must be at least 5 characters long."),
+    categoryId: z.number(),
     pax: z.any().refine((value) => !isNaN(value), {
       message: "The number of participants must be at least 1.",
     }),
@@ -280,6 +303,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
           price: Number(formData.price),
           inclusions: formData.inclusions,
           video_url: videoURL ?? formData.uploaded_video,
+          category_id: formData.categoryId,
         };
 
         const updateDestination = await fetch(`/api/destination?id=${id}`, {
@@ -329,6 +353,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
       errors,
       loading,
       destination,
+      categoryOptions,
     },
     actions: {
       handleChange,

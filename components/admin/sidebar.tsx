@@ -2,7 +2,13 @@ import { capitalizeWords } from "@/utils/capitalizeWords";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import { FaMap, FaClipboardList, FaBars, FaStar } from "react-icons/fa6";
+import {
+  FaMap,
+  FaClipboardList,
+  FaBars,
+  FaStar,
+  FaList,
+} from "react-icons/fa6";
 
 type MenuItem = {
   name: string;
@@ -21,6 +27,11 @@ const Sidebar = ({
 
   const menuItems: MenuItem[] = [
     { name: "Booking", path: "/admin/booking", icon: <FaClipboardList /> },
+    {
+      name: "Category",
+      path: "/admin/category",
+      icon: <FaList />,
+    },
     {
       name: "Destination",
       path: "/admin/destination",

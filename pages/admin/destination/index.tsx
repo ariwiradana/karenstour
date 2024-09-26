@@ -18,16 +18,15 @@ const AdminDestinationPage = () => {
               Add New Destination
             </button>
           </Link>
-          {state.totalRows > 0 && (
-            <TextField
-              value={state.search}
-              onChange={actions.handleSearch}
-              size="small"
-              label="Search"
-              variant="outlined"
-              className="w-64"
-            />
-          )}
+
+          <TextField
+            value={state.search}
+            onChange={actions.handleSearch}
+            size="small"
+            label="Search"
+            variant="outlined"
+            className="w-64"
+          />
         </div>
         {state.totalRows > 0 && (
           <div className="min-w-full overflow-x-auto">
@@ -36,7 +35,9 @@ const AdminDestinationPage = () => {
                 <tr className="bg-gray-100 text-left">
                   <th className="border px-4 py-2 text-sm text-dark">Tour</th>
                   <th className="border px-4 py-2 text-sm text-dark">Assets</th>
-
+                  <th className="border px-4 py-2 text-sm text-dark">
+                    Category
+                  </th>
                   <th className="border px-4 py-2 text-sm text-dark">
                     Duration
                   </th>
@@ -67,9 +68,16 @@ const AdminDestinationPage = () => {
                       <div className="mt-1">
                         <p className="text-darkgray text-sm">Images</p>
                         <h4 className="font-medium">
-                          {destination.images.length > 0 ? destination.images.length : "-"}
+                          {destination.images.length > 0
+                            ? destination.images.length
+                            : "-"}
                         </h4>
                       </div>
+                    </td>
+                    <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
+                      <h6 className="font-medium">
+                        {destination.category_name}
+                      </h6>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
                       <h6 className="font-medium">

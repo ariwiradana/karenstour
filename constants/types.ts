@@ -10,14 +10,8 @@ export interface Destination {
   duration: number;
   price: number;
   average_rating: number;
-}
-
-export interface Service {
-  id: number;
-  svg: string;
-  title: string;
-  slug: string;
-  description: string;
+  category_id: number;
+  category_name: string;
 }
 
 export interface Env {
@@ -51,6 +45,11 @@ export interface Booking {
   updated_at: string;
   pickup_location: string;
   payment_proof: string;
+}
+
+export interface Category {
+  id: number;
+  name: string;
 }
 
 export interface Review {

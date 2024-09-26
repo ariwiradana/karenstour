@@ -2,7 +2,7 @@ import { Destination } from "@/constants/types";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 
-type SortBy = "popularity" | "duration" | "price";
+type SortBy = "average_rating" | "d.duration" | "d.price";
 type SortOrder = "asc" | "desc";
 
 interface UseDestination {
@@ -44,7 +44,7 @@ const useDestination = (): UseDestination => {
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
-  const [sortBy, setSortBy] = useState<SortBy>("popularity");
+  const [sortBy, setSortBy] = useState<SortBy>("average_rating");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
 
   const topRef = useRef<HTMLDivElement>(null);

@@ -50,27 +50,27 @@ const ServiceList: FC<Props> = () => {
             options={[
               {
                 key: "Popularity: Most Popular Tours",
-                value: "popularity-asc",
+                value: "average_rating-asc",
               },
               {
                 key: "Popularity: Least Popular Tours",
-                value: "popularity-desc",
+                value: "average_rating-desc",
               },
               {
                 key: "Price: Low to High",
-                value: "price-asc",
+                value: "d.price-asc",
               },
               {
                 key: "Price: High to Low",
-                value: "price-desc",
+                value: "d.price-desc",
               },
               {
                 key: "Duration: Shortest Tours",
-                value: "duration-asc",
+                value: "d.duration-asc",
               },
               {
                 key: "Duration: Longest Tours",
-                value: "duration-desc",
+                value: "d.duration-desc",
               },
             ]}
           />

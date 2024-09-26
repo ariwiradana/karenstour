@@ -7,10 +7,13 @@ import { useRouter } from "next/router";
 import { generateIds } from "@/utils/generateIds";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
+import { Options } from "@/constants/types";
+import useAdminCategory from "./useAdminCategory";
 
 interface FormData {
   images: FileList | null;
   title: string;
+  categoryId: number | null;
   pax: number;
   description: string;
   duration: number;
@@ -23,6 +26,7 @@ interface UseAdminAddDestinationState {
   formData: FormData;
   errors: Record<string, string>;
   loading: boolean;
+  categoryOptions: Options[] | [];
 }
 
 interface UseAdminAddDestination {
@@ -39,6 +43,7 @@ interface UseAdminAddDestination {
 const initialFormData: FormData = {
   images: null,
   title: "",
+  categoryId: null,
   pax: 1,
   description: "",
   duration: 1,
@@ -55,6 +60,9 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
+
+  const { state: category } = useAdminCategory();
 
   const router = useRouter();
 
@@ -63,6 +71,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       message: "Please select at least one image file.",
     }),
     title: z.string().min(5, "The title must be at least 5 characters long."),
+    categoryId: z.number(),
     pax: z.any().refine((value) => !isNaN(value), {
       message: "The number of participants must be at least 1.",
     }),
@@ -84,6 +93,20 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       .optional()
       .nullable(),
   });
+
+  useEffect(() => {
+    if (category.categories.length > 0) {
+      const options: Options[] = category.categories.map((item) => ({
+        label: item.name,
+        value: item.id.toString(),
+      }));
+      setCategoryOptions(options);
+      setFormData((prevData) => ({
+        ...prevData,
+        categoryId: formData.categoryId ?? category.categories[0].id,
+      }));
+    }
+  }, [category]);
 
   const handleChange = (
     value: string | number | string[] | File | FileList | null,
@@ -109,9 +132,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       if (video) {
         const fileVideo = video instanceof FileList ? video[0] : video;
         const filename = generateFilename("video");
-        const uploadToast = toast.loading(
-          `Video is uploading...`
-        );
+        const uploadToast = toast.loading(`Video is uploading...`);
         try {
           const filepath = "destination/videos";
           const response = await fetch(
@@ -214,6 +235,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
             price: Number(formData.price),
             inclusions: formData.inclusions,
             video_url: videoURL ?? "",
+            category_id: formData.categoryId ?? "",
           };
 
           const createDestination = await fetch("/api/destination", {
@@ -263,6 +285,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
       formData,
       errors,
       loading,
+      categoryOptions,
     },
     actions: {
       handleChange,

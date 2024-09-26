@@ -3,10 +3,14 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { Destination } from "@/constants/types";
 import ImageShimmer from "./image.shimmer";
-import { BiSolidTime, BiSolidUser } from "react-icons/bi";
+import {
+  BiSolidCompass,
+  BiSolidStar,
+  BiSolidTime,
+  BiSolidUser,
+} from "react-icons/bi";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
-import { FaStar } from "react-icons/fa6";
 
 interface DestinationCardProps {
   data: Destination;
@@ -26,12 +30,22 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
             fill
             alt={props.data.slug}
           />
+          {props.data.category_name && (
+            <div
+              className={`px-2 md:py-3 py-2 absolute inset-x-0 group-hover/item:bottom-0 -bottom-20 transition-all ease-in-out rounded-b-xl duration-500 flex justify-center items-center z-10 backdrop-blur-md gap-1 shadow delay-200 ${unbounded.className}`}
+            >
+              <BiSolidCompass className="text-white text-sm" />
+              <span className="text-white text-xs font-medium">
+                {props.data.category_name}
+              </span>
+            </div>
+          )}
           {props.data.average_rating && (
             <div
-              className={`px-2 py-1 absolute top-4 right-4 rounded-lg flex justify-center items-center z-10 bg-primary gap-1 shadow ${unbounded.className}`}
+              className={`px-2 py-1 absolute top-2 right-2 md:top-4 md:right-4 rounded-lg flex justify-center items-center backdrop-blur-md gap-1 shadow ${unbounded.className}`}
             >
-              <FaStar className="text-white text-[12px]" />
-              <span className="text-white text-[12px] font-medium">
+              <BiSolidStar className="text-white text-sm" />
+              <span className="text-white text-xs font-medium">
                 {props.data.average_rating}
               </span>
             </div>
@@ -39,7 +53,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         </div>
         <div className="flex flex-col justify-between">
           <div className={unbounded.className}>
-            <h3 className="font-medium text-dark text-base md:text-xl mt-4 mb-3 line-clamp-2">
+            <h3 className="font-medium text-dark text-base md:text-xl mt-4 mb-2 line-clamp-2">
               {props.data.title}
             </h3>
             <div

@@ -1,20 +1,12 @@
+import { Options } from "@/constants/types";
 import React, { FC } from "react";
 
-interface Option {
-  value: string;
+interface InputSelectProps
+  extends React.InputHTMLAttributes<HTMLSelectElement> {
   label: string;
-}
-
-interface InputSelectProps {
-  id?: string;
-  type?: "text" | "number" | "email";
-  label: string;
-  value: string | number;
-  name: string;
-  onChange: React.ChangeEventHandler<HTMLSelectElement>;
   error?: string;
   full?: boolean;
-  options: Option[];
+  options: Options[];
 }
 
 const InputSelect: FC<InputSelectProps> = (props) => {
@@ -27,9 +19,6 @@ const InputSelect: FC<InputSelectProps> = (props) => {
         {props.label}
       </label>
       <select
-        name={props.name}
-        id={props.id}
-        value={props.value.toString()}
         onChange={props.onChange}
         className="mt-1 block w-full border border-gray-300 rounded-md px-2 py-[9.5px]"
       >

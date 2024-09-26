@@ -7,6 +7,7 @@ import { HiChevronLeft } from "react-icons/hi2";
 import InputChip from "@/components/admin/elements/input.chip";
 import useAdminAddDestination from "@/hooks/admin/useAdminAddDestination";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
+import InputSelect from "@/components/admin/elements/select";
 
 const AddDestinationPage: FC = () => {
   const { state, actions } = useAdminAddDestination();
@@ -50,6 +51,15 @@ const AddDestinationPage: FC = () => {
             onChange={(e) => actions.handleChange(e.target.value, "title")}
             value={state.formData.title}
             error={state.errors.title}
+          />
+          <InputSelect
+            label="Category"
+            onChange={(e) =>
+              actions.handleChange(Number(e.target.value), "categoryId")
+            }
+            value={state.formData.categoryId?.toString()}
+            error={state.errors.categoryId}
+            options={state.categoryOptions}
           />
           <InputTextEditor
             label="Description"

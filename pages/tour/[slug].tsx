@@ -12,7 +12,13 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
-import { BiSolidDollarCircle, BiSolidTime, BiSolidUser } from "react-icons/bi";
+import {
+  BiSolidCompass,
+  BiSolidDollarCircle,
+  BiSolidStar,
+  BiSolidTime,
+  BiSolidUser,
+} from "react-icons/bi";
 import { HiCheck } from "react-icons/hi2";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
@@ -20,7 +26,6 @@ import VideoPlayer from "@/components/admin/elements/video.player";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
-import { FaStar } from "react-icons/fa6";
 import Lightbox from "@/components/client/elements/lightbox";
 import generatePDF from "react-to-pdf";
 import TourBrochure from "@/components/client/brochure";
@@ -56,6 +61,16 @@ const ServiceDetail: FC<PageProps> = (props) => {
       />
       <Container className="py-10 lg:py-16">
         {state.data && <Title title={state.data?.title ?? ""} action={false} />}
+        {state.data?.category_name && (
+          <div className="flex items-center gap-x-2">
+            <BiSolidCompass className="text-primary text-xl md:text-2xl" />
+            <h6
+              className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
+            >
+              {state.data?.category_name}
+            </h6>
+          </div>
+        )}
         <GalleryDetail />
         <div className="my-8">
           <ServiceDetail />
@@ -174,10 +189,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
       >
         {state.data?.average_rating && (
           <div
-            className={`px-2 py-1 absolute top-4 right-4 rounded-lg flex justify-center items-center z-20 bg-primary gap-1 shadow ${unbounded.className}`}
+            className={`px-2 py-[6px] md:px-3 md:py-2 absolute top-4 right-4 rounded-lg lg:rounded-xl flex justify-center items-center z-20 backdrop-blur-md gap-1 shadow ${unbounded.className}`}
           >
-            <FaStar className="text-white text-[12px]" />
-            <span className="text-white text-[12px] font-medium">
+            <BiSolidStar className="text-white text-sm md:text-sm" />
+            <span className="text-white text-sm md:text-sm font-medium">
               {state.data.average_rating}
             </span>
           </div>
@@ -271,7 +286,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
     if (!state.data) return <></>;
     return (
       <div
-        className={`flex flex-wrap items-center gap-x-10 gap-y-4 capitalize ${montserrat.className}`}
+        className={`flex flex-wrap gap-y-4 gap-x-8 lg:gap-x-10 capitalize ${montserrat.className}`}
       >
         <div className="flex gap-x-2 items-start">
           <div className="w-5 min-w-5 md:w-6 md:min-w-6">

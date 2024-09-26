@@ -11,6 +11,7 @@ import VideoPlayer from "@/components/admin/elements/video.player";
 import { BsX } from "react-icons/bs";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
+import InputSelect from "@/components/admin/elements/select";
 
 interface PageProps {
   id: string;
@@ -95,6 +96,15 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             onChange={(e) => actions.handleChange(e.target.value, "title")}
             value={state.formData.title}
             error={state.errors.title}
+          />
+          <InputSelect
+            label="Category"
+            onChange={(e) =>
+              actions.handleChange(Number(e.target.value), "categoryId")
+            }
+            value={state.formData.categoryId?.toString()}
+            error={state.errors.categoryId}
+            options={state.categoryOptions}
           />
           <InputTextEditor
             label="Description"

@@ -26,12 +26,20 @@ export const successResponse = (
       message = `Operation on ${entity} completed successfully.`;
   }
 
-  res.status(200).json({
-    success: true,
-    message,
-    data,
-    totalRows,
-  });
+  if (totalRows > 0) {
+    res.status(200).json({
+      success: true,
+      message,
+      data,
+      totalRows: Number(totalRows),
+    });
+  } else {
+    res.status(200).json({
+      success: true,
+      message,
+      data,
+    });
+  }
 };
 
 export const errorResponse = (res: NextApiResponse, error: any): void => {

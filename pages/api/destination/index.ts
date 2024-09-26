@@ -22,8 +22,8 @@ export default async function handler(
 
     const {
       slug,
-      limit = 10,
-      page = 1,
+      limit,
+      page,
       sort,
       order,
       search = "",
@@ -31,53 +31,64 @@ export default async function handler(
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
+    const values: (string | number)[] = [searchTerm];
+    const countValues: (string | number)[] = [searchTerm];
 
-    // Base query
-    let query = `
-      SELECT d.*, ROUND(AVG(r.rating), 1) AS average_rating, COUNT(r.id) AS review_count
+    let text = `
+      SELECT d.*, ROUND(AVG(r.rating), 1) AS average_rating, COUNT(r.id) AS review_count, c.id AS category_id, c.name AS category_name
       FROM destination d
       LEFT JOIN reviews r ON d.id = r.destination_id
-      WHERE d.title ILIKE '${searchTerm}'
+      LEFT JOIN category c ON d.category_id = c.id
+      WHERE d.title ILIKE $1
     `;
 
-    // Base count query
-    let countQuery = `
+    const countText = `
       SELECT COUNT(*)
       FROM destination
-      WHERE title ILIKE '${searchTerm}'
+      WHERE title ILIKE $1
     `;
 
     if (id) {
-      query += ` AND d.id = '${id}'`;
+      const valueIndex = values.length + 1;
+      text += ` AND d.id = $${valueIndex}`;
+      values.push(id);
     }
 
-    // Append optional conditions
     if (slug) {
-      query += ` AND d.slug = '${slug}'`;
-      countQuery += ` AND slug = '${slug}'`;
+      const valueIndex = values.length + 1;
+      text += ` AND d.slug = $${valueIndex}`;
+      values.push(slug);
     }
 
-    query += " GROUP BY d.id"; // Ensure you're grouping by destination ID
+    text += " GROUP BY d.id, c.id";
 
-    // Append sorting logic
-    if (sort) {
-      if (sort === "popularity") {
-        query += ` ORDER BY average_rating ${order}`; // Sort by average rating for popularity
+    const validSortColumns = ["d.duration", "d.price", "average_rating"];
+    const validSortOrders = ["ASC", "DESC"];
+
+    if (sort && order) {
+      if (
+        validSortColumns.includes(sort) &&
+        validSortOrders.includes(order.toUpperCase())
+      ) {
+        text += ` ORDER BY ${sort} ${order.toUpperCase()}`;
       } else {
-        query += ` ORDER BY ${sort} ${order}`; // Existing sort logic
+        return errorResponse(response, {
+          message: `Invalid sort category. Allowed sort: ${validSortColumns.join(
+            ", "
+          )}.`,
+        });
       }
-    } else {
-      query += ` ORDER BY average_rating DESC`; // Default to sort by average rating
     }
 
-    // Handle pagination
-    const offset = (page - 1) * limit;
-    query += ` LIMIT ${limit} OFFSET ${offset}`;
+    if (page && limit) {
+      const offset = (page - 1) * limit;
+      text += ` LIMIT ${limit} OFFSET ${offset}`;
+    }
 
     try {
       const [{ rows }, { rows: totalRows }] = await Promise.all([
-        sql.query(query),
-        sql.query(countQuery),
+        sql.query(text, values),
+        sql.query(countText, countValues),
       ]);
 
       return successResponse(
@@ -101,12 +112,13 @@ export default async function handler(
         price,
         inclusions,
         video_url,
+        category_id
       }: Destination = request.body;
 
       const query = {
         text: `
-          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
           RETURNING *;
         `,
         values: [
@@ -119,6 +131,7 @@ export default async function handler(
           price,
           inclusions,
           video_url,
+          category_id,
         ],
       };
       const { rows } = await sql.query(query);
@@ -138,6 +151,7 @@ export default async function handler(
         price,
         inclusions,
         video_url,
+        category_id,
       }: Destination = request.body;
 
       const { id } = request.query;
@@ -147,8 +161,8 @@ export default async function handler(
                 UPDATE destination
                 SET images = $1, title = $2, slug = $3, minimum_pax = $4,
                     description = $5, duration = $6, price = $7,
-                    inclusions = $8, video_url = $9
-                WHERE id = $10
+                    inclusions = $8, video_url = $9, category_id = $10
+                WHERE id = $11
                 RETURNING *;
             `,
         values: [
@@ -161,6 +175,7 @@ export default async function handler(
           price,
           inclusions,
           video_url,
+          category_id,
           id,
         ],
       };
