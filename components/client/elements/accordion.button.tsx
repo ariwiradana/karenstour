@@ -19,7 +19,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
   };
 
   return (
-    <div className={`bg-lightgray rounded-lg overflow-hidden border border-primary ${unbounded.className}`}>
+    <div className={`bg-lightgray rounded-lg overflow-hidden ${unbounded.className}`}>
       <button
         onClick={handleClickButton}
         className="w-full text-center text-white font-normal text-sm py-4 px-6 flex justify-center items-center focus:outline-none bg-primary"
