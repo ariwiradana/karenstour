@@ -163,7 +163,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
         <p className="md:gap-x-2 text-base font-medium text-darkgray md:mt-2 leading-6">
           Need help with booking?{" "}
           <span className="text-primary">
-            <Link href={"/"}>Send us a message</Link>
+            <Link href={contact.whatsapp}>Send us a message</Link>
           </span>
         </p>
       </div>
