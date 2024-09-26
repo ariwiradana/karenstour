@@ -4,7 +4,6 @@ import React, { FC } from "react";
 import { Destination } from "@/constants/types";
 import ImageShimmer from "./image.shimmer";
 import {
-  BiSolidCompass,
   BiSolidStar,
   BiSolidTime,
   BiSolidUser,
@@ -18,31 +17,21 @@ interface DestinationCardProps {
 }
 
 const DestinationCard: FC<DestinationCardProps> = (props) => {
-  console.log(props);
   return (
     <Link href={`/tour/${props.data.slug}`}>
       <div className={`group/item ${props.className ?? ""}`}>
         <div className="relative w-full h-32 md:h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
           <ImageShimmer
+            sizes="400px"
             priority
             src={props.data.images[0]}
             className="object-cover group-hover/item:scale-110 transition-transform ease-in-out duration-700"
             fill
             alt={props.data.slug}
           />
-          {props.data.category_name && (
-            <div
-              className={`px-2 md:py-3 py-2 absolute inset-x-0 group-hover/item:bottom-0 -bottom-20 transition-all ease-in-out rounded-b-xl duration-500 flex justify-center items-center z-10 backdrop-blur-md gap-1 shadow delay-200 ${unbounded.className}`}
-            >
-              <BiSolidCompass className="text-white text-sm" />
-              <span className="text-white text-xs font-medium">
-                {props.data.category_name}
-              </span>
-            </div>
-          )}
           {props.data.average_rating && (
             <div
-              className={`px-2 py-1 absolute top-2 right-2 md:top-4 md:right-4 rounded-lg flex justify-center items-center backdrop-blur-md gap-1 shadow ${unbounded.className}`}
+              className={`px-2 py-1 absolute top-2 right-2 md:top-4 md:right-4 rounded-lg flex justify-center items-center bg-primary gap-1 shadow ${unbounded.className}`}
             >
               <BiSolidStar className="text-white text-sm" />
               <span className="text-white text-xs font-medium">

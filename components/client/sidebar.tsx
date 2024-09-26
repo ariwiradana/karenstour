@@ -16,6 +16,7 @@ const Sidebar: FC<SidebarProps> = (props) => {
     <div className={`p-6 ${unbounded.className} relative`}>
       <div className="relative transition-all ease-in-out duration-500 delay-200 w-24 h-24">
         <Image
+          sizes="100px"
           src="/images/logo.webp"
           alt="Logo"
           className="object-contain w-full"

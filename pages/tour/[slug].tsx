@@ -13,7 +13,6 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
 import {
-  BiSolidCompass,
   BiSolidDollarCircle,
   BiSolidStar,
   BiSolidTime,
@@ -62,14 +61,11 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <Container className="py-10 lg:py-16">
         {state.data && <Title title={state.data?.title ?? ""} action={false} />}
         {state.data?.category_name && (
-          <div className="flex items-center gap-x-2">
-            <BiSolidCompass className="text-primary text-xl md:text-2xl" />
-            <h6
-              className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
-            >
-              {state.data?.category_name}
-            </h6>
-          </div>
+          <h6
+            className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
+          >
+            {state.data?.category_name}
+          </h6>
         )}
         <GalleryDetail />
         <div className="my-8">
@@ -189,10 +185,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
       >
         {state.data?.average_rating && (
           <div
-            className={`px-2 py-[6px] md:px-3 md:py-2 absolute top-4 right-4 rounded-lg lg:rounded-xl flex justify-center items-center z-20 backdrop-blur-md gap-1 shadow ${unbounded.className}`}
+            className={`px-2 py-1 absolute top-2 right-2 md:top-4 md:right-4 rounded-lg flex justify-center items-center bg-primary gap-1 shadow-sm z-10 ${unbounded.className}`}
           >
-            <BiSolidStar className="text-white text-sm md:text-sm" />
-            <span className="text-white text-sm md:text-sm font-medium">
+            <BiSolidStar className="text-white text-base" />
+            <span className="text-white text-sm font-medium">
               {state.data.average_rating}
             </span>
           </div>
@@ -225,6 +221,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             ) : (
               <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine h-full aspect-video">
                 <ImageShimmer
+                  sizes="400px"
                   onClick={() => actions.handleToggleLightbox(1)}
                   priority
                   alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
@@ -243,6 +240,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   className="overflow-hidden relative shine aspect-square md:aspect-auto"
                 >
                   <ImageShimmer
+                    sizes="200px"
                     onClick={() =>
                       actions.handleToggleLightbox(
                         state.data?.video_url ? index + 1 : index + 2

@@ -42,18 +42,21 @@ const Footer: FC = () => {
   function FooterRight() {
     return (
       <div className="flex flex-col items-center md:items-end">
-        <Image
-          src="/images/logo.webp"
-          alt="Logo"
-          className="hidden md:block"
-          width={160}
-          height={50}
-        />
+        <div className="relative w-40 h-20 mb-6">
+          <Image
+            priority
+            src="/images/logo.webp"
+            alt="Logo"
+            className="hidden md:block w-auto object-cover"
+            sizes="160px"
+            fill
+          />
+        </div>
         <p className="text-darkgray font-light text-sm text-right hidden md:block">
           {t("footer.caption")}
         </p>
         <p className="text-dark text-center md:text-right font-light text-sm mt-4">
-         {contact.copyright}
+          {contact.copyright}
         </p>
       </div>
     );

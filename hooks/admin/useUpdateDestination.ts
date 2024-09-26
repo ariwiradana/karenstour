@@ -27,6 +27,8 @@ interface UseUpdateDestinationState {
   loading: boolean;
   destination: Destination | null;
   categoryOptions: Options[] | [];
+  lightbox: boolean;
+  slideIndex: number;
 }
 
 interface UseUpdateDestination {
@@ -34,6 +36,7 @@ interface UseUpdateDestination {
   actions: {
     handleRemoveImage: (imageURL: string) => void;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
+    handleToggleLightbox: (index: number) => void;
     handleChange: (
       value: string | number | string[] | File | FileList | null,
       name: string
@@ -61,6 +64,8 @@ const isFileList = (value: any): value is FileList => {
 const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [lightbox, setLightbox] = useState<boolean>(false);
+  const [slideIndex, setSlideIndex] = useState<number>(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [destination, setDestination] = useState<Destination | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
@@ -68,6 +73,12 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const { state: category } = useAdminCategory();
 
   const router = useRouter();
+
+  const handleToggleLightbox = (index: number) => {
+    console.log(index);
+    setLightbox(!lightbox);
+    setSlideIndex(index);
+  };
 
   const fetchDestinationBySlug = async () => {
     const response = await fetch(`/api/destination?id=${id}`);
@@ -354,11 +365,14 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
       loading,
       destination,
       categoryOptions,
+      lightbox,
+      slideIndex,
     },
     actions: {
       handleChange,
       handleSubmit,
       handleRemoveImage,
+      handleToggleLightbox,
     },
   };
 };

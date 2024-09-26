@@ -24,7 +24,6 @@ const useAdminDetailReview = (id: number): UseAdminDetailReview => {
 
       if (result.success) {
         setReview(result?.data[0]);
-        console.log(result);
       }
     } catch (error: any) {
       toast.error(error.message);

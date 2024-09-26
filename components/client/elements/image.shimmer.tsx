@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Image from "next/image";
+import Image, { ImageProps } from "next/image";
 import ShimmerLoader from "./shimmer.loader";
 
-interface ImageShimmerProps {
+interface ImageShimmerProps extends ImageProps {
   src: string;
   alt: string;
   width?: number;
@@ -24,6 +24,7 @@ const ImageShimmer: React.FC<ImageShimmerProps> = (props) => {
     >
       {loading && <ShimmerLoader />}
       <Image
+        {...props}
         priority={props.priority}
         fill={props.fill}
         src={props.src}

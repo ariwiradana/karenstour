@@ -36,6 +36,7 @@ const Hero: FC = () => {
           <SwiperSlide key={`hero-${data.id}`}>
             <div className="relative w-full h-full">
               <ImageShimmer
+                sizes="1920px"
                 priority
                 fill
                 src={data.images.length > 2 ? data.images[1] : data.images[0]}

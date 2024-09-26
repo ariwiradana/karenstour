@@ -12,6 +12,7 @@ import { BsX } from "react-icons/bs";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
 import InputSelect from "@/components/admin/elements/select";
+import FsLightbox from "fslightbox-react";
 
 interface PageProps {
   id: string;
@@ -22,6 +23,16 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
 
   return (
     <Layout>
+      {state.formData.uploaded_images &&
+      state.formData.uploaded_images?.length > 0 ? (
+        <FsLightbox
+          slide={state.slideIndex}
+          toggler={state.lightbox}
+          sources={state.formData.uploaded_images}
+        />
+      ) : (
+        <></>
+      )}
       <div className="p-2 md:p-6 w-full">
         <h1 className="text-2xl md:text-3xl mb-6">Update Destination</h1>
         <div className="mb-4 flex items-center gap-2">
@@ -78,6 +89,8 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
                       <BsX className="text-dark text-base" />
                     </button>
                     <ImageShimmer
+                      onClick={() => actions.handleToggleLightbox(index + 1)}
+                      sizes="150px"
                       priority
                       alt={`upadte-image-${index + 1}`}
                       className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"

@@ -52,16 +52,18 @@ const NavbarStill: FC<NavbarProps> = () => {
             <RiMenu2Line className="text-xl transition-colors ease-in-out duration-500 delay-20" />
           </button>
         </li>
-        <li className="relative hidden md:block transition-all ease-in-out duration-500 delay-200 w-20 h-20">
-          <Link href="/">
+        <Link href="/">
+          <li className="relative hidden md:block transition-all ease-in-out duration-300 delay-75 w-20 h-20">
             <Image
+              priority
               src="/images/logo.webp"
               alt="Logo"
               className="object-contain w-full"
               fill
+              sizes="100px"
             />
-          </Link>
-        </li>
+          </li>
+        </Link>
         <li className="flex items-center gap-x-8">
           {/* <div>
             <SelectInput

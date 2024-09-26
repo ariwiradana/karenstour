@@ -38,7 +38,6 @@ const usePopularDestination = (
         const result = await response.json();
         if (result.success) {
           if (exceptionId) {
-            console.log("this");
             const newData = result.data.filter(
               (item: Destination) => item.id !== exceptionId
             );
