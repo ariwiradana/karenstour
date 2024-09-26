@@ -20,7 +20,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
   return (
     <Link href={`/tour/${props.data.slug}`}>
       <div className={`group/item ${props.className ?? ""}`}>
-        <div className="relative w-full h-32 md:h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
+        <div className="relative w-full h-52 lg:h-60 rounded-3xl bg-gray-300 overflow-hidden">
           <ImageShimmer
             sizes="400px"
             priority
@@ -31,9 +31,9 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
           />
           {props.data.average_rating && (
             <div
-              className={`px-2 py-1 absolute top-2 right-2 md:top-4 md:right-4 rounded-lg flex justify-center items-center bg-primary gap-1 shadow ${unbounded.className}`}
+              className={`absolute top-4 right-4 px-2 py-1 rounded-lg flex justify-center items-center bg-primary gap-1 shadow ${unbounded.className}`}
             >
-              <BiSolidStar className="text-white text-sm" />
+              <BiSolidStar className="text-white text-base" />
               <span className="text-white text-xs font-medium">
                 {props.data.average_rating}
               </span>
@@ -42,22 +42,22 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         </div>
         <div className="flex flex-col justify-between">
           <div className={unbounded.className}>
-            <h3 className="font-medium text-dark text-base md:text-xl mt-4 mb-2 line-clamp-2">
+            <h3 className="font-medium text-dark text-xl mt-4 mb-2 line-clamp-2">
               {props.data.title}
             </h3>
             <div
-              className={`flex md:items-center flex-col md:flex-row my-2 gap-y-1 gap-x-3 md:gap-x-4 ${montserrat.className}`}
+              className={`flex my-2 gap-y-1 gap-x-4 ${montserrat.className}`}
             >
               <div className="flex gap-x-2 items-center">
-                <BiSolidTime className="text-lg md:text-xl text-primary" />
-                <p className="text-sm md:text-base text-primary font-medium">
+                <BiSolidTime className="text-xl text-primary" />
+                <p className="text-lg text-primary font-medium">
                   {convertHoursToReadableFormat(props.data.duration)}
                 </p>
               </div>
 
               <div className="flex gap-x-2 items-center">
-                <BiSolidUser className="text-lg md:text-xl text-primary" />
-                <p className="text-sm md:text-base text-primary font-medium">
+                <BiSolidUser className="text-xl text-primary" />
+                <p className="text-lg text-primary font-medium">
                   {props.data.minimum_pax} pax
                 </p>
               </div>
@@ -69,7 +69,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
             Start from
           </p>
           <h2
-            className={`text-[17px] md:text-2xl text-dark font-semibold ${unbounded.className}`}
+            className={`text-2xl text-dark font-semibold ${unbounded.className}`}
           >
             {currencyIDR(props.data.price)}
           </h2>

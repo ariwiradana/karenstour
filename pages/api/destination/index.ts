@@ -18,6 +18,7 @@ export default async function handler(
       order?: string;
       search?: string;
       id?: number;
+      category_names?: string[]
     }
 
     const {
@@ -28,6 +29,7 @@ export default async function handler(
       order,
       search = "",
       id,
+      category_names
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
@@ -58,6 +60,10 @@ export default async function handler(
       const valueIndex = values.length + 1;
       text += ` AND d.slug = $${valueIndex}`;
       values.push(slug);
+    }
+
+    if (category_names) {
+      
     }
 
     text += " GROUP BY d.id, c.id";

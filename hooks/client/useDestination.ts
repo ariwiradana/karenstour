@@ -1,6 +1,7 @@
-import { Destination } from "@/constants/types";
+import { Category, Destination } from "@/constants/types";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import useAdminCategory from "../admin/useAdminCategory";
 
 type SortBy = "average_rating" | "d.duration" | "d.price";
 type SortOrder = "asc" | "desc";
@@ -21,6 +22,8 @@ interface UseDestination {
     totalRows: number;
     sortBy: SortBy;
     sortOrder: SortOrder;
+    categories: Category[];
+    categoryFilters: string[] | [];
   };
   actions: {
     setFirstSlide: (value: boolean) => void;
@@ -31,6 +34,7 @@ interface UseDestination {
     ) => void;
     handleChangeFilter: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handleScrollToRef: () => void;
+    handleChangeFilterCategory: (categoryName: string) => void;
   };
 }
 
@@ -46,6 +50,30 @@ const useDestination = (): UseDestination => {
   const [firstLoad, setFirstLoad] = useState<boolean>(true);
   const [sortBy, setSortBy] = useState<SortBy>("average_rating");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
+  const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+
+  const fetchCategories = useCallback(async () => {
+    setLoading(true);
+    let url = `/api/category`;
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+      const result = await response.json();
+
+      if (result.success) {
+        setCategories(result?.data);
+      }
+    } catch (error: any) {
+      setError(error.message);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -105,11 +133,24 @@ const useDestination = (): UseDestination => {
     fetchDestinations();
   }, [fetchDestinations]);
 
+  const handleChangeFilterCategory = (categoryName: string) => {
+    let newCategoryFilters = [...categoryFilters];
+    if (categoryFilters.includes(categoryName)) {
+      newCategoryFilters = newCategoryFilters.filter(
+        (item) => item !== categoryName
+      );
+    } else {
+      newCategoryFilters.push(categoryName);
+    }
+    setCategoryFilters(newCategoryFilters);
+  };
+
   return {
     ref: {
       topRef,
     },
     state: {
+      categories,
       firstSlide,
       lastSlide,
       service,
@@ -121,6 +162,7 @@ const useDestination = (): UseDestination => {
       loading,
       sortBy,
       sortOrder,
+      categoryFilters,
     },
     actions: {
       setFirstSlide,
@@ -128,6 +170,7 @@ const useDestination = (): UseDestination => {
       handleChangePagination,
       handleChangeFilter,
       handleScrollToRef,
+      handleChangeFilterCategory,
     },
   };
 };

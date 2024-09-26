@@ -187,7 +187,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
       >
         {state.data?.average_rating && (
           <div
-            className={`px-2 py-1 absolute top-4 right-4 rounded-lg flex justify-center items-center bg-primary gap-1 shadow-sm z-10 ${unbounded.className}`}
+            className={`absolute top-4 right-4 px-2 py-1 rounded-lg flex justify-center items-center bg-primary gap-1 shadow z-10 ${unbounded.className}`}
           >
             <BiSolidStar className="text-white text-base" />
             <span className="text-white text-sm font-medium">

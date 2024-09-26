@@ -18,7 +18,7 @@ interface CustomSelectProps {
 const CustomSelect: FC<CustomSelectProps> = (props) => {
   return (
     <div
-      className={`min-h-10 bg-lightgray border border-gray-200 cursor-pointer hover:border-gray-300 rounded-lg flex items-center ${montserrat.className}`}
+      className={`min-h-10 bg-lightgray border border-gray-100 cursor-pointer hover:border-gray-200 rounded-lg flex items-center ${montserrat.className}`}
     >
       <select
         id={props.id}

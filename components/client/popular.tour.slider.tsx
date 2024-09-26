@@ -32,6 +32,11 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
 
         <div className="relative">
           <Swiper
+            autoplay={{
+              disableOnInteraction: false,
+              delay: 4000,
+              pauseOnMouseEnter: true,
+            }}
             className="group"
             navigation={{
               prevEl: ".slidePrev-btn",
@@ -39,11 +44,11 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             }}
             breakpoints={{
               0: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 16,
               },
               640: {
-                slidesPerView: 2,
+                slidesPerView: 1,
                 spaceBetween: 16,
               },
               768: {

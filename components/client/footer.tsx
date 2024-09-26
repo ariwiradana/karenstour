@@ -65,7 +65,7 @@ const Footer: FC = () => {
   function FooterLeft() {
     return (
       <div>
-        <h2 className="lg:text-3xl text-2xl uppercase font-bold text-dark mb-2">
+        <h2 className="text-2xl uppercase font-bold text-dark mb-2">
           {t("footer.title")}
         </h2>
         <div className="mt-8 w-auto">

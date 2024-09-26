@@ -8,7 +8,9 @@ import React, { FC } from "react";
 import Pagination from "@mui/material/Pagination";
 import { montserrat, unbounded } from "@/constants/font";
 import useDestination from "@/hooks/client/useDestination";
-import CustomSelect from "@/components/client/elements/select";
+import { Category } from "@/constants/types";
+import { BiCheck } from "react-icons/bi";
+import { BsFilter } from "react-icons/bs";
 
 interface Props {}
 
@@ -35,55 +37,104 @@ const ServiceList: FC<Props> = () => {
             action={false}
           />
         </div>
-        <div className="flex flex-wrap items-center justify-between gap-2 py-4 mt-8 mb-3 sticky top-14 lg:top-20 z-20 bg-white">
-          <h5
-            className={`text-base text-dark font-semibold ${montserrat.className}`}
-          >
-            Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
-            {Math.min(state.page * state.limit, state.totalRows)} of{" "}
-            {state.totalRows} results
-          </h5>
-          <CustomSelect
-            id="filter-select"
-            value={`${state.sortBy}-${state.sortOrder}`}
-            onChange={actions.handleChangeFilter}
-            options={[
-              {
-                key: "Popularity: Most Popular Tours",
-                value: "average_rating-asc",
-              },
-              {
-                key: "Popularity: Least Popular Tours",
-                value: "average_rating-desc",
-              },
-              {
-                key: "Price: Low to High",
-                value: "d.price-asc",
-              },
-              {
-                key: "Price: High to Low",
-                value: "d.price-desc",
-              },
-              {
-                key: "Duration: Shortest Tours",
-                value: "d.duration-asc",
-              },
-              {
-                key: "Duration: Longest Tours",
-                value: "d.duration-desc",
-              },
-            ]}
-          />
+        <div className="sticky top-12 md:top-24 lg:top-20 z-10 bg-white pt-6 pb-4">
+          {state.categories.length > 0 && (
+            <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg">
+              <h6 className="text-sm font-normal mb-3 text-dark md:hidden">
+                Category Filter
+              </h6>
+              <div
+                className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
+              >
+                <div className="md:flex items-center hidden">
+                  <BsFilter className="text-2xl text-dark" />
+                </div>
+                {state.categories.map((category: Category) => (
+                  <div
+                    key={category.name}
+                    className={`flex items-center justify-start gap-x-1 p-2 rounded-lg ${
+                      (state.categoryFilters as string[]).includes(
+                        category.name
+                      )
+                        ? "bg-primary text-white border-primary"
+                        : "bg-white text-dark border-gray-100"
+                    }`}
+                  >
+                    <BiCheck
+                      className={`text-xs md:text-sm ${
+                        (state.categoryFilters as string[]).includes(
+                          category.name
+                        )
+                          ? "text-white"
+                          : "text-darkgray"
+                      }`}
+                    />
+                    <button
+                      onClick={() =>
+                        actions.handleChangeFilterCategory(category.name)
+                      }
+                      className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left"
+                    >
+                      {category.name}
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* <div className="w-full">
+              <CustomSelect
+                id="filter-select"
+                value={`${state.sortBy}-${state.sortOrder}`}
+                onChange={actions.handleChangeFilter}
+                options={[
+                  {
+                    key: "Popularity: Most Popular Tours",
+                    value: "average_rating-asc",
+                  },
+                  {
+                    key: "Popularity: Least Popular Tours",
+                    value: "average_rating-desc",
+                  },
+                  {
+                    key: "Price: Low to High",
+                    value: "d.price-asc",
+                  },
+                  {
+                    key: "Price: High to Low",
+                    value: "d.price-desc",
+                  },
+                  {
+                    key: "Duration: Shortest Tours",
+                    value: "d.duration-asc",
+                  },
+                  {
+                    key: "Duration: Longest Tours",
+                    value: "d.duration-desc",
+                  },
+                ]}
+              />
+            </div> */}
         </div>
+
+        <h5
+          className={`text-base text-dark font-semibold my-4 ${montserrat.className}`}
+        >
+          Showing {Math.max(state.page * state.limit - state.limit + 1, 1)} -{" "}
+          {Math.min(state.page * state.limit, state.totalRows)} of{" "}
+          {state.totalRows} results
+        </h5>
+
         {state.loading ? (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-8">
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
           </div>
         ) : (
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-5 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 md:gap-5 lg:gap-8 divide-y md:divide-y-0">
             {state.data.map((obj) => (
               <DestinationCard key={obj.id} data={obj} />
             ))}
