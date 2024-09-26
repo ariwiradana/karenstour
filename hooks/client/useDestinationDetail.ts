@@ -1,7 +1,7 @@
 import { Destination } from "@/constants/types";
 import { formatDate } from "@/utils/dateFormatter";
 import { useRouter } from "next/router";
-import { useState, useEffect, useCallback, FormEvent } from "react";
+import { useState, useEffect, useCallback, FormEvent, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { z, ZodSchema } from "zod";
 import { parseTaxRate } from "@/utils/parseRates";
@@ -39,6 +39,9 @@ export interface UseDestinationDetail {
     images: string[];
     lightbox: boolean;
     lightboxIndex: number;
+  };
+  refs?: {
+    brochureRef: React.MutableRefObject<HTMLDivElement | null>;
   };
   actions: {
     handleToggleExpanded: () => void;
@@ -79,6 +82,8 @@ const useDestinationDetail = (
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
+
+  const brochureRef = useRef<HTMLDivElement | null>(null);
 
   const handleToggleLightbox = (index: number) => {
     setLightboxIndex(index);
@@ -301,6 +306,9 @@ const useDestinationDetail = (
       images,
       lightbox,
       lightboxIndex,
+    },
+    refs: {
+      brochureRef,
     },
     actions: {
       handleToggleExpanded,

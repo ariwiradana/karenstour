@@ -11,8 +11,6 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
   const formattedDate = moment(bookingDate).format("YYYY-MM-DD");
 
-  console.log("form booking", props.state);
-
   return (
     <form
       onSubmit={props.actions.handleSubmit}

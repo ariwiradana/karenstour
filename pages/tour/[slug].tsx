@@ -22,16 +22,21 @@ import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
 import { FaStar } from "react-icons/fa6";
 import Lightbox from "@/components/client/elements/lightbox";
+import generatePDF from "react-to-pdf";
+import TourBrochure from "@/components/client/brochure";
 interface PageProps extends Env {}
 
 const ServiceDetail: FC<PageProps> = (props) => {
-  const { state, actions } = useDestinationDetail(
+  const { state, actions, refs } = useDestinationDetail(
     props.publicKey,
     props.serviceId
   );
 
   return (
     <Layout still pageTitle={state.data?.title ?? "Karen's Tour & Travel"}>
+      <div ref={refs?.brochureRef} style={{ display: "none" }}>
+        <TourBrochure destination={state.data ?? undefined} />
+      </div>
       <Lightbox
         slideIndex={state.lightboxIndex}
         show={state.lightbox}
@@ -78,15 +83,13 @@ const ServiceDetail: FC<PageProps> = (props) => {
               />
               <Accordion
                 title="Download Packages"
-                content={
-                  <input
-                    className="border p-2"
-                    type="text"
-                    onChange={actions.handleChange}
-                    name="name"
-                    value={state.formData.name}
-                  />
-                }
+                onClick={() => {
+                  if (refs && refs.brochureRef) {
+                    generatePDF(refs.brochureRef, {
+                      filename: `${state.data?.title}.pdf`,
+                    });
+                  }
+                }}
               />
             </div>
             <BookingInfo />
@@ -155,7 +158,9 @@ const ServiceDetail: FC<PageProps> = (props) => {
         <p className="md:gap-x-2 text-base font-medium text-darkgray md:mt-2 leading-6">
           Need help with booking?{" "}
           <span className="text-primary">
-            <Link href={contact.whatsapp}>Send us a message</Link>
+            <Link target="_blank" href={contact.whatsapp}>
+              Send us a message
+            </Link>
           </span>
         </p>
       </div>

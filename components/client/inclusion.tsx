@@ -5,6 +5,7 @@ import React from "react";
 
 const Inclusion: React.FC<UseDestinationDetail> = (props) => {
   if (!props.state.data) return <></>;
+
   return (
     <div>
       <h6
