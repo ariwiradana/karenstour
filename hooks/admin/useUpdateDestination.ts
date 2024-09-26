@@ -10,6 +10,7 @@ import useAdminCategory from "./useAdminCategory";
 interface FormData {
   uploaded_images?: string[] | [];
   images: FileList | null;
+  thumbnail_image?: string;
   title: string;
   categoryId: number | null;
   pax: number;
@@ -34,7 +35,9 @@ interface UseUpdateDestinationState {
 interface UseUpdateDestination {
   state: UseUpdateDestinationState;
   actions: {
+    handleRemoveVideo: (videoURL: string) => void;
     handleRemoveImage: (imageURL: string) => void;
+    handleSetThumbnail: (imageURL: string) => void;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
     handleToggleLightbox: (index: number) => void;
     handleChange: (
@@ -47,6 +50,7 @@ interface UseUpdateDestination {
 const initialFormData: FormData = {
   uploaded_images: [],
   images: null,
+  thumbnail_image: "",
   title: "",
   categoryId: null,
   pax: 1,
@@ -120,6 +124,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
         uploaded_images: data.images,
         uploaded_video: data.video_url,
         categoryId: data.category_id,
+        thumbnail_image: data.thumbnail_image,
       }));
     }
   };
@@ -167,7 +172,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     const newImages = formData.uploaded_images?.filter(
       (image) => image !== imageURL
     );
-    if ((newImages ?? [])?.length > 0) {
+    if ((newImages ?? [])?.length > -1) {
       try {
         setLoading(true);
         const response = await fetch(
@@ -190,6 +195,58 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
       }
     } else {
       toast.error("Oops! The image cannot be empty");
+    }
+  };
+
+  const handleRemoveVideo = async (videoURL: string) => {
+    if (videoURL) {
+      try {
+        setLoading(true);
+        const response = await fetch(
+          `/api/destination/delete-file?url=${videoURL}&destination_id=${id}&category=video_url`,
+          {
+            method: "POST",
+          }
+        );
+        const result = await response.json();
+        if (result.success) {
+          setFormData((prevData) => ({
+            ...prevData,
+            uploaded_video: "",
+          }));
+        }
+      } catch (error: any) {
+        toast.error(error.message);
+      } finally {
+        setLoading(false);
+      }
+    }
+  };
+
+  const handleSetThumbnail = async (imageURL: string) => {
+    let updatedDestination = { ...destination };
+    updatedDestination.thumbnail_image = imageURL;
+
+    try {
+      setLoading(true);
+      const response = await fetch(`/api/destination?id=${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updatedDestination),
+      });
+      const result = await response.json();
+      if (result.success) {
+        setFormData((prevData) => ({
+          ...prevData,
+          thumbnail_image: imageURL,
+        }));
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -382,6 +439,8 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
       handleSubmit,
       handleRemoveImage,
       handleToggleLightbox,
+      handleSetThumbnail,
+      handleRemoveVideo,
     },
   };
 };

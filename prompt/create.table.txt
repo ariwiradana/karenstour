@@ -2,6 +2,8 @@ CREATE TABLE IF NOT EXISTS destination (
     id SERIAL PRIMARY KEY,
     category_id INTEGER REFERENCES category(id) ON DELETE SET NULL
     images TEXT[],
+    ALTER TABLE destination,
+    thumbnail_image VARCHAR(255),
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,
     minimum_pax INTEGER NOT NULL,

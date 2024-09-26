@@ -3,11 +3,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { Destination } from "@/constants/types";
 import ImageShimmer from "./image.shimmer";
-import {
-  BiSolidStar,
-  BiSolidTime,
-  BiSolidUser,
-} from "react-icons/bi";
+import { BiSolidStar, BiSolidTime, BiSolidUser } from "react-icons/bi";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 
@@ -20,11 +16,11 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
   return (
     <Link href={`/tour/${props.data.slug}`}>
       <div className={`group/item ${props.className ?? ""}`}>
-        <div className="relative w-full h-52 lg:h-60 rounded-3xl bg-gray-300 overflow-hidden">
+        <div className="relative w-full h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
           <ImageShimmer
             sizes="400px"
             priority
-            src={props.data.images[0]}
+            src={props.data.thumbnail_image ?? props.data.images[0]}
             className="object-cover group-hover/item:scale-110 transition-transform ease-in-out duration-700"
             fill
             alt={props.data.slug}

@@ -55,6 +55,16 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
                 className="w-full aspect-video rounded"
                 videoUrl={state.formData.uploaded_video}
               />
+              <button
+                disabled={state.loading}
+                type="button"
+                onClick={() =>
+                  actions.handleRemoveVideo(state.formData.uploaded_video ?? "")
+                }
+                className="bg-white text-dark absolute right-2 top-2 p-[2px] z-10 rounded-full bg-opacity-80 hover:bg-opacity-100 transition-all ease-in-out duration-500"
+              >
+                <BsX className="text-dark text-base" />
+              </button>
             </div>
           )}
           <Input
@@ -78,7 +88,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
                 {(state.formData.uploaded_images ?? []).map((image, index) => (
                   <div
                     key={`upadte-image-${index + 1}`}
-                    className="relative w-full aspect-video"
+                    className="relative w-full aspect-video group"
                   >
                     <button
                       disabled={state.loading}
@@ -88,12 +98,26 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
                     >
                       <BsX className="text-dark text-base" />
                     </button>
+                    {state.formData.thumbnail_image !== image && (
+                      <button
+                        type="button"
+                        onClick={() => actions.handleSetThumbnail(image)}
+                        className="absolute group-hover:bottom-2 bottom-0 group-hover:visible invisible group-hover:opacity-100 opacity-0 left-2 z-10 bg-white bg-opacity-80 px-2 py-1 text-xs font-medium rounded hover:bg-opacity-100 transition-all ease-in-out duration-500"
+                      >
+                        Set as Thumbnail
+                      </button>
+                    )}
+                    {state.formData.thumbnail_image === image && (
+                      <p className="absolute top-2 left-2 z-10 bg-white bg-opacity-80 px-2 py-1 text-xs font-medium rounded transition-all ease-in-out duration-500">
+                        Thumbnail
+                      </p>
+                    )}
                     <ImageShimmer
                       onClick={() => actions.handleToggleLightbox(index + 1)}
                       sizes="150px"
                       priority
                       alt={`upadte-image-${index + 1}`}
-                      className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
+                      className="object-cover transform hover:scale-[1.01] transition-transform ease-in-out duration-500"
                       fill
                       src={image}
                     />

@@ -222,7 +222,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
                   className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
                   fill
-                  src={state.data?.images[0] ?? ""}
+                  src={
+                    state.data?.thumbnail_image ??
+                    (state.data?.images[0] as string)
+                  }
                 />
               </div>
             )}

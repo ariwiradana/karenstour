@@ -181,6 +181,7 @@ export default async function handler(
         inclusions,
         video_url,
         category_id,
+        thumbnail_image,
       }: Destination = request.body;
 
       const { id } = request.query;
@@ -190,8 +191,8 @@ export default async function handler(
                 UPDATE destination
                 SET images = $1, title = $2, slug = $3, minimum_pax = $4,
                     description = $5, duration = $6, price = $7,
-                    inclusions = $8, video_url = $9, category_id = $10
-                WHERE id = $11
+                    inclusions = $8, video_url = $9, category_id = $10, thumbnail_image = $11
+                WHERE id = $12
                 RETURNING *;
             `,
         values: [
@@ -205,6 +206,7 @@ export default async function handler(
           inclusions,
           video_url,
           category_id,
+          thumbnail_image,
           id,
         ],
       };

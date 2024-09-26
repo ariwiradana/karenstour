@@ -1,6 +1,7 @@
 export interface Destination {
   id: number;
   images: string[] | [];
+  thumbnail_image?: string;
   video_url?: string;
   title: string;
   slug: string;
