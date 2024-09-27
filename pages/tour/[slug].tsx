@@ -78,10 +78,15 @@ const ServiceDetail: FC<PageProps> = (props) => {
         <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
           <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
             <div className={montserrat.className}>
-              <h4 className={`text-3xl lg:text-4xl text-dark font-bold`}>
-                {currencyIDR(state.data?.price ?? 0)}{" "}
-                <span className="text-xs text-darkgray">/ pax</span>
-              </h4>
+              {state.loading ? (
+                <div className="w-60 shine h-10 bg-black rounded"></div>
+              ) : (
+                <h4 className={`text-3xl lg:text-4xl text-dark font-bold`}>
+                  {currencyIDR(state.data?.price ?? 0)}{" "}
+                  <span className="text-xs text-darkgray">/ pax</span>
+                </h4>
+              )}
+
               <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
                 The price are includes transportation, admission fees, and all
                 other relevant costs.
