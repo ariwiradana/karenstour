@@ -12,9 +12,9 @@ const AdminLoginPage: FC = () => {
 
   return (
     <div
-      className={`flex justify-center items-center w-screen h-screen bg-[#f9f9f9] p-10 ${montserrat.className}`}
+      className={`flex justify-center items-center w-screen h-screen bg-white md:bg-[#f9f9f9] md:p-10 ${montserrat.className}`}
     >
-      <div className="max-w-md w-full p-10 bg-white rounded-2xl shadow-lg">
+      <div className="max-w-md w-full p-10 bg-white rounded-2xl md:shadow-lg">
         <h1 className="text-3xl text-center text-gray-800 mb-4 font-medium font-montserrat">
           {contact.company} Administration Portal
         </h1>
@@ -80,7 +80,7 @@ const AdminLoginPage: FC = () => {
               disabled={state.loading}
               title="Login"
               type="submit"
-              className="bg-blue-500 text-white rounded-lg w-full hover:bg-blue-400 transition font-montserrat"
+              className="bg-blue-500 text-white rounded-lg flex justify-center w-full hover:bg-blue-400 transition font-montserrat"
             />
           </div>
         </form>

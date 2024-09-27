@@ -67,12 +67,12 @@ const Sidebar = ({
       </Head>
       <aside
         className={`${
-          isCollapsed ? "w-14 p-2" : "w-14 md:w-44 lg:w-64 p-5"
+          isCollapsed ? "w-14 p-2" : "w-14 md:w-44 lg:w-64 p-2 md:p-3 lg:p-5"
         } bg-gray-800 h-screen transition-all duration-300 fixed inset-y-0 rounded-r-lg shadow-lg`}
       >
         <div
           className={`flex w-full ${
-            isCollapsed ? "justify-center" : "justify-between"
+            isCollapsed ? "justify-center" : "justify-center lg:justify-between"
           } items-center text-white py-4 px-4`}
         >
           <span
@@ -93,7 +93,9 @@ const Sidebar = ({
                 <Link
                   href={item.path}
                   className={`flex items-center ${
-                    isCollapsed ? "justify-center" : "justify-start"
+                    isCollapsed
+                      ? "justify-center"
+                      : "justify-center lg:justify-start"
                   } py-3 px-4 rounded-lg text-white bg-gray-700 hover:bg-gray-600 transition duration-200 ${
                     router.pathname === item.path ? "bg-gray-600" : ""
                   }`}
@@ -113,7 +115,9 @@ const Sidebar = ({
               <button
                 onClick={handleLogout}
                 className={`flex items-center py-3 px-4 rounded-lg text-white bg-blue-500 w-full transition duration-200 hover:bg-blue-400 ${
-                  isCollapsed ? "justify-center" : "justify-start"
+                  isCollapsed
+                    ? "justify-center"
+                    : "justify-center lg:justify-start"
                 }`}
               >
                 <span className="text-lg">
