@@ -7,6 +7,7 @@ import { montserrat } from "@/constants/font";
 import moment from "moment";
 import ButtonPrimary from "./elements/button.primary";
 import { currencyIDR } from "@/utils/currencyFormatter";
+import CustomInputNumber from "./elements/input.number";
 
 const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
@@ -36,14 +37,14 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         </h5>
       </div>
       <CustomInput
-        onChange={props.actions.handleChange}
+        onChange={(e) => props.actions.handleChange(e.target.value, "name")}
         name="name"
         label="Full name"
         value={props.state.formData.name}
         error={props.state.errors.name}
       />
       <CustomInput
-        onChange={props.actions.handleChange}
+        onChange={(e) => props.actions.handleChange(e.target.value, "email")}
         name="email"
         type="email"
         label="Email"
@@ -52,7 +53,9 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
       />
 
       <CustomInput
-        onChange={props.actions.handleChange}
+        onChange={(e) =>
+          props.actions.handleChange(e.target.value, "bookingDate")
+        }
         type="date"
         name="bookingDate"
         label="Booking Date"
@@ -62,15 +65,20 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
 
       <CustomTextarea
         rows={3}
-        onChange={props.actions.handleChange}
+        onChange={(e) =>
+          props.actions.handleChange(e.target.value, "pickupLocation")
+        }
         name="pickupLocation"
         label="Pickup Address"
         value={props.state.formData.pickupLocation}
         error={props.state.errors.pickupLocation}
         info="Please enter the name of your pickup location (e.g., hotel name, address, or landmark)."
       />
-      <CustomInput
-        onChange={props.actions.handleChange}
+
+      <CustomInputNumber
+        onChange={(e) =>
+          props.actions.handleChange(Number(e.target.value), "pax")
+        }
         min={props.state.data?.minimum_pax}
         max={10}
         name="pax"
@@ -78,14 +86,14 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         label="Pax"
         value={props.state.formData.pax}
         error={props.state.errors.pax}
-        info={`We require a minimum of ${props.state.data?.minimum_pax} participants (pax) for this tour.`}
+        info={`A minimum of ${props.state.data?.minimum_pax} participants (pax) is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
       />
 
       <CustomTextarea
         name="message"
         label="Message"
         value={props.state.formData.message}
-        onChange={props.actions.handleChange}
+        onChange={(e) => props.actions.handleChange(e.target.value, "message")}
         error={props.state.errors.message}
       />
 

@@ -47,9 +47,7 @@ export interface UseDestinationDetail {
     handleToggleExpanded: () => void;
     handleToggleLightbox: (index: number) => void;
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
-    handleChange: (
-      event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-    ) => void;
+    handleChange: (value: number | string, name: string) => void;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
   };
 }
@@ -83,6 +81,8 @@ const useDestinationDetail = (
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
+  console.log(formData);
+
   const brochureRef = useRef<HTMLDivElement | null>(null);
 
   const handleToggleLightbox = (index: number) => {
@@ -99,23 +99,11 @@ const useDestinationDetail = (
       .min(1, "Email is required"),
     bookingDate: z.string().min(1, "Booking date is required"),
     pickupLocation: z.string().min(1, "Pickup address is required"),
-    pax: z
-      .union([z.string(), z.number()])
-      .transform((value) => {
-        if (typeof value === "string") {
-          const num = parseInt(value, 10);
-          return isNaN(num) ? 0 : num;
-        }
-        return value;
-      })
-      .refine((value) => value > 0, "At least one pax is required"),
+    pax: z.number().min(data?.minimum_pax ?? 1),
     message: z.string().optional(),
   });
 
-  const handleChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = event.target;
+  const handleChange = (value: number | string, name: string) => {
     const updatedValue = name === "bookingDate" ? new Date(value) : value;
 
     setFormData((prevFormData) => ({
@@ -196,6 +184,7 @@ const useDestinationDetail = (
 
           let initData = { ...initialFormData };
           initData["title"] = data?.title ?? "";
+          initData["pax"] = data?.minimum_pax ?? 2;
           setFormData(initData);
           setLoadingSubmit(false);
         } else {

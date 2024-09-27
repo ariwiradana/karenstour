@@ -27,10 +27,6 @@ const CustomInput: FC<Props> = ({
         <input
           className={`bg-white min-h-12 px-3 text-base font-semibold w-full rounded-lg focus:outline-none border ${
             error ? "border-red-500 focus:border-red-500" : "border-gray-100"
-          } ${
-            inputProps.type === "date"
-              ? "focus:border-transparent"
-              : "focus:border-gray-200"
           } transition-all ease-in-out duration-500 ${
             disabled ? "text-darkgray opacity-95" : "opacity-100"
           }`}
