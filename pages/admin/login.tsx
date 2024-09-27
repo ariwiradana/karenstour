@@ -4,12 +4,13 @@ import ButtonPrimary from "@/components/admin/elements/button.primary";
 import useAdminLogin from "@/hooks/admin/useAdminLogin";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
+import { contact } from "@/constants/data";
 
 const AdminLoginPage: FC = () => {
   const { state, actions } = useAdminLogin();
   return (
     <div className="p-2 md:p-6 w-screen h-screen flex justify-center items-center flex-col">
-      <h1 className="text-2xl md:text-3xl mb-6">Admin Login</h1>
+      <h1 className="text-2xl md:text-3xl mb-6">Admin {contact.company}</h1>
 
       <form
         onSubmit={actions.handleSubmit}

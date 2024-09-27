@@ -1,3 +1,4 @@
+import { contact } from "@/constants/data";
 import { capitalizeWords } from "@/utils/capitalizeWords";
 import Head from "next/head";
 import Link from "next/link";
@@ -52,7 +53,7 @@ const Sidebar = ({
 
   const handleLogout = async () => {
     try {
-      const response = await fetch("/api/logout", {
+      const response = await fetch("/api/auth/logout", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -89,7 +90,7 @@ const Sidebar = ({
               isCollapsed ? "hidden" : "hidden md:block"
             } text-base lg:text-xl`}
           >
-            Admin Panel
+            {contact.company}
           </span>
           <button onClick={toggleSidebar} className="text-white outline-none">
             <FaBars className="text-lg md:text-xl" />
