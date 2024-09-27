@@ -6,6 +6,7 @@ import CustomTextarea from "./elements/textarea";
 import { montserrat } from "@/constants/font";
 import moment from "moment";
 import ButtonPrimary from "./elements/button.primary";
+import { currencyIDR } from "@/utils/currencyFormatter";
 
 const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
@@ -20,6 +21,18 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         <p className="text-xs mb-1 font-medium text-darkgray">Trip Name</p>
         <h5 className="font-semibold text-dark text-xl">
           {props.state.data?.title}
+        </h5>
+      </div>
+      <div className={montserrat.className}>
+        <p className="text-xs mb-1 font-medium text-darkgray">Price</p>
+        <h5 className="font-semibold text-dark text-xl">
+          {currencyIDR(
+            props.state.formData.pax * (props.state.data?.price ?? 0)
+          )}
+          <span className="text-sm text-darkgray font-normal">
+            {" "}
+            / {props.state.formData.pax} pax
+          </span>
         </h5>
       </div>
       <CustomInput
