@@ -10,6 +10,7 @@ import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
+import { BiPlus } from "react-icons/bi";
 import Swal from "sweetalert2";
 
 interface PageProps extends Env {
@@ -25,7 +26,7 @@ const BookingPage: FC<PageProps> = (props) => {
         <h1 className="text-2xl md:text-3xl mb-6">Booking Management</h1>
         <div className="mb-4 flex flex-wrap items-center gap-4">
           <Link href="/admin/booking/add">
-            <ButtonPrimary title="Add New Booking" />
+            <ButtonPrimary icon={<BiPlus />} title="Add New Booking" />
           </Link>
           {state.totalRows > 0 && (
             <TextField

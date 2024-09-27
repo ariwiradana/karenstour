@@ -67,12 +67,18 @@ const Sidebar = ({
       </Head>
       <aside
         className={`${
-          isCollapsed ? "w-14" : "w-14 md:w-44 lg:w-64"
-        } bg-gray-900 h-screen transition-all duration-300 fixed inset-y-0`}
+          isCollapsed ? "w-14 p-2" : "w-14 md:w-44 lg:w-64 p-5"
+        } bg-gray-800 h-screen transition-all duration-300 fixed inset-y-0 rounded-r-lg shadow-lg`}
       >
-        <div className="flex justify-between items-center text-white py-4 px-4">
+        <div
+          className={`flex w-full ${
+            isCollapsed ? "justify-center" : "justify-between"
+          } items-center text-white py-4 px-4`}
+        >
           <span
-            className={`text-lg ${isCollapsed ? "hidden" : "hidden md:block"}`}
+            className={`text-lg font-semibold ${
+              isCollapsed ? "hidden" : "hidden md:block"
+            }`}
           >
             {contact.company}
           </span>
@@ -86,12 +92,18 @@ const Sidebar = ({
               <li key={item.name} className="my-2">
                 <Link
                   href={item.path}
-                  className={`flex items-center py-3 px-4 text-white hover:bg-gray-700 transition duration-200 ${
-                    router.pathname === item.path ? "bg-gray-700" : ""
+                  className={`flex items-center ${
+                    isCollapsed ? "justify-center" : "justify-start"
+                  } py-3 px-4 rounded-lg text-white bg-gray-700 hover:bg-gray-600 transition duration-200 ${
+                    router.pathname === item.path ? "bg-gray-600" : ""
                   }`}
                 >
-                  <span className="mr-3 text-lg">{item.icon}</span>
-                  <span className={`text-base ${isCollapsed ? "hidden" : "hidden md:block"}`}>
+                  <span className="text-lg">{item.icon}</span>
+                  <span
+                    className={`text-base ${
+                      isCollapsed ? "hidden" : "hidden md:block ml-3"
+                    }`}
+                  >
                     {item.name}
                   </span>
                 </Link>
@@ -100,12 +112,18 @@ const Sidebar = ({
             <li className="mt-12">
               <button
                 onClick={handleLogout}
-                className="flex items-center py-3 px-4 text-white bg-gray-700 w-full transition duration-200 hover:bg-gray-600"
+                className={`flex items-center py-3 px-4 rounded-lg text-white bg-blue-500 w-full transition duration-200 hover:bg-blue-400 ${
+                  isCollapsed ? "justify-center" : "justify-start"
+                }`}
               >
-                <span className="mr-3 text-lg">
+                <span className="text-lg">
                   <BiLogOut />
                 </span>
-                <span className={`text-base ${isCollapsed ? "hidden" : "hidden md:block"}`}>
+                <span
+                  className={`text-base ${
+                    isCollapsed ? "hidden" : "hidden md:block ml-3"
+                  }`}
+                >
                   Logout
                 </span>
               </button>

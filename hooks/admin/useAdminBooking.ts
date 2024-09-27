@@ -27,6 +27,7 @@ interface UseAdminBookingReturn {
     setPage: (page: number) => void;
     handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleBookActions: (data: Booking, status: string) => void;
+    getButtonClass: (status: string) => string;
   };
 }
 
@@ -42,6 +43,24 @@ const useAdminBooking = (
   const [totalRows, setTotalRows] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [query] = useDebounce(search, 500);
+
+  const getButtonClass = (status: string) => {
+    switch (status) {
+      case "pending":
+        return "bg-green-500 hover:bg-green-400";
+      case "confirmed":
+        return "bg-blue-500 hover:bg-blue-400";
+      case "paid":
+        return "bg-amber-500 hover:bg-amber-400";
+      case "ongoing":
+        return "bg-indigo-500 hover:bg-indigo-400";
+      case "canceled":
+        return "bg-red-500 hover:bg-red-400";
+      default:
+        return "bg-gray-500 hover:bg-gray-400";
+    }
+  };
+
 
   const buttonStatusTitle: Record<string, string> = {
     pending: "Confirm Booking",
@@ -246,6 +265,7 @@ const useAdminBooking = (
       setPage,
       handleSearch,
       handleBookActions,
+      getButtonClass,
     },
   };
 };

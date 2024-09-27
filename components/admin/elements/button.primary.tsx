@@ -1,30 +1,24 @@
-import { montserrat } from "@/constants/font";
 import React, { FC, ReactNode } from "react";
 
 interface ButtonPrimaryProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   title: string;
-  onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void;
   className?: string | "";
   icon?: ReactNode;
-  type?: "button" | "submit";
 }
 
 const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
   return (
     <button
-      type={props.type || "button"}
-      onClick={props.onClick}
+      {...props}
       className={`${
         props.className ?? ""
-      } text-white font-semibold text-base py-2 px-4 rounded-md transition duration-300 ease-in-out ${
-        props.disabled
-          ? "cursor-not-allowed bg-gray-300"
-          : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800"
-      } ${montserrat.className}`}
+      } flex items-center py-3 px-4 rounded-lg text-white bg-blue-500 w-full transition duration-200 hover:bg-blue-400 justify-start`}
     >
-      {props.icon && <span className="mr-2">{props.icon}</span>}
-      <span>{props.title}</span>
+      <span className="text-lg">{props.icon}</span>
+      <span className={`text-base ${props.icon ? "ml-3" : "ml-0"}`}>
+        {props.title}
+      </span>
     </button>
   );
 };
