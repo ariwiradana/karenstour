@@ -7,7 +7,7 @@ interface Option {
   value: string;
 }
 
-interface CustomSelectProps {
+interface CustomSelect2Props {
   transparent?: boolean;
   id: string;
   value: string | "";
@@ -19,10 +19,12 @@ interface CustomSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 }
 
-const CustomSelect: FC<CustomSelectProps> = (props) => {
+const CustomSelect2: FC<CustomSelect2Props> = (props) => {
   return (
     <div>
-      <p className={`text-xs mb-1 font-medium text-darkgray ml-2 ${montserrat.className}`}>
+      <p
+        className={`text-xs mb-1 font-medium text-darkgray ml-2 ${montserrat.className}`}
+      >
         {props.label}
         {props.required ? "*" : ""}
       </p>
@@ -34,7 +36,7 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
           id={props.id}
           className={`${
             props.className
-          } outline-none text-xs md:text-sm lg:text-sm font-medium py-2 pl-3 pr-[26px] cursor-pointer rounded-lg appearance-none ${
+          } outline-none text-base font-semibold py-2 pl-3 pr-[26px] cursor-pointer rounded-lg appearance-none ${
             props.transparent
               ? "bg-transparent text-white"
               : "bg-white text-dark"
@@ -54,4 +56,4 @@ const CustomSelect: FC<CustomSelectProps> = (props) => {
   );
 };
 
-export default CustomSelect;
+export default CustomSelect2;

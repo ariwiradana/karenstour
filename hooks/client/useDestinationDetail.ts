@@ -13,6 +13,7 @@ import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { calculateTotalPrice } from "@/utils/calculateTotalPrice";
 
 interface FormData {
+  nameTitle: string;
   title: string;
   name: string;
   email: string;
@@ -54,6 +55,7 @@ export interface UseDestinationDetail {
 
 const initialFormData = {
   title: "",
+  nameTitle: "mr",
   name: "",
   email: "",
   bookingDate: moment().format("YYYY-MM-DD HH:mm:ss"),
@@ -81,7 +83,7 @@ const useDestinationDetail = (
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
-  console.log(formData);
+  console.log(errors);
 
   const brochureRef = useRef<HTMLDivElement | null>(null);
 
@@ -92,13 +94,41 @@ const useDestinationDetail = (
 
   const schema: ZodSchema = z.object({
     title: z.string().min(1, "Destination name is required"),
-    name: z.string().min(1, "Name is required"),
+    name: z
+      .string()
+      .min(1, "The full name is required")
+      .max(
+        100,
+        "The full name cannot exceed 100 characters. Please shorten your entry"
+      ),
     email: z
       .string()
-      .email("Invalid email address")
-      .min(1, "Email is required"),
-    bookingDate: z.string().min(1, "Booking date is required"),
-    pickupLocation: z.string().min(1, "Pickup address is required"),
+      .email("Please provide a valid email address (e.g., name@example.com).")
+      .min(1, "The email is required")
+      .max(
+        255,
+        "The email address cannot exceed 254 characters. Please provide a valid email."
+      ),
+    bookingDate: z
+      .string()
+      .min(1, "The booking date is required")
+      .refine(
+        (date) => {
+          const bookDate = moment(date, "YYYY-MM-DD");
+          return !bookDate.isBefore(moment().startOf("day"));
+        },
+        {
+          message:
+            "The booking date cannot be in the past. Please select a valid date.",
+        }
+      ),
+    pickupLocation: z
+      .string()
+      .min(1, "The pickup location is required")
+      .max(
+        255,
+        "The pickup location cannot exceed 255 characters. Please revise your entry"
+      ),
     pax: z.number().min(data?.minimum_pax ?? 1),
     message: z.string().optional(),
   });
@@ -129,7 +159,7 @@ const useDestinationDetail = (
     const bookingId = generateIds("BKG");
 
     const emailPayload = {
-      customer_name: capitalizeWords(formData.name),
+      customer_name: capitalizeWords(`${formData.nameTitle}. ${formData.name}`),
       customer_email: formData.email,
       destination: formData.title,
       duration: convertHoursToReadableFormat(data?.duration ?? 0),
@@ -142,7 +172,7 @@ const useDestinationDetail = (
     const bookingPayload = {
       id: bookingId,
       destination_id: data?.id,
-      name: capitalizeWords(formData.name),
+      name: capitalizeWords(`${formData.nameTitle}. ${formData.name}`),
       email: formData.email,
       booking_date: formData.bookingDate,
       status: "pending",
@@ -156,10 +186,10 @@ const useDestinationDetail = (
       updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
     };
 
+    const toastId = toast.loading("Creating your booking...");
+    setLoadingSubmit(true);
     try {
-      setLoadingSubmit(true);
       schema.parse(formData);
-      const toastId = toast.loading("Creating your booking...");
       const templateId = "template_jtoz9nl";
       if (serviceId && publicKey) {
         const createBooking = await fetch("/api/booking", {
@@ -196,7 +226,7 @@ const useDestinationDetail = (
           setFormData(initData);
           setErrors({});
         } else {
-          toast.error(bookingResponse.message);
+          toast.error(bookingResponse.message, { id: toastId });
         }
       }
     } catch (error) {
@@ -209,9 +239,12 @@ const useDestinationDetail = (
         });
         setErrors(formattedErrors);
         setLoadingSubmit(false);
+        toast.dismiss(toastId);
       } else {
         console.error("Error sending email:", error);
-        toast.error("There was an unexpected error. Please try again later.");
+        toast.error("There was an unexpected error. Please try again later.", {
+          id: toastId,
+        });
       }
     } finally {
       setLoadingSubmit(false);

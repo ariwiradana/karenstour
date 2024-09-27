@@ -17,8 +17,8 @@ const Layout: FC<LayoutProps> = (props) => {
       <Sidebar isCollapsed={isCollapsed} toggleSidebar={toggleSidebar} />
       <div
         className={`${
-          isCollapsed ? "md:ml-14 ml-10" : "ml-10 md:ml-64"
-        } flex-1 p-4 lg:p-10 transition-all duration-300 bg-white text-black w-full overflow-x-hidden`}
+          isCollapsed ? "md:ml-14 ml-16" : "ml-16 md:ml-44 lg:ml-64"
+        } flex-1 p-4 md:p-6 lg:p-10 transition-all duration-300 bg-white text-black w-full overflow-x-hidden`}
       >
         {props.children}
       </div>

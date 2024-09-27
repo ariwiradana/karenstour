@@ -44,9 +44,9 @@ const ReviewCard: FC<ReviewCardProps> = (props) => {
         </div>
       </div>
       <p
-        className={`text-base font-normal text-darkgray mt-4 leading-7 ${montserrat.className} ${
-          isExpanded ? "line-clamp-3" : "line-clamp-none"
-        }`}
+        className={`text-base font-normal text-darkgray mt-4 leading-7 ${
+          montserrat.className
+        } ${isExpanded ? "line-clamp-3" : "line-clamp-none"}`}
       >
         {props.review.comments}
       </p>
@@ -78,6 +78,7 @@ const Reviews: FC = () => {
           autoplay={{
             delay: 2000,
             disableOnInteraction: true,
+            pauseOnMouseEnter: true,
           }}
           breakpoints={{
             0: {

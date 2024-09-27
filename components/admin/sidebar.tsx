@@ -67,11 +67,13 @@ const Sidebar = ({
       </Head>
       <aside
         className={`${
-          isCollapsed ? "w-14" : "w-64"
+          isCollapsed ? "w-14" : "w-14 md:w-44 lg:w-64"
         } bg-gray-900 h-screen transition-all duration-300 fixed inset-y-0`}
       >
         <div className="flex justify-between items-center text-white py-4 px-4">
-          <span className={`text-lg ${isCollapsed ? "hidden" : ""}`}>
+          <span
+            className={`text-lg ${isCollapsed ? "hidden" : "hidden md:block"}`}
+          >
             {contact.company}
           </span>
           <button onClick={toggleSidebar} className="text-white">
@@ -89,7 +91,7 @@ const Sidebar = ({
                   }`}
                 >
                   <span className="mr-3 text-lg">{item.icon}</span>
-                  <span className={`text-base ${isCollapsed ? "hidden" : ""}`}>
+                  <span className={`text-base ${isCollapsed ? "hidden" : "hidden md:block"}`}>
                     {item.name}
                   </span>
                 </Link>
@@ -103,7 +105,7 @@ const Sidebar = ({
                 <span className="mr-3 text-lg">
                   <BiLogOut />
                 </span>
-                <span className={`text-base ${isCollapsed ? "hidden" : ""}`}>
+                <span className={`text-base ${isCollapsed ? "hidden" : "hidden md:block"}`}>
                   Logout
                 </span>
               </button>

@@ -8,6 +8,7 @@ import moment from "moment";
 import ButtonPrimary from "./elements/button.primary";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import CustomInputNumber from "./elements/input.number";
+import CustomSelect2 from "./elements/select2";
 
 const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
@@ -32,17 +33,35 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
           )}
           <span className="text-sm text-darkgray font-normal">
             {" "}
-            / {props.state.formData.pax} pax
+            ({props.state.formData.pax} pax)
           </span>
         </h5>
       </div>
-      <CustomInput
-        onChange={(e) => props.actions.handleChange(e.target.value, "name")}
-        name="name"
-        label="Full name"
-        value={props.state.formData.name}
-        error={props.state.errors.name}
-      />
+      <div className="flex gap-x-2">
+        <CustomSelect2
+          className="min-h-12 border border-gray-100"
+          label="Title"
+          name="name"
+          value={props.state.formData.nameTitle}
+          id="nameTitle"
+          onChange={(e) =>
+            props.actions.handleChange(e.target.value, "nameTitle")
+          }
+          options={[
+            { key: "Mr", value: "mr" },
+            { key: "Mrs", value: "mrs" },
+            { key: "Ms", value: "ms" },
+          ]}
+        />
+        <CustomInput
+          onChange={(e) => props.actions.handleChange(e.target.value, "name")}
+          name="name"
+          label="Fullname"
+          value={props.state.formData.name}
+          error={props.state.errors.name}
+        />
+      </div>
+
       <CustomInput
         onChange={(e) => props.actions.handleChange(e.target.value, "email")}
         name="email"
@@ -60,7 +79,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         name="bookingDate"
         label="Booking Date"
         value={formattedDate}
-        error={props.state.errors.bookingdate}
+        error={props.state.errors.bookingDate}
       />
 
       <CustomTextarea

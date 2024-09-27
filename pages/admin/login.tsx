@@ -10,14 +10,18 @@ const AdminLoginPage: FC = () => {
   const { state, actions } = useAdminLogin();
 
   return (
-    <div className="flex justify-center items-center w-screen h-screen bg-gray-100">
-      <Paper elevation={2} className="max-w-md w-full p-6 rounded-md shadow-sm">
+    <div className="flex justify-center items-center w-screen h-screen bg-gray-100 p-10">
+      <Paper elevation={1} className="max-w-md w-full p-6 rounded-md">
         <Typography variant="h5" className="text-center text-gray-800 ">
           {contact.company} Admin
         </Typography>
 
-        <form onSubmit={actions.handleSubmit} className="flex flex-col gap-4 mt-8">
+        <form
+          onSubmit={actions.handleSubmit}
+          className="flex flex-col gap-4 mt-8"
+        >
           <TextField
+            size="small"
             name="username"
             onChange={actions.handleChange}
             value={state.formData.username}
@@ -25,10 +29,10 @@ const AdminLoginPage: FC = () => {
             label="Username"
             helperText={state.errors.username}
             variant="outlined"
-            required
             className="rounded-md"
           />
           <TextField
+            size="small"
             name="password"
             label="Password"
             type="password"
@@ -37,7 +41,6 @@ const AdminLoginPage: FC = () => {
             value={state.formData.password}
             helperText={state.errors.password}
             variant="outlined"
-            required
             className="rounded-md"
           />
 

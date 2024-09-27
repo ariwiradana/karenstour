@@ -144,6 +144,7 @@ const useDestination = (): UseDestination => {
       newCategoryFilters.push(categoryName);
     }
     setCategoryFilters(newCategoryFilters);
+    setPage(1);
   };
 
   return {

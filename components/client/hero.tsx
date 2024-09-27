@@ -16,11 +16,11 @@ const Hero: FC = () => {
 
   if (state.data.length === 0)
     return (
-      <div className="w-full min-h-[70vh] md:min-h-[60vh] lg:min-h-[70vh] 2xl:min-h-[45vh] h-[70vh] md:h-[60vh] lg:h-[70vh] 2xl:h-[45vh] shine"></div>
+      <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] shine"></div>
     );
 
   return (
-    <div className="w-full min-h-[70vh] md:min-h-[60vh] lg:min-h-[70vh] 2xl:min-h-[45vh] h-[70vh] md:h-[60vh] lg:h-[70vh] 2xl:h-[45vh] relative">
+    <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] relative">
       <Swiper
         modules={[Autoplay, EffectFade]}
         autoplay={{ delay: 3000 }}

@@ -18,14 +18,18 @@ const CustomInput: FC<Props> = ({
   ...inputProps
 }) => {
   return (
-    <div className={`flex flex-col ${montserrat.className}`}>
+    <div
+      className={`flex flex-col ${montserrat.className} w-full ${
+        inputProps.type === "date" ? "border border-gray-100" : ""
+      }`}
+    >
       <p className="text-xs mb-1 font-medium text-darkgray ml-2">
         {label}
         {required ? "*" : ""}
       </p>
       <div className="min-h-12 flex items-center bg-white rounded-lg">
         <input
-          className={`bg-white min-h-12 px-3 text-base font-semibold w-full rounded-lg focus:outline-none border ${
+          className={`bg-white min-h-12 outline-none px-3 text-base font-semibold w-full rounded-lg focus:outline-none border ${
             error
               ? "border-red-500 focus:border-red-500"
               : inputProps.type !== "date"
