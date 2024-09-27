@@ -13,6 +13,7 @@ export interface Destination {
   average_rating: number;
   category_id: number;
   category_name: string;
+  location?: string;
 }
 
 export interface Env {

@@ -13,7 +13,7 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
 import {
-  BiSolidDollarCircle,
+  BiSolidMap,
   BiSolidStar,
   BiSolidTime,
   BiSolidUser,
@@ -74,12 +74,20 @@ const ServiceDetail: FC<PageProps> = (props) => {
           </h6>
         )}
         <GalleryDetail />
-        <div className="my-8">
-          <ServiceDetail />
-        </div>
 
         <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
           <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
+            <div className={montserrat.className}>
+              <h4 className={`text-3xl lg:text-4xl text-dark font-bold`}>
+                {currencyIDR(state.data?.price ?? 0)}{" "}
+                <span className="text-xs text-darkgray">/ pax</span>
+              </h4>
+              <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
+                The price are includes transportation, admission fees, and all
+                other relevant costs.
+              </p>
+            </div>
+            <ServiceDetail />
             <Description />
             <Inclusion state={state} actions={actions} />
           </div>
@@ -187,11 +195,12 @@ const ServiceDetail: FC<PageProps> = (props) => {
             className={`absolute top-4 right-4 px-2 py-1 rounded-lg flex justify-center items-center bg-primary gap-1 shadow z-10 ${unbounded.className}`}
           >
             <BiSolidStar className="text-white text-base" />
-            <span className="text-white text-sm font-medium">
+            <span className="text-white text-xs md:text-sm">
               {state.data.average_rating}
             </span>
           </div>
         )}
+
         {state.loading ? (
           <>
             <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
@@ -216,6 +225,23 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   className="aspect-video h-full"
                   videoUrl={state.data?.video_url ?? ""}
                 />
+                <div className="absolute bottom-4 left-4 z-10">
+                  <button className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform">
+                    <BiSolidMap className="text-base text-white" />
+                    <div className="text-left">
+                      <Link
+                        target="_blank"
+                        href={`https://www.google.com/maps/search/?api=1&query=${
+                          state.data?.title ?? state.data?.location
+                        }`}
+                      >
+                        <p className="text-xs text-white font-medium">
+                          Show on Map
+                        </p>
+                      </Link>
+                    </div>
+                  </button>
+                </div>
               </div>
             ) : (
               <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine h-full aspect-video">
@@ -231,6 +257,23 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     (state.data?.images[0] as string)
                   }
                 />
+                <div className="absolute bottom-4 left-4 z-10">
+                  <button className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform">
+                    <BiSolidMap className="text-base text-white" />
+                    <div className="text-left">
+                      <Link
+                        target="_blank"
+                        href={`https://www.google.com/maps/search/?api=1&query=${
+                          state.data?.title ?? state.data?.location
+                        }`}
+                      >
+                        <p className="text-xs text-white font-medium">
+                          Show on Map
+                        </p>
+                      </Link>
+                    </div>
+                  </button>
+                </div>
               </div>
             )}
             {state.slicedImages?.map((image, index) => {
@@ -289,7 +332,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
         className={`flex flex-wrap gap-y-4 gap-x-8 lg:gap-x-10 capitalize ${montserrat.className}`}
       >
         <div className="flex gap-x-2 items-start">
-          <div className="w-5 min-w-5 md:w-6 md:min-w-6">
+          <div className="w-5 min-w-5 md:w-6 md:min-w-6 mt-1">
             <BiSolidTime className="w-full h-full text-primary" />
           </div>
           <div>
@@ -301,26 +344,13 @@ const ServiceDetail: FC<PageProps> = (props) => {
         </div>
 
         <div className="flex gap-x-2 items-start">
-          <div className="w-5 min-w-5 md:w-6 md:min-w-6">
+          <div className="w-5 min-w-5 md:w-6 md:min-w-6 mt-1">
             <BiSolidUser className="w-full h-full text-primary" />
           </div>
           <div>
             <h4 className="text-darkgray text-base font-medium">Minimum Pax</h4>
             <p className="text-base md:text-lg text-dark font-semibold">
               {state.data.minimum_pax} Pax
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-x-2 items-start">
-          <div className="w-5 min-w-5 md:w-6 md:min-w-6">
-            <BiSolidDollarCircle className="w-full h-full text-primary" />
-          </div>
-          <div>
-            <h4 className="text-darkgray text-base font-medium">Price</h4>
-            <p className="text-base md:text-lg text-dark font-semibold">
-              {currencyIDR(state.data.price)}{" "}
-              <span className="text-xs text-darkgray">/ pax</span>
             </p>
           </div>
         </div>
