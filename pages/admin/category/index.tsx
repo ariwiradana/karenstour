@@ -1,3 +1,4 @@
+import ButtonPrimary from "@/components/admin/elements/button.primary";
 import Layout from "@/components/admin/layout";
 import useAdminCategory from "@/hooks/admin/useAdminCategory";
 import { Pagination, TextField } from "@mui/material";
@@ -14,9 +15,7 @@ const AdminCategoryPage = () => {
         <h1 className="text-2xl md:text-3xl mb-6">Category Management</h1>
         <div className="mb-4 flex flex-wrap items-center gap-4">
           <Link href="/admin/category/add">
-            <button className="bg-admin-success text-white font-semibold py-2 px-4 rounded">
-              Add New Category
-            </button>
+            <ButtonPrimary title="Add New Category" />
           </Link>
           {state.totalRows > 0 && (
             <TextField

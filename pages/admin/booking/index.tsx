@@ -1,3 +1,4 @@
+import ButtonPrimary from "@/components/admin/elements/button.primary";
 import Layout from "@/components/admin/layout";
 import { Env } from "@/constants/types";
 import useAdminBooking from "@/hooks/admin/useAdminBooking";
@@ -24,9 +25,7 @@ const BookingPage: FC<PageProps> = (props) => {
         <h1 className="text-2xl md:text-3xl mb-6">Booking Management</h1>
         <div className="mb-4 flex flex-wrap items-center gap-4">
           <Link href="/admin/booking/add">
-            <button className="bg-admin-success text-white font-semibold py-2 px-4 rounded">
-              Add New Booking
-            </button>
+            <ButtonPrimary title="Add New Booking" />
           </Link>
           {state.totalRows > 0 && (
             <TextField

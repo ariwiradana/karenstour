@@ -17,13 +17,14 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
       onClick={props.onClick}
       className={`${
         props.className ?? ""
-      } text-white font-semibold text-base py-3 px-4 rounded ${
+      } text-white font-semibold text-base py-2 px-4 rounded-md transition duration-300 ease-in-out ${
         props.disabled
-          ? "cursor-not-allowed bg-gray-300 bg-opacity-60 pointer-events-none"
-          : "bg-admin-success"
+          ? "cursor-not-allowed bg-gray-300"
+          : "bg-blue-600 hover:bg-blue-700 active:bg-blue-800"
       } ${montserrat.className}`}
     >
-      {props.icon && props.icon} <span>{props.title}</span>
+      {props.icon && <span className="mr-2">{props.icon}</span>}
+      <span>{props.title}</span>
     </button>
   );
 };

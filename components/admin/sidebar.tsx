@@ -30,21 +30,9 @@ const Sidebar = ({
 
   const menuItems: MenuItem[] = [
     { name: "Booking", path: "/admin/booking", icon: <FaClipboardList /> },
-    {
-      name: "Category",
-      path: "/admin/category",
-      icon: <FaList />,
-    },
-    {
-      name: "Destination",
-      path: "/admin/destination",
-      icon: <FaMap />,
-    },
-    {
-      name: "Review",
-      path: "/admin/reviews",
-      icon: <FaStar />,
-    },
+    { name: "Category", path: "/admin/category", icon: <FaList /> },
+    { name: "Destination", path: "/admin/destination", icon: <FaMap /> },
+    { name: "Review", path: "/admin/reviews", icon: <FaStar /> },
   ];
 
   const pageTitle = menuItems.find(
@@ -55,9 +43,7 @@ const Sidebar = ({
     try {
       const response = await fetch("/api/auth/logout", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
       });
 
       if (response.ok) {
@@ -81,37 +67,29 @@ const Sidebar = ({
       </Head>
       <aside
         className={`${
-          isCollapsed ? "w-10 md:w-14" : "w-10 md:w-64"
-        } bg-gray-800 h-screen transition-all duration-300 fixed inset-y-0`}
+          isCollapsed ? "w-14" : "w-64"
+        } bg-gray-900 h-screen transition-all duration-300 fixed inset-y-0`}
       >
-        <div className="flex justify-between items-center text-white py-4 px-[9px] md:px-4 text-xl gap-x-4">
-          <span
-            className={`${
-              isCollapsed ? "hidden" : "hidden md:block"
-            } text-base lg:text-xl`}
-          >
+        <div className="flex justify-between items-center text-white py-4 px-4">
+          <span className={`text-lg ${isCollapsed ? "hidden" : ""}`}>
             {contact.company}
           </span>
-          <button onClick={toggleSidebar} className="text-white outline-none">
-            <FaBars className="text-lg md:text-xl" />
+          <button onClick={toggleSidebar} className="text-white">
+            <FaBars className="text-xl" />
           </button>
         </div>
-        <nav className="mt-10">
+        <nav className="mt-8">
           <ul>
             {menuItems.map((item) => (
               <li key={item.name} className="my-2">
                 <Link
                   href={item.path}
-                  className={`flex items-center py-2 px-3 md:px-4 text-white hover:bg-gray-700 ${
+                  className={`flex items-center py-3 px-4 text-white hover:bg-gray-700 transition duration-200 ${
                     router.pathname === item.path ? "bg-gray-700" : ""
                   }`}
                 >
-                  <span className="mr-3 text-sm md:text-lg">{item.icon}</span>
-                  <span
-                    className={`${
-                      isCollapsed ? "hidden" : "hidden md:block"
-                    } text-sm md:text-base`}
-                  >
+                  <span className="mr-3 text-lg">{item.icon}</span>
+                  <span className={`text-base ${isCollapsed ? "hidden" : ""}`}>
                     {item.name}
                   </span>
                 </Link>
@@ -120,16 +98,12 @@ const Sidebar = ({
             <li className="mt-12">
               <button
                 onClick={handleLogout}
-                className={`flex items-center py-2 px-3 md:px-4 text-white bg-gray-700 w-full`}
+                className="flex items-center py-3 px-4 text-white bg-gray-700 w-full transition duration-200 hover:bg-gray-600"
               >
-                <span className="mr-3 text-sm md:text-lg">
+                <span className="mr-3 text-lg">
                   <BiLogOut />
                 </span>
-                <span
-                  className={`${
-                    isCollapsed ? "hidden" : "hidden md:block"
-                  } text-sm md:text-base`}
-                >
+                <span className={`text-base ${isCollapsed ? "hidden" : ""}`}>
                   Logout
                 </span>
               </button>

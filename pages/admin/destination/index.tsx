@@ -1,3 +1,4 @@
+import ButtonPrimary from "@/components/admin/elements/button.primary";
 import Layout from "@/components/admin/layout";
 import useAdminDestination from "@/hooks/admin/useAdminDestination";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
@@ -16,9 +17,7 @@ const AdminDestinationPage = () => {
         <h1 className="text-2xl md:text-3xl mb-6">Destination Management</h1>
         <div className="mb-4 flex flex-wrap items-center gap-4">
           <Link href="/admin/destination/add">
-            <button className="bg-admin-success text-white font-semibold py-2 px-4 rounded">
-              Add New Destination
-            </button>
+            <ButtonPrimary title="Add New Destination" />
           </Link>
 
           <TextField
