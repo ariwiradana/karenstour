@@ -18,9 +18,9 @@ const Inclusion: React.FC<UseDestinationDetail> = (props) => {
         {props.state.data.inclusions?.map((item, index) => (
           <li
             key={index}
-            className="text-darkgray font-medium flex items-center gap-x-4"
+            className="text-darkgray font-medium flex gap-x-4"
           >
-            <BiCheck className="text-primary text-xl md:text-2xl" />
+            <BiCheck className="text-primary text-xl md:text-2xl min-w-5" />
             <span> {item}</span>
           </li>
         ))}
