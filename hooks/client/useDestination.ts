@@ -43,7 +43,7 @@ const useDestination = (): UseDestination => {
   const [lastSlide, setLastSlide] = useState<boolean>(false);
   const [totalRows, setTotalRows] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(16);
+  const [limit, setLimit] = useState<number>(12);
   const [data, setData] = useState<Destination[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
