@@ -110,6 +110,10 @@ const useDestinationDetail = (
       ...prevFormData,
       [name]: updatedValue,
     }));
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "",
+    }));
   };
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -186,7 +190,7 @@ const useDestinationDetail = (
           initData["title"] = data?.title ?? "";
           initData["pax"] = data?.minimum_pax ?? 2;
           setFormData(initData);
-          setLoadingSubmit(false);
+          setErrors({});
         } else {
           toast.error(bookingResponse.message);
         }
