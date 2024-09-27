@@ -13,12 +13,12 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
 import {
+  BiCheck,
   BiSolidMap,
   BiSolidStar,
   BiSolidTime,
   BiSolidUser,
 } from "react-icons/bi";
-import { HiCheck } from "react-icons/hi2";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
@@ -167,15 +167,15 @@ const ServiceDetail: FC<PageProps> = (props) => {
         className={`p-6 md:p-10 rounded-xl bg-lightgray flex flex-col gap-6 ${montserrat.className}`}
       >
         <li className="flex items-center gap-x-2 text-base font-medium text-dark">
-          <HiCheck className="text-primary text-xl md:text-2xl" />
+          <BiCheck className="text-primary text-xl md:text-2xl" />
           Best Price Guaranteed
         </li>
         <li className="flex items-center gap-x-2 text-base font-medium text-dark">
-          <HiCheck className="text-primary text-xl md:text-2xl" />
+          <BiCheck className="text-primary text-xl md:text-2xl" />
           No Booking Fees
         </li>
         <li className="flex items-center gap-x-2 text-base font-medium text-dark">
-          <HiCheck className="text-primary text-xl md:text-2xl" />
+          <BiCheck className="text-primary text-xl md:text-2xl" />
           Professional Local Guide
         </li>
         <p className="md:gap-x-2 text-base font-medium text-darkgray md:mt-2 leading-6">

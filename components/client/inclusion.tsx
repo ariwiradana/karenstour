@@ -2,6 +2,7 @@
 import { montserrat, unbounded } from "@/constants/font";
 import { UseDestinationDetail } from "@/hooks/client/useDestinationDetail";
 import React from "react";
+import { BiCheck } from "react-icons/bi";
 
 const Inclusion: React.FC<UseDestinationDetail> = (props) => {
   if (!props.state.data) return <></>;
@@ -13,10 +14,14 @@ const Inclusion: React.FC<UseDestinationDetail> = (props) => {
       >
         Inclusions
       </h6>
-      <ul className={`list-disc space-y-2 mt-3 ml-8 ${montserrat.className}`}>
+      <ul className={`space-y-2 mt-3 ${montserrat.className}`}>
         {props.state.data.inclusions?.map((item, index) => (
-          <li key={index} className="text-darkgray font-medium">
-            {item}
+          <li
+            key={index}
+            className="text-darkgray font-medium flex items-center gap-x-4"
+          >
+            <BiCheck className="text-primary text-xl md:text-2xl" />
+            <span> {item}</span>
           </li>
         ))}
       </ul>
