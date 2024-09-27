@@ -138,7 +138,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             }`}
           ></p>
           <button
-            className="text-primary underline font-semibold text-base mt-2 hover:underline"
+            className="text-primary underline font-semibold text-base mt-4 hover:underline"
             onClick={actions.handleToggleExpanded}
           >
             {state.isExpanded ? "Read Less" : "Read More"}

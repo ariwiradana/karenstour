@@ -69,7 +69,7 @@ button:disabled {
 }
 
 .description li {
-  @apply ml-2 md:ml-6 mb-3;
+  @apply ml-2 md:ml-8 list-disc;
 }
 
 .description p strong,
