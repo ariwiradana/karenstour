@@ -39,7 +39,7 @@ interface UseAdminAddBooking {
 const initialFormData: FormData = {
   name: "",
   email: "",
-  bookingDate: moment().format("YYYY-MM-DD"),
+  bookingDate: moment().format("YYYY-MM-DD HH:mm:ss"),
   destination: "",
   pax: 1,
   pickupLocation: "",
@@ -123,8 +123,8 @@ const useAdminAddBooking = (
       tax,
       tax_rate: parseTaxRate(taxrate),
       total: grandTotal,
-      created_at: moment().format("YYYY-MM-DD"),
-      updated_at: moment().format("YYYY-MM-DD"),
+      created_at: moment().format("YYYY-MM-DD HH:mm:ss"),
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
     };
 
     const emailPayload = {

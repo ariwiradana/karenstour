@@ -48,6 +48,8 @@ export default async function handler(
         OR b.status ILIKE ${searchTerm}
       `;
 
+      console.log(rows);
+
       return successResponse(
         response,
         "GET",

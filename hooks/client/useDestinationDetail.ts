@@ -56,7 +56,7 @@ const initialFormData = {
   title: "",
   name: "",
   email: "",
-  bookingDate: moment().format("YYYY-MM-DD"),
+  bookingDate: moment().format("YYYY-MM-DD HH:mm:ss"),
   pickupLocation: "",
   pax: 1,
   message: "",
@@ -104,7 +104,11 @@ const useDestinationDetail = (
   });
 
   const handleChange = (value: number | string, name: string) => {
-    const updatedValue = name === "bookingDate" ? new Date(value) : value;
+    console.log(value);
+    const updatedValue =
+      name === "bookingDate"
+        ? moment(value).format("YYYY-MM-DD") + " " + moment().format("HH:mm:ss")
+        : value;
 
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -140,7 +144,7 @@ const useDestinationDetail = (
       destination_id: data?.id,
       name: capitalizeWords(formData.name),
       email: formData.email,
-      booking_date: moment(formData.bookingDate).format("YYYY-MM-DD"),
+      booking_date: formData.bookingDate,
       status: "pending",
       pax: formData.pax,
       tax,
@@ -148,8 +152,8 @@ const useDestinationDetail = (
       subtotal,
       total: grandTotal,
       pickup_location: capitalizeWords(formData.pickupLocation),
-      created_at: moment().format("YYYY-MM-DD"),
-      updated_at: moment().format("YYYY-MM-DD"),
+      created_at: moment().format("YYYY-MM-DD HH:mm:ss"),
+      updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
     };
 
     try {

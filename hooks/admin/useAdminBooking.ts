@@ -1,7 +1,7 @@
 import { useState, useEffect, useCallback, useMemo } from "react";
 import { Booking } from "@/constants/types";
 import { useDebounce } from "use-debounce";
-import { bookingSteps } from "@/constants/data";
+import { bookingSteps, contact } from "@/constants/data";
 import { customSwal } from "@/lib/sweetalert2";
 import toast from "react-hot-toast";
 import { formatDate } from "@/utils/dateFormatter";
@@ -124,9 +124,9 @@ const useAdminBooking = (
       tax: currencyIDR(bookingData.tax),
       total: currencyIDR(bookingData.total),
       bank_name: "BCA",
-      account_name: "Karen's Tour & Travel",
+      account_name: contact.company,
       account_number: 123928712627,
-      company: "Karen's Tour & Travel",
+      company: contact.company,
       upload_transfer_link: `${
         window.location.hostname === "localhost" ? "http" : "https"
       }://${window.location.host}/upload-payment-proof/${encodeURIComponent(
@@ -204,7 +204,7 @@ const useAdminBooking = (
             body: JSON.stringify({
               updates: {
                 status: status !== "canceled" ? nextStatus : "canceled",
-                updated_at: moment().format("YYYY-MM-DD"),
+                updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
               },
             }),
           })

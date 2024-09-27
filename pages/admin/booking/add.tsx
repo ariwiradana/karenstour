@@ -57,13 +57,15 @@ const AddDestinationPage: FC<PageProps> = (props) => {
             type="date"
             onChange={(e) =>
               actions.handleChange(
-                moment(e.target.value).format("YYYY-MM-DD"),
+                moment(e.target.value).format("YYYY-MM-DD HH:mm:ss"),
                 "bookingDate"
               )
             }
             value={
               state.formData.bookingDate
-                ? moment(state.formData.bookingDate).format("YYYY-MM-DD")
+                ? moment(state.formData.bookingDate).format(
+                    "YYYY-MM-DD HH:mm:ss"
+                  )
                 : ""
             }
             error={state.errors.bookingDate}

@@ -67,4 +67,5 @@ export const contact: Record<string, string> = {
   whatsapp: "https://api.whatsapp.com/send?phone=+6281246768627",
   instagram: "https://www.instagram.com/karenstourtravel",
   copyright: "© 2024 Karen's Tour & Travel. All Rights Reserved.",
+  company: "Karen's Tour",
 };

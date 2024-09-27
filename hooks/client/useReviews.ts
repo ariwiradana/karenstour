@@ -93,7 +93,7 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
       const newFormData = {
         ...formData,
         destination_id: destinationId,
-        created_at: moment().format("YYYY-MM-DD"),
+        created_at: moment().format("YYYY-MM-DD HH:mm:ss"),
       };
       const response = await fetch("/api/reviews", {
         method: "POST",
