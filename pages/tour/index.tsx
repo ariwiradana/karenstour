@@ -38,8 +38,8 @@ const ServiceList: FC<Props> = () => {
           />
         </div>
         <div className="bg-white mt-8 lg:mt-0">
-          <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg">
-            <h6 className="text-sm font-normal mb-3 text-dark md:hidden">
+          <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg mt-8">
+            <h6 className="text-xs md:text-sm font-normal mb-3 text-dark md:hidden">
               Category Filter
             </h6>
             <div
