@@ -13,7 +13,7 @@ const Sidebar: FC<SidebarProps> = (props) => {
   const { state } = useDestination();
 
   return (
-    <div className={`p-6 ${unbounded.className} relative`}>
+    <div className={`p-6 ${unbounded.className} relative h-dvh`}>
       <div className="relative transition-all ease-in-out duration-500 delay-200 w-24 h-24">
         <Image
           sizes="100px"
@@ -32,7 +32,7 @@ const Sidebar: FC<SidebarProps> = (props) => {
               href={`/tour/${item.slug}`}
               className={`text-darkgray hover:underline text-xs ${montserrat.className}`}
             >
-              {item.title}
+              - {item.title}
             </Link>
           ))}
         </SidebarItem>
@@ -84,7 +84,9 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
         </div>
       </div>
       {isOpen && props.children && (
-        <ul className="pl-2 flex flex-col gap-2 mt-3">{props.children}</ul>
+        <ul className="pl-2 flex flex-col gap-2 mt-3 max-h-[65vh] overflow-auto">
+          {props.children}
+        </ul>
       )}
     </li>
   );
