@@ -79,7 +79,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
           <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
             <div className={montserrat.className}>
               {state.loading ? (
-                <div className="w-60 shine h-10 bg-black rounded"></div>
+                <div className="w-60 shine h-6 bg-black rounded"></div>
               ) : (
                 <h4 className={`text-3xl lg:text-4xl text-dark font-bold`}>
                   {currencyIDR(state.data?.price ?? 0)}{" "}
