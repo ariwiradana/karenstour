@@ -41,7 +41,7 @@ const ServiceList: FC<Props> = () => {
         <div className="bg-white mt-8 lg:mt-0">
           <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg mt-8">
             <h6 className="text-xs md:text-sm font-normal mb-3 text-dark md:hidden">
-              Category Filter
+              Filter
             </h6>
             <div
               className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
