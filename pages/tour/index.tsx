@@ -11,6 +11,7 @@ import useDestination from "@/hooks/client/useDestination";
 import { Category } from "@/constants/types";
 import { BiCheck } from "react-icons/bi";
 import { BsFilter } from "react-icons/bs";
+import CustomSelect from "@/components/client/elements/select";
 
 interface Props {}
 
@@ -59,6 +60,37 @@ const ServiceList: FC<Props> = () => {
                 </>
               ) : (
                 <>
+                  <CustomSelect
+                    id="filter-select"
+                    value={`${state.sortBy}-${state.sortOrder}`}
+                    onChange={actions.handleChangeFilter}
+                    options={[
+                      {
+                        key: "Most Popular",
+                        value: "average_rating-asc",
+                      },
+                      {
+                        key: "Least Popular",
+                        value: "average_rating-desc",
+                      },
+                      {
+                        key: "Price: Low to High",
+                        value: "d.price-asc",
+                      },
+                      {
+                        key: "Price: High to Low",
+                        value: "d.price-desc",
+                      },
+                      {
+                        key: "Shortest Duration",
+                        value: "d.duration-asc",
+                      },
+                      {
+                        key: "Longest Duration",
+                        value: "d.duration-desc",
+                      },
+                    ]}
+                  />
                   {state.categories.map((category: Category) => (
                     <div
                       key={category.name}
@@ -93,40 +125,6 @@ const ServiceList: FC<Props> = () => {
               )}
             </div>
           </div>
-
-          {/* <div className="w-full">
-              <CustomSelect
-                id="filter-select"
-                value={`${state.sortBy}-${state.sortOrder}`}
-                onChange={actions.handleChangeFilter}
-                options={[
-                  {
-                    key: "Popularity: Most Popular Tours",
-                    value: "average_rating-asc",
-                  },
-                  {
-                    key: "Popularity: Least Popular Tours",
-                    value: "average_rating-desc",
-                  },
-                  {
-                    key: "Price: Low to High",
-                    value: "d.price-asc",
-                  },
-                  {
-                    key: "Price: High to Low",
-                    value: "d.price-desc",
-                  },
-                  {
-                    key: "Duration: Shortest Tours",
-                    value: "d.duration-asc",
-                  },
-                  {
-                    key: "Duration: Longest Tours",
-                    value: "d.duration-desc",
-                  },
-                ]}
-              />
-            </div> */}
         </div>
 
         <h5
