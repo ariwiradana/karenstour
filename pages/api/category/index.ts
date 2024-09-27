@@ -1,11 +1,13 @@
 import { errorResponse, successResponse } from "@/utils/response";
 import { sql } from "@vercel/postgres";
 import { NextApiResponse, NextApiRequest } from "next";
-
 export default async function handler(
   request: NextApiRequest,
   response: NextApiResponse
 ) {
+  // const verifiedToken = verifyToken(request, response);
+  // if (verifiedToken === null && request.query.isAdmin === "true") return;
+
   if (request.method === "GET") {
     interface QueryParams {
       limit?: number;
@@ -15,7 +17,6 @@ export default async function handler(
     }
 
     const { limit, page, search = "", id }: QueryParams = request.query;
-
     const searchTerm = `%${search}%`;
 
     const values: (string | number)[] = [searchTerm];

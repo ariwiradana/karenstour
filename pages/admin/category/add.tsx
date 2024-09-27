@@ -7,6 +7,7 @@ import { HiChevronLeft } from "react-icons/hi2";
 import { GetServerSideProps } from "next";
 import { Env } from "@/constants/types";
 import useAdminAddCategory from "@/hooks/admin/useAdminAddCategory";
+import { parse } from "cookie";
 
 interface PageProps extends Env {}
 
@@ -52,9 +53,23 @@ const AdminAddCategoryPage: FC<PageProps> = () => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+}) => {
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? "";
   const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? "";
+
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: { serviceId, publicKey },
+    };
+  }
 
   return {
     props: {

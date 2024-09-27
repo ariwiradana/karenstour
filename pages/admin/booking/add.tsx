@@ -9,6 +9,7 @@ import moment from "moment";
 import SearchableSelect from "@/components/admin/elements/input.searchable";
 import { GetServerSideProps } from "next";
 import { Env } from "@/constants/types";
+import { parse } from "cookie";
 
 interface PageProps extends Env {}
 
@@ -115,9 +116,23 @@ const AddDestinationPage: FC<PageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+}) => {
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? "";
   const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? "";
+
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: { serviceId, publicKey },
+    };
+  }
 
   return {
     props: {

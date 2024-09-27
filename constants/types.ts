@@ -72,3 +72,8 @@ export interface Options {
   value: string;
   label: string;
 }
+
+export interface User {
+  username: string;
+  password: string;
+}

@@ -2,6 +2,8 @@ import { capitalizeWords } from "@/utils/capitalizeWords";
 import Head from "next/head";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import toast from "react-hot-toast";
+import { BiLogOut } from "react-icons/bi";
 import {
   FaMap,
   FaClipboardList,
@@ -48,6 +50,27 @@ const Sidebar = ({
     (menu) => menu.path === router.pathname
   )?.name;
 
+  const handleLogout = async () => {
+    try {
+      const response = await fetch("/api/logout", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.ok) {
+        toast.success("Successfully logged out");
+        router.push("/admin/login");
+      } else {
+        const result = await response.json();
+        console.error(result.message || "Logout failed.");
+      }
+    } catch (error) {
+      console.error("An error occurred during logout:", error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -93,6 +116,23 @@ const Sidebar = ({
                 </Link>
               </li>
             ))}
+            <li className="mt-12">
+              <button
+                onClick={handleLogout}
+                className={`flex items-center py-2 px-3 md:px-4 text-white bg-gray-700 w-full`}
+              >
+                <span className="mr-3 text-sm md:text-lg">
+                  <BiLogOut />
+                </span>
+                <span
+                  className={`${
+                    isCollapsed ? "hidden" : "hidden md:block"
+                  } text-sm md:text-base`}
+                >
+                  Logout
+                </span>
+              </button>
+            </li>
           </ul>
         </nav>
       </aside>

@@ -8,6 +8,7 @@ import { Rating } from "@mui/material";
 import { formatDate } from "@/utils/dateFormatter";
 import { montserrat } from "@/constants/font";
 import { FaStar } from "react-icons/fa6";
+import { parse } from "cookie";
 
 interface PageProps {
   id: string;
@@ -56,10 +57,24 @@ const DetailReviewPage: FC<PageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async (
-  context
-) => {
-  const { id } = context.params as { id: string };
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+  params,
+}) => {
+  const { id } = params as { id: string };
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: {
+        id,
+      },
+    };
+  }
 
   return {
     props: {

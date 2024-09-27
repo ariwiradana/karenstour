@@ -48,10 +48,14 @@ export default async function handler(
   }
 
   try {
-    const blob = await put(`${filepath}/${filename}.${filetype.split("/")[1]}`, request, {
-      access: "public",
-      multipart: true,
-    });
+    const blob = await put(
+      `${filepath}/${filename}.${filetype.split("/")[1]}`,
+      request,
+      {
+        access: "public",
+        multipart: true,
+      }
+    );
 
     return successResponse(response, "POST", "upload file", blob);
   } catch (error) {

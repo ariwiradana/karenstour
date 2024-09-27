@@ -1,6 +1,8 @@
 import Layout from "@/components/admin/layout";
 import useAdminReview from "@/hooks/admin/useAdminReview";
 import { Pagination, Rating, TextField } from "@mui/material";
+import { parse } from "cookie";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
 
@@ -91,6 +93,23 @@ const AdminReviewPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default AdminReviewPage;

@@ -2,7 +2,7 @@ import { NextApiResponse } from "next";
 
 export const successResponse = (
   res: NextApiResponse,
-  action: "GET" | "POST" | "PUT" | "PATCH" | "DELETE",
+  action: "GET" | "POST" | "PUT" | "PATCH" | "DELETE" | "LOGIN",
   entity: string,
   data: any = null,
   totalRows: number = 0
@@ -21,6 +21,9 @@ export const successResponse = (
       break;
     case "DELETE":
       message = `Successfully deleted the ${entity}.`;
+      break;
+    case "LOGIN":
+      message = `Successfully logged in ${entity}.`;
       break;
     default:
       message = `Operation on ${entity} completed successfully.`;

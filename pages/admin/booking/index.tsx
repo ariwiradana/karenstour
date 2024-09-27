@@ -4,13 +4,16 @@ import useAdminBooking from "@/hooks/admin/useAdminBooking";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { formatDate } from "@/utils/dateFormatter";
 import { Pagination, TextField } from "@mui/material";
+import { parse } from "cookie";
 import { GetServerSideProps } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import Swal from "sweetalert2";
 
-interface PageProps extends Env {}
+interface PageProps extends Env {
+  authToken?: string;
+}
 
 const BookingPage: FC<PageProps> = (props) => {
   const { state, actions } = useAdminBooking(props.publicKey, props.serviceId);
@@ -206,9 +209,23 @@ const BookingPage: FC<PageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  req,
+  res,
+}) => {
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? "";
   const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? "";
+
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: { serviceId, publicKey },
+    };
+  }
 
   return {
     props: {

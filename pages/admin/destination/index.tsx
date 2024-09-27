@@ -3,6 +3,8 @@ import useAdminDestination from "@/hooks/admin/useAdminDestination";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { Pagination, TextField } from "@mui/material";
+import { parse } from "cookie";
+import { GetServerSideProps } from "next";
 import Link from "next/link";
 
 const AdminDestinationPage = () => {
@@ -122,6 +124,23 @@ const AdminDestinationPage = () => {
       </div>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default AdminDestinationPage;

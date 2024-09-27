@@ -8,6 +8,8 @@ import InputChip from "@/components/admin/elements/input.chip";
 import useAdminAddDestination from "@/hooks/admin/useAdminAddDestination";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import InputSelect from "@/components/admin/elements/select";
+import { GetServerSideProps } from "next";
+import { parse } from "cookie";
 
 const AddDestinationPage: FC = () => {
   const { state, actions } = useAdminAddDestination();
@@ -112,6 +114,23 @@ const AddDestinationPage: FC = () => {
       </div>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
+  const cookie = req.headers.cookie || "";
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: {},
+    };
+  }
+
+  return {
+    props: {},
+  };
 };
 
 export default AddDestinationPage;
