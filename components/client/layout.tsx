@@ -4,7 +4,7 @@ import Footer from "./footer";
 import NavbarStill from "./navbar.still";
 import GoTop from "./go.top";
 import Head from "next/head";
-import { montserrat, unbounded } from "@/constants/font";
+import { montserrat } from "@/constants/font";
 
 interface LayoutProps {
   children?: ReactNode;
