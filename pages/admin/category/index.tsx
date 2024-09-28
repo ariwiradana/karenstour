@@ -52,11 +52,14 @@ const AdminCategoryPage = () => {
               </thead>
               <tbody>
                 {state.categories.map((category) => (
-                  <tr key={category.id} className="text-left">
-                    <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">{category.name}</h6>
+                  <tr
+                    key={category.id}
+                    className="text-left border-b border-b-gray-200"
+                  >
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{category.name}</h6>
                     </td>
-                    <td className="border px-4 py-2">
+                    <td className="px-4 py-2">
                       <div className="flex gap-x-2">
                         <button
                           onClick={() => actions.handleDelete(category.id)}
