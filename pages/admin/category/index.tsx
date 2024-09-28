@@ -39,11 +39,13 @@ const AdminCategoryPage = () => {
         </div>
         <div>
           <div className="min-w-full overflow-x-auto">
-            <table className="table-auto w-full border-collapse min-w-max text-left">
+            <table className="table-auto w-full border-collapse min-w-max">
               <thead>
-                <tr className="bg-gray-100">
-                  <th className="border px-4 py-2 text-sm text-dark">Name</th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                <tr className="bg-gray-100 text-left border border-gray-200">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
+                    Category
+                  </th>
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Actions
                   </th>
                 </tr>
