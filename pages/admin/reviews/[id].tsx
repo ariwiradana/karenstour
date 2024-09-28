@@ -20,8 +20,10 @@ const DetailReviewPage: FC<PageProps> = (props) => {
   if (!state.review) return <></>;
   return (
     <Layout>
-      <div className="p-2 md:p-6 w-full">
-        <h1 className="text-2xl md:text-3xl mb-6">Detail Review</h1>
+      <div className="w-full">
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Review Detail
+        </h1>
         <div className="mb-4 flex items-center gap-2">
           <Link
             href="/admin/reviews"

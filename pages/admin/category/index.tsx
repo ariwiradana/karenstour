@@ -1,10 +1,12 @@
 import ButtonPrimary from "@/components/admin/elements/button.primary";
+import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
 import useAdminCategory from "@/hooks/admin/useAdminCategory";
-import { Pagination, TextField } from "@mui/material";
+import { Pagination } from "@mui/material";
 import { parse } from "cookie";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
+import { BiPlus } from "react-icons/bi";
 
 const AdminCategoryPage = () => {
   const { state, actions } = useAdminCategory();
@@ -12,19 +14,20 @@ const AdminCategoryPage = () => {
   return (
     <Layout>
       <div>
-        <h1 className="text-2xl md:text-3xl mb-6">Category Management</h1>
-        <div className="mb-4 flex flex-wrap items-center gap-4">
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Category Management
+        </h1>
+        <div className="mb-4 flex items-end flex-wrap gap-3">
           <Link href="/admin/category/add">
-            <ButtonPrimary title="Add New Category" />
+            <ButtonPrimary icon={<BiPlus />} title="Add New Category" />
           </Link>
           {state.totalRows > 0 && (
-            <TextField
+            <Input
+              inputSize="medium"
+              placeholder="Search"
               value={state.search}
               onChange={actions.handleSearch}
-              size="small"
-              label="Search"
-              variant="outlined"
-              className="w-64"
+              id="search"
             />
           )}
         </div>

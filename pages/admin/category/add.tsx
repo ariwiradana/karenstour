@@ -8,6 +8,7 @@ import { GetServerSideProps } from "next";
 import { Env } from "@/constants/types";
 import useAdminAddCategory from "@/hooks/admin/useAdminAddCategory";
 import { parse } from "cookie";
+import { BiCategory } from "react-icons/bi";
 
 interface PageProps extends Env {}
 
@@ -16,8 +17,10 @@ const AdminAddCategoryPage: FC<PageProps> = () => {
 
   return (
     <Layout>
-      <div className="p-2 md:p-6 w-full">
-        <h1 className="text-2xl md:text-3xl mb-6">Add New Category</h1>
+      <div className="w-full">
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Add New Category
+        </h1>
         <div className="mb-4 flex items-center gap-2">
           <Link
             href="/admin/category"
@@ -40,8 +43,9 @@ const AdminAddCategoryPage: FC<PageProps> = () => {
             error={state.errors.name}
           />
 
-          <div className="flex">
+          <div className="flex justify-end">
             <ButtonPrimary
+              icon={<BiCategory/>}
               disabled={state.loading}
               title="Add New Category"
               type="submit"

@@ -1,6 +1,7 @@
+import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
 import useAdminReview from "@/hooks/admin/useAdminReview";
-import { Pagination, Rating, TextField } from "@mui/material";
+import { Pagination, Rating } from "@mui/material";
 import { parse } from "cookie";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
@@ -12,16 +13,19 @@ const AdminReviewPage = () => {
   return (
     <Layout>
       <div>
-        <h1 className="text-2xl md:text-3xl mb-6">Review Management</h1>
-        <div className="mb-4 flex flex-wrap items-center gap-4">
-          <TextField
-            value={state.search}
-            onChange={actions.handleSearch}
-            size="small"
-            label="Search"
-            variant="outlined"
-            className="w-64"
-          />
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Review Management
+        </h1>
+        <div className="mb-4 flex items-end flex-wrap gap-3">
+          {state.totalRows > 0 && (
+            <Input
+              inputSize="medium"
+              placeholder="Search"
+              value={state.search}
+              onChange={actions.handleSearch}
+              id="search"
+            />
+          )}
         </div>
         <div>
           <div className="min-w-full overflow-x-auto">

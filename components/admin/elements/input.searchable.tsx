@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { montserrat } from "@/constants/font";
 
 interface Option {
   value: string;
@@ -14,6 +15,7 @@ interface SearchableSelectProps {
   label: string;
   name: string;
   placeholder?: string;
+  inputSize?: "small" | "medium" | "large";
 }
 
 const SearchableSelect: React.FC<SearchableSelectProps> = (props) => {
@@ -34,10 +36,21 @@ const SearchableSelect: React.FC<SearchableSelectProps> = (props) => {
     setIsOpen(false);
   };
 
+  const paddingStyles = (size: "small" | "medium" | "large") => {
+    switch (size) {
+      case "small":
+        return "p-2";
+      case "medium":
+        return "p-3";
+      case "large":
+        return "p-4";
+    }
+  };
+
   return (
-    <div>
+    <div className={`${montserrat.className} text-sm`}>
       <label
-        className="block text-sm font-medium text-gray-700"
+        className="block text-gray-700 mb-1 font-montserrat"
         htmlFor={props.name}
       >
         {props.label}
@@ -50,16 +63,20 @@ const SearchableSelect: React.FC<SearchableSelectProps> = (props) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           onFocus={() => setIsOpen(true)}
           onBlur={() => setTimeout(() => setIsOpen(false), 200)}
-          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
           placeholder={props.placeholder}
+          className={`w-full border rounded-lg focus:ring-1 focus:outline-none ${
+            props.error
+              ? "border-admin-danger focus:ring-transparent"
+              : "border-gray-300 focus:ring-black"
+          } ${paddingStyles(props.inputSize ?? "large")}`}
         />
         {isOpen && filteredOptions.length > 0 && (
-          <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-32 overflow-y-auto">
+          <ul className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-lg shadow-lg max-h-[7.6rem] overflow-y-auto">
             {filteredOptions.map((option) => (
               <li
                 key={option.value}
                 onClick={() => handleOptionClick(option)}
-                className="px-4 py-2 hover:bg-blue-500 hover:text-white cursor-pointer text-sm text-dark"
+                className="px-4 py-2 hover:bg-darkgray hover:text-white cursor-pointer text-base text-dark"
               >
                 {option.label}
               </li>
@@ -68,9 +85,9 @@ const SearchableSelect: React.FC<SearchableSelectProps> = (props) => {
         )}
       </div>
       {props.error ? (
-        <p className="text-red-500 text-sm">{props.error}</p>
+        <p className="text-admin-danger text-sm mt-1">{props.error}</p>
       ) : props.info ? (
-        <p className="text-darkgray text-sm">{props.info}</p>
+        <p className="text-darkgray text-sm mt-1">{props.info}</p>
       ) : (
         <></>
       )}

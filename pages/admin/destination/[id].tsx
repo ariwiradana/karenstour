@@ -13,6 +13,7 @@ import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
 import InputSelect from "@/components/admin/elements/select";
 import FsLightbox from "fslightbox-react";
+import { BiMap } from "react-icons/bi";
 
 interface PageProps {
   id: string;
@@ -33,8 +34,10 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
       ) : (
         <></>
       )}
-      <div className="p-2 md:p-6 w-full">
-        <h1 className="text-2xl md:text-3xl mb-6">Update Destination</h1>
+      <div className="w-full">
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Update Destination
+        </h1>
         <div className="mb-4 flex items-center gap-2">
           <Link
             href="/admin/destination"
@@ -185,6 +188,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
 
           <div className="flex justify-end">
             <ButtonPrimary
+              icon={<BiMap/>}
               disabled={state.loading}
               title="Update Destination"
               type="submit"

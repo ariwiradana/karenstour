@@ -1,5 +1,6 @@
 import { Options } from "@/constants/types";
 import React, { FC } from "react";
+import { montserrat } from "@/constants/font";
 
 interface InputSelectProps
   extends React.InputHTMLAttributes<HTMLSelectElement> {
@@ -7,20 +8,40 @@ interface InputSelectProps
   error?: string;
   full?: boolean;
   options: Options[];
+  inputSize?: "small" | "medium" | "large";
 }
 
 const InputSelect: FC<InputSelectProps> = (props) => {
+  const paddingStyles = (size: "small" | "medium" | "large") => {
+    switch (size) {
+      case "small":
+        return "p-2";
+      case "medium":
+        return "p-3";
+      case "large":
+        return "py-4 pr-4 px-3";
+    }
+  };
+
   return (
-    <div className={props.full ? "w-full" : "w-auto"}>
+    <div
+      className={`${props.full ? "w-full" : "w-auto"} ${
+        montserrat.className
+      } text-sm`}
+    >
       <label
         htmlFor={props.id}
-        className="block text-sm font-medium text-gray-700"
+        className="block text-gray-700 mb-1 font-montserrat"
       >
         {props.label}
       </label>
       <select
         {...props}
-        className="mt-1 block w-full border border-gray-300 rounded-md px-2 py-[9.5px]"
+        className={`w-full border rounded-lg focus:ring-1 focus:outline-none ${
+          props.error
+            ? "border-admin-danger focus:ring-transparent"
+            : "border-gray-300 focus:ring-black"
+        } ${paddingStyles(props.inputSize ?? "large")}`}
       >
         {props.options.map(({ value, label }) => (
           <option key={value} value={value}>
@@ -28,7 +49,9 @@ const InputSelect: FC<InputSelectProps> = (props) => {
           </option>
         ))}
       </select>
-      {props.error && <p className="text-red-500 text-sm">{props.error}</p>}
+      {props.error && (
+        <p className="text-admin-danger text-sm mt-1">{props.error}</p>
+      )}
     </div>
   );
 };

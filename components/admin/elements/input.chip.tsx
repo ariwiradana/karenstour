@@ -8,6 +8,7 @@ interface InputChipProps {
   chips: string[]; // Current chip values
   onChange: (newChips: string[]) => void; // Function to update chips
   error?: string;
+  inputSize?: "small" | "medium" | "large";
 }
 
 const InputChip: React.FC<InputChipProps> = ({
@@ -18,6 +19,7 @@ const InputChip: React.FC<InputChipProps> = ({
   name,
   onChange,
   error,
+  inputSize,
 }) => {
   const [inputValue, setInputValue] = React.useState<string>("");
 
@@ -35,16 +37,31 @@ const InputChip: React.FC<InputChipProps> = ({
     onChange(updatedChips);
   };
 
+  const paddingStyles = (size: "small" | "medium" | "large") => {
+    switch (size) {
+      case "small":
+        return "p-1";
+      case "medium":
+        return "p-2";
+      case "large":
+        return "p-[14px]";
+    }
+  };
+
   return (
     <div>
       <label htmlFor={id} className="block text-sm font-medium text-gray-700">
         {label}
       </label>
-      <div className="flex flex-wrap items-center border border-gray-300 rounded p-2 gap-2">
+      <div
+        className={`flex flex-wrap items-center border border-gray-300 rounded-lg gap-2 ${paddingStyles(
+          inputSize ?? "large"
+        )}`}
+      >
         {chips.map((chip, index) => (
           <div
             key={index}
-            className="flex items-start bg-gray-200 rounded px-2 py-1"
+            className="flex items-start bg-gray-200 rounded px-2"
           >
             <span>{chip}</span>
             <button
@@ -52,7 +69,7 @@ const InputChip: React.FC<InputChipProps> = ({
               className="ml-3 text-sm text-gray-600 hover:text-gray-800"
               onClick={() => handleDeleteChip(index)}
             >
-              &times;
+              <span className="text-base"> &times;</span>
             </button>
           </div>
         ))}

@@ -6,6 +6,7 @@ import { parse } from "cookie";
 import { contact } from "@/constants/data";
 import { montserrat } from "@/constants/font";
 import { BiLogIn } from "react-icons/bi";
+import Input from "@/components/admin/elements/input";
 
 const AdminLoginPage: FC = () => {
   const { state, actions } = useAdminLogin();
@@ -24,55 +25,25 @@ const AdminLoginPage: FC = () => {
         </p>
 
         <form onSubmit={actions.handleSubmit} className="flex flex-col gap-6">
-          <div>
-            <label
-              htmlFor="username"
-              className="block text-gray-700 mb-1 font-montserrat"
-            >
-              Username
-            </label>
-            <input
-              type="text"
-              id="username"
-              name="username"
-              onChange={actions.handleChange}
-              value={state.formData.username}
-              className={`w-full p-3 border rounded-lg ${
-                state.errors.username ? "border-red-500" : "border-gray-300"
-              } font-montserrat`}
-              placeholder="Enter your username"
-            />
-            {state.errors.username && (
-              <p className="text-red-500 text-sm mt-1">
-                {state.errors.username}
-              </p>
-            )}
-          </div>
+          <Input
+            label="Username"
+            id="username"
+            name="username"
+            onChange={actions.handleChange}
+            value={state.formData.username}
+            placeholder="Enter your username"
+            error={state.errors.username}
+          />
 
-          <div>
-            <label
-              htmlFor="password"
-              className="block text-gray-700 mb-1 font-montserrat"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={actions.handleChange}
-              value={state.formData.password}
-              className={`w-full p-3 border rounded-lg ${
-                state.errors.password ? "border-red-500" : "border-gray-300"
-              } font-montserrat`}
-              placeholder="Enter your password"
-            />
-            {state.errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {state.errors.password}
-              </p>
-            )}
-          </div>
+          <Input
+            label="Password"
+            id="password"
+            name="password"
+            onChange={actions.handleChange}
+            value={state.formData.password}
+            placeholder="Enter your password"
+            error={state.errors.password}
+          />
 
           <div className="flex justify-end">
             <ButtonPrimary
@@ -80,7 +51,7 @@ const AdminLoginPage: FC = () => {
               disabled={state.loading}
               title="Login"
               type="submit"
-              className="bg-blue-500 text-white rounded-lg flex justify-center w-full hover:bg-blue-400 transition font-montserrat"
+              className="flex justify-center"
             />
           </div>
         </form>

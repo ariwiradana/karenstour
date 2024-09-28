@@ -18,7 +18,9 @@ const config: Config = {
           success: "#33B747",
           info: "#548EF9",
           warning: "#FFE23F",
-          danger: "#FF3B2D",
+          danger: "#E63946",
+          dark: "#333333",
+          "hover-dark": "#1A1A1A",
         },
       },
       fontFamily: {

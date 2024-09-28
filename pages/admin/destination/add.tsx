@@ -10,14 +10,17 @@ import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import InputSelect from "@/components/admin/elements/select";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
+import { BiMap } from "react-icons/bi";
 
 const AddDestinationPage: FC = () => {
   const { state, actions } = useAdminAddDestination();
 
   return (
     <Layout>
-      <div className="p-2 md:p-6 w-full">
-        <h1 className="text-2xl md:text-3xl mb-6">Add New Destination</h1>
+      <div className="w-full">
+        <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
+          Add New Destination
+        </h1>
         <div className="mb-4 flex items-center gap-2">
           <Link href="/admin/destination">
             <button className="flex items-center text-darkgray transition hover:underline">
@@ -105,6 +108,7 @@ const AddDestinationPage: FC = () => {
 
           <div className="flex justify-end">
             <ButtonPrimary
+              icon={<BiMap />}
               disabled={state.loading}
               title="Add Destination"
               type="submit"
