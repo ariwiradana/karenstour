@@ -15,6 +15,7 @@ import {
 import ButtonPrimaryIcon from "./elements/button.primary.icon";
 import ButtonPrimary from "./elements/button.primary";
 import ImageShimmer from "../client/elements/image.shimmer";
+import { FC } from "react";
 
 type MenuItem = {
   name: string;
@@ -22,13 +23,12 @@ type MenuItem = {
   icon: React.ReactNode;
 };
 
-const Sidebar = ({
-  isCollapsed,
-  toggleSidebar,
-}: {
+interface Props {
   isCollapsed: boolean;
   toggleSidebar: () => void;
-}) => {
+}
+
+const Sidebar: FC<Props> = (props) => {
   const router = useRouter();
 
   const menuItems: MenuItem[] = [
@@ -70,14 +70,14 @@ const Sidebar = ({
       </Head>
       <aside
         className={`${
-          isCollapsed
+          props.isCollapsed
             ? "w-auto p-2"
             : "w-auto md:w-56 lg:w-72 p-2 md:p-3 lg:p-5"
         } bg-white h-screen transition-all duration-300 ease-in-out fixed inset-y-0 shadow-lg divide-y`}
       >
         <nav
           className={`flex items-center py-3 md:pb-5 gap-3 ${
-            isCollapsed
+            props.isCollapsed
               ? "flex-col-reverse justify-between"
               : "md:gap-x-6 justify-center md:justify-between"
           }`}
@@ -85,7 +85,7 @@ const Sidebar = ({
           <div className="flex gap-x-4 items-center">
             <div
               className={`rounded-full overflow-hidden relative flex justify-center items-center aspect-square ${
-                isCollapsed ? "w-10" : "w-10 md:w-14"
+                props.isCollapsed ? "w-10" : "w-10 md:w-14"
               }`}
             >
               <ImageShimmer
@@ -97,12 +97,12 @@ const Sidebar = ({
                 src="https://avatar.iran.liara.run/public/2"
               />
             </div>
-            <div className={isCollapsed ? "hidden" : "hidden md:block"}>
+            <div className={props.isCollapsed ? "hidden" : "hidden md:block"}>
               <h4 className="font-semibold text-admin-dark">Admin</h4>
               <p className="text-xs text-darkgray">Session ends in 9m 5s</p>
             </div>
           </div>
-          <button className="hidden md:block" onClick={toggleSidebar}>
+          <button className="hidden md:block" onClick={props.toggleSidebar}>
             <BiMenu className="text-xl text-admin-dark" />
           </button>
         </nav>
@@ -113,7 +113,7 @@ const Sidebar = ({
                 <Link
                   href={item.path}
                   className={`flex items-center ${
-                    isCollapsed
+                    props.isCollapsed
                       ? "justify-center p-3 aspect-square"
                       : "justify-center md:justify-start py-3 px-4"
                   } transition duration-200 rounded-lg ${
@@ -125,7 +125,7 @@ const Sidebar = ({
                   <span className="text-lg text-admin-dark">{item.icon}</span>
                   <span
                     className={`text-base text-admin-hover-dark ${
-                      isCollapsed ? "hidden" : "hidden md:block ml-3"
+                      props.isCollapsed ? "hidden" : "hidden md:block ml-3"
                     }`}
                   >
                     {item.name}
@@ -136,7 +136,7 @@ const Sidebar = ({
           </ul>
         </nav>
         <nav className="pt-3 md:pt-5">
-          {isCollapsed ? (
+          {props.isCollapsed ? (
             <ButtonPrimaryIcon
               size="medium"
               onClick={handleLogout}

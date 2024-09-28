@@ -1,4 +1,5 @@
 import ButtonPrimary from "@/components/admin/elements/button.primary";
+import ButtonPrimaryIcon from "@/components/admin/elements/button.primary.icon";
 import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
 import useAdminDestination from "@/hooks/admin/useAdminDestination";
@@ -21,7 +22,12 @@ const AdminDestinationPage = () => {
         </h1>
         <div className="mb-4 flex items-end flex-wrap gap-3">
           <Link href="/admin/destination/add">
-            <ButtonPrimary icon={<BiPlus />} title="Add New Destination" />
+            <ButtonPrimary
+              icon={<BiPlus />}
+              title="Add New Destination"
+              className="hidden md:flex"
+            />
+            <ButtonPrimaryIcon className="md:hidden" icon={<BiPlus />} />
           </Link>
           {state.totalRows > 0 && (
             <Input

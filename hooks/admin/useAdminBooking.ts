@@ -11,6 +11,11 @@ import { capitalizeWords } from "@/utils/capitalizeWords";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 
+type StatusStyle = {
+  background: string;
+  text: string;
+};
+
 interface UseAdminBookingReturn {
   state: {
     bookings: Booking[];
@@ -20,7 +25,7 @@ interface UseAdminBookingReturn {
     limit: number;
     totalRows: number;
     search: string;
-    statusColors: Record<string, string>;
+    statusStyles: Record<string, StatusStyle>;
     buttonStatusTitle: Record<string, string>;
   };
   actions: {
@@ -61,7 +66,6 @@ const useAdminBooking = (
     }
   };
 
-
   const buttonStatusTitle: Record<string, string> = {
     pending: "Confirm Booking",
     confirmed: "Mark as Paid",
@@ -70,15 +74,14 @@ const useAdminBooking = (
     canceled: "Cancel Booking",
   };
 
-  const statusColors: Record<string, string> = {
-    pending: "bg-amber-500",
-    confirmed: "bg-green-500",
-    paid: "bg-blue-500",
-    ongoing: "bg-amber-500",
-    complete: "bg-indigo-500",
-    canceled: "bg-red-500",
+  const statusStyles: Record<string, StatusStyle> = {
+    pending: { background: "#fff9c6", text: "#B57C00" }, // Amber (background), Darker Amber (text)
+    confirmed: { background: "#ebfccb", text: "#669038" }, // Green (background), Darker Green (text)
+    paid: { background: "#ebfafc", text: "#03619c" }, // Blue (background), Darker Blue (text)
+    ongoing: { background: "#ffedd6", text: "#cb5c37" }, // Amber (background), Darker Amber (text)
+    complete: { background: "#f7e9fd", text: "#a220ae" }, // Indigo (background), Darker Indigo (text)
+    canceled: { background: "#fde6eb", text: "#b11656" }, // Red (background), Darker Red (text)
   };
-
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     const toastFetch = toast.loading("Load data...");
@@ -258,7 +261,7 @@ const useAdminBooking = (
       limit,
       page,
       totalRows,
-      statusColors,
+      statusStyles,
       buttonStatusTitle,
     },
     actions: {

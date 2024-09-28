@@ -29,8 +29,8 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
         props.size ?? "large"
       )}`}
     >
-      <span className="text-xm">{props.icon}</span>
-      <span className={`${props.icon ? "ml-3" : "ml-0"}`}>{props.title}</span>
+      <span className="text-sm">{props.icon}</span>
+      <span className={`${props.icon ? "ml-2" : "ml-0"}`}>{props.title}</span>
     </button>
   );
 };

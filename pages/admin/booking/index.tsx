@@ -1,4 +1,5 @@
 import ButtonPrimary from "@/components/admin/elements/button.primary";
+import ButtonPrimaryIcon from "@/components/admin/elements/button.primary.icon";
 import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
 import { Env } from "@/constants/types";
@@ -29,7 +30,12 @@ const BookingPage: FC<PageProps> = (props) => {
         </h1>
         <div className="mb-4 flex items-end flex-wrap gap-3">
           <Link href="/admin/booking/add">
-            <ButtonPrimary icon={<BiPlus />} title="Add New Booking" />
+            <ButtonPrimary
+              icon={<BiPlus />}
+              title="Add New Booking"
+              className="hidden md:flex"
+            />
+            <ButtonPrimaryIcon className="md:hidden" icon={<BiPlus />} />
           </Link>
           {state.totalRows > 0 && (
             <Input
@@ -45,79 +51,81 @@ const BookingPage: FC<PageProps> = (props) => {
           <div className="min-w-full overflow-x-auto">
             <table className="table-auto w-full border-collapse min-w-max">
               <thead>
-                <tr className="bg-gray-100 text-left">
-                  <th className="border px-4 py-2 text-sm text-dark">
+                <tr className="bg-gray-100 text-left border border-gray-200">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Information
                   </th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Booking Date
                   </th>
-                  <th className="border px-4 py-2 text-sm text-dark">Pax(s)</th>
-                  <th className="border px-4 py-2 text-sm text-dark">Status</th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
+                    Pax(s)
+                  </th>
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
+                    Status
+                  </th>
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Subtotal
                   </th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Reservation Fee
                   </th>
-                  <th className="border px-4 py-2 text-sm text-dark">Total</th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
+                    Total
+                  </th>
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Payment Proof
                   </th>
-                  <th className="border px-4 py-2 text-sm text-dark">
+                  <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
                     Actions
                   </th>
                 </tr>
               </thead>
               <tbody>
                 {state.bookings.map((booking) => (
-                  <tr key={booking.id} className="text-center">
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
+                  <tr
+                    key={booking.id}
+                    className="text-center border-b border-b-gray-200"
+                  >
+                    <td className="px-4 py-2 text-left text-admin-dark max-w-80">
                       <div>
-                        <h4 className="font-medium">{booking.name}</h4>
-                        <h6 className="text-darkgray text-sm">
-                          {booking.email}
-                        </h6>
+                        <h4 className="font-medium text-base">{booking.name}</h4>
                         <div className="flex">
-                          <h6 className="border border-admin-primary px-2 py-1 text-admin-primary rounded font-medium text-xs mt-2">
+                          <h6 className="text-darkgray text-sm">
                             #{booking.id}
                           </h6>
                         </div>
                       </div>
                     </td>
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
-                        {formatDate(booking.booking_date)}
-                      </h6>
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{formatDate(booking.booking_date)}</h6>
                     </td>
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">{booking.pax} Pax</h6>
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{booking.pax} Pax</h6>
                     </td>
-                    <td className="border px-4 py-2 text-center">
+                    <td className="px-4 py-2 text-center">
                       <div
-                        className={`inline-flex items-center capitalize px-3 py-1 rounded-full text-xs font-semibold text-white ${
-                          state.statusColors[booking.status]
-                        }`}
+                        style={{
+                          borderColor: state.statusStyles[booking.status].text,
+                          color: state.statusStyles[booking.status].text,
+                          backgroundColor:
+                            state.statusStyles[booking.status].background,
+                        }}
+                        className={`inline-flex items-center capitalize px-3 py-1 rounded-lg text-sm font-semibold`}
                       >
                         {booking.status}
                       </div>
                     </td>
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
-                        {currencyIDR(booking.subtotal)}
-                      </h6>
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{currencyIDR(booking.subtotal)}</h6>
                     </td>
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
-                        {currencyIDR(booking.tax)}
-                      </h6>
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{currencyIDR(booking.tax)}</h6>
                     </td>
-                    <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
-                        {currencyIDR(booking.total)}
-                      </h6>
+                    <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
+                      <h6>{currencyIDR(booking.total)}</h6>
                     </td>
-                    <td className="border px-4 py-2 text-center text-dark text-sm md:text-base max-w-80">
+                    <td className="px-4 py-2 text-center text-admin-dark text-sm max-w-80">
                       {booking.payment_proof ? (
                         <button
                           onClick={() => {
@@ -138,10 +146,10 @@ const BookingPage: FC<PageProps> = (props) => {
                           />
                         </button>
                       ) : (
-                        <h6 className="font-medium">-</h6>
+                        <h6>-</h6>
                       )}
                     </td>
-                    <td className="border px-4 py-2">
+                    <td className="px-4 py-2">
                       <div className="flex flex-col gap-y-2">
                         {!["complete", "canceled"].includes(booking.status) && (
                           <button
