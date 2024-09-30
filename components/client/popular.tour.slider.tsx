@@ -23,7 +23,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
   return (
     <Container className="flex flex-col divide-y lg:divide-y-0">
       <div className="md:py-14 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6 md:mb-0">
           <Title
             action={false}
             path={props.link}
@@ -33,6 +33,24 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
           <Link href={"/tour"}>
             <ButtonText title="All Tours" />
           </Link>
+        </div>
+
+        <div className="gap-x-2 hidden md:flex mb-10 mt-5">
+          {Array.from(
+            {
+              length: Math.ceil(state.data.length + 1 - state.slidesPerView),
+            },
+            (_, index) => index
+          ).map((item) => (
+            <div
+              key={`${item}-indicator`}
+              className={`h-1 md:h-2 rounded-full ${
+                item === state.activeIndex
+                  ? "bg-primary w-4"
+                  : "w-1 md:w-2 bg-gray-200"
+              }`}
+            ></div>
+          ))}
         </div>
 
         {state.loading ? (
@@ -98,7 +116,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                 );
               })}
               <div className="flex justify-between items-center mt-2 md:mt-10 lg:mt-0">
-                <div className="flex gap-x-2">
+                <div className="flex gap-x-2 md:hidden">
                   {Array.from(
                     {
                       length: Math.ceil(
@@ -117,7 +135,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                     ></div>
                   ))}
                 </div>
-                <div className="flex justify-start md:justify-center gap-x-2 md:gap-x-4">
+                <div className="flex justify-start md:justify-center gap-x-2 lg:gap-x-4">
                   <button
                     aria-label="btn-slide-prev"
                     className={`${
