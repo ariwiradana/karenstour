@@ -9,11 +9,11 @@ const Inclusion: React.FC<UseDestinationDetail> = (props) => {
 
   return (
     <div>
-      <h6
+      <h1
         className={`text-lg md:text-xl uppercase font-bold ${unbounded.className}`}
       >
         Inclusions
-      </h6>
+      </h1>
       <ul className={`space-y-2 mt-3 ${montserrat.className}`}>
         {props.state.data.inclusions?.map((item, index) => (
           <li

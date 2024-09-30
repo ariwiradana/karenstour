@@ -40,9 +40,9 @@ const ServiceList: FC<Props> = () => {
         </div>
         <div className="bg-white mt-8 lg:mt-0">
           <div className="lg:p-8 p-4 bg-lightgray border border-gray-100 rounded-lg mt-8">
-            <h6 className="text-xs md:text-sm font-normal mb-3 text-dark md:hidden">
+            <h1 className="text-xs md:text-sm font-normal mb-3 text-dark md:hidden">
               Filter
-            </h6>
+            </h1>
             <div
               className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
             >
@@ -112,6 +112,7 @@ const ServiceList: FC<Props> = () => {
                         }`}
                       />
                       <button
+                        aria-label="btn-filter-category"
                         onClick={() =>
                           actions.handleChangeFilterCategory(category.name)
                         }
@@ -127,7 +128,7 @@ const ServiceList: FC<Props> = () => {
           </div>
         </div>
 
-        <h5
+        <p
           className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
         >
           Showing{" "}
@@ -136,7 +137,7 @@ const ServiceList: FC<Props> = () => {
             : 0}{" "}
           - {Math.min(state.page * state.limit, state.totalRows ?? 0)} of{" "}
           {state.totalRows} results
-        </h5>
+        </p>
 
         <div className="mt-4 md:mt-6">
           {state.loading ? (

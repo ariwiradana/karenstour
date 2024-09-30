@@ -67,11 +67,11 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <Container className="py-10 lg:py-16">
         {state.data && <Title title={state.data?.title ?? ""} action={false} />}
         {state.data?.category_name && (
-          <h6
+          <p
             className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
           >
             {state.data?.category_name}
-          </h6>
+          </p>
         )}
         <GalleryDetail />
 
@@ -81,10 +81,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
               {state.loading ? (
                 <div className="w-60 shine h-4 bg-black rounded"></div>
               ) : (
-                <h4 className={`text-3xl lg:text-4xl text-dark font-bold`}>
+                <h1 className={`text-3xl lg:text-4xl text-dark font-bold`}>
                   {currencyIDR(state.data?.price ?? 0)}{" "}
                   <span className="text-xs text-darkgray">/ pax</span>
-                </h4>
+                </h1>
               )}
 
               <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
@@ -136,11 +136,11 @@ const ServiceDetail: FC<PageProps> = (props) => {
     if (!state.data) return <></>;
     return (
       <div>
-        <h6
+        <p
           className={`text-lg md:text-xl uppercase font-bold ${unbounded.className}`}
         >
           Description
-        </h6>
+        </p>
         <div className={`flex flex-col items-start ${montserrat.className}`}>
           <p
             dangerouslySetInnerHTML={{ __html: state.data?.description }}
@@ -151,6 +151,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             }`}
           ></p>
           <button
+            aria-label="btn-expand-desc"
             className="text-primary underline font-semibold text-base mt-4 hover:underline"
             onClick={actions.handleToggleExpanded}
           >
@@ -231,7 +232,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   videoUrl={state.data?.video_url ?? ""}
                 />
                 <div className="absolute bottom-4 left-4 z-10">
-                  <button className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform">
+                  <button
+                    aria-label="btn-open-map"
+                    className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform"
+                  >
                     <BiSolidMap className="text-base text-white" />
                     <div className="text-left">
                       <Link
@@ -263,7 +267,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   }
                 />
                 <div className="absolute bottom-4 left-4 z-10">
-                  <button className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform">
+                  <button
+                    aria-label="btn-show-map"
+                    className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform"
+                  >
                     <BiSolidMap className="text-base text-white" />
                     <div className="text-left">
                       <Link
@@ -304,6 +311,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   />
                   {isLastImage && (
                     <button
+                      aria-label="btn-toggle-lightbox"
                       onClick={() =>
                         actions.handleToggleLightbox(
                           state.data?.video_url
@@ -314,9 +322,9 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     >
                       <div className="absolute inset-0 bg-black bg-opacity-50 hover:bg-opacity-70 transition-all ease-in-out duration-500 flex items-center justify-center cursor-pointer">
                         <div className="text-white text-xs md:text-base font-light p-2 text-center">
-                          <h6 className={unbounded.className}>
+                          <p className={unbounded.className}>
                             + {state.remainingImages?.length} Photos
-                          </h6>
+                          </p>
                         </div>
                       </div>
                     </button>
@@ -341,7 +349,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             <BiSolidTime className="w-full h-full text-primary" />
           </div>
           <div>
-            <h4 className="text-darkgray text-base font-medium">Duration</h4>
+            <h2 className="text-darkgray text-base font-medium">Duration</h2>
             <p className="text-base md:text-lg text-dark font-semibold">
               {convertHoursToReadableFormat(state.data.duration)}
             </p>
@@ -353,7 +361,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             <BiSolidUser className="w-full h-full text-primary" />
           </div>
           <div>
-            <h4 className="text-darkgray text-base font-medium">Minimum Pax</h4>
+            <h3 className="text-darkgray text-base font-medium">Minimum Pax</h3>
             <p className="text-base md:text-lg text-dark font-semibold">
               {state.data.minimum_pax} Pax
             </p>

@@ -52,6 +52,7 @@ const CustomInputNumber: FC<Props> = ({
       </p>
       <div className="min-h-12 flex items-center rounded-lg">
         <button
+          aria-label="btn-decrement"
           type="button"
           onClick={handleDecrement}
           disabled={disabled || (min !== undefined && value <= min)}
@@ -74,6 +75,7 @@ const CustomInputNumber: FC<Props> = ({
           {...inputProps}
         />
         <button
+          aria-label="btn-increment"
           type="button"
           onClick={handleIncrement}
           disabled={disabled || (max !== undefined && value >= max)}

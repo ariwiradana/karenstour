@@ -10,9 +10,10 @@ const config: Config = {
     extend: {
       colors: {
         lightgray: "#f9f9fb",
-        dark: "#101010",
-        darkgray: "#6F787F",
-        primary: "#81A263",
+        dark: "#141f33",
+        darkgray: "#404856",
+        primary: "#317039",
+        secondary: "#c8f068",
         admin: {
           primary: "#3366FF",
           success: "#33B747",

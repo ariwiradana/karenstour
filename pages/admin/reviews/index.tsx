@@ -46,7 +46,7 @@ const AdminReviewPage = () => {
                 {state.reviews.map((review) => (
                   <tr key={review.id} className="text-left">
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">{review.user_name}</h6>
+                      <span className="font-medium">{review.user_name}</span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-96">
                       <Rating
@@ -58,9 +58,9 @@ const AdminReviewPage = () => {
                       />
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="text-dark text-sm line-clamp-3">
+                      <span className="text-dark text-sm line-clamp-3">
                         {review.comments}
-                      </h6>
+                      </span>
                     </td>
                     <td className="border px-4 py-2">
                       <div className="flex gap-x-2">

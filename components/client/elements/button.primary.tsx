@@ -8,12 +8,15 @@ interface ButtonPrimaryProps
   className?: string | "";
   icon?: ReactNode;
   disabled?: boolean;
+  id: string;
 }
 
 const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
   return (
     <button
       {...props}
+      id={props.id ?? props.title.replace(" ", "-").toLowerCase()}
+      aria-label={props.id ?? props.title.replace(" ", "-").toLowerCase()}
       disabled={props.disabled}
       onClick={props.onClick}
       className={`${montserrat.className} ${
@@ -24,7 +27,8 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
           : "bg-primary pointer-events-auto"
       } rounded-lg`}
     >
-      {props.icon && props.icon} <span>{props.title}</span>
+      <span>{props.title}</span>{" "}
+      <span className="text-2xl">{props.icon && props.icon}</span>
     </button>
   );
 };

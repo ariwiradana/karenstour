@@ -21,11 +21,11 @@ const Title: FC<TitleProps> = (props) => {
       } w-full`}
     >
       <div className={props.center ? "text-center" : "text-left"}>
-        <h2
+        <h1
           className={`text-xl md:text-2xl lg:text-3xl font-bold text-dark mb-2 ${unbounded.className}`}
         >
           {props.title}
-        </h2>
+        </h1>
         <p
           className={`text-darkgray text-lg ${
             !props.center ? "lg:max-w-[70dvw]" : ""

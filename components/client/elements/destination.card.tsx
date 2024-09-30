@@ -18,7 +18,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
       <div className={`group/item ${props.className ?? ""}`}>
         <div className="relative w-full h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
           <ImageShimmer
-            sizes="400px"
+            sizes="(max-width: 640px) 240px, (max-width: 768px) 360px, (max-width: 1024px) 480px, 480px"
             priority
             src={props.data.thumbnail_image ?? props.data.images[0]}
             className="object-cover group-hover/item:scale-110 transition-transform ease-in-out duration-700"
@@ -38,9 +38,9 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         </div>
         <div className="flex flex-col justify-between">
           <div className={unbounded.className}>
-            <h3 className="font-medium text-dark text-lg md:text-xl mt-4 mb-2 line-clamp-2">
+            <h1 className="font-medium text-dark text-lg md:text-xl mt-4 mb-2 line-clamp-2">
               {props.data.title}
-            </h3>
+            </h1>
             <div
               className={`flex my-2 gap-y-1 gap-x-4 ${montserrat.className}`}
             >

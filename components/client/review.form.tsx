@@ -3,10 +3,11 @@ import React, { FC } from "react";
 import CustomInput from "./elements/input";
 import CustomTextarea from "./elements/textarea";
 import { Rating } from "@mui/material";
-import { FaPencil, FaStar } from "react-icons/fa6";
+import { FaStar } from "react-icons/fa6";
 import ButtonPrimary from "./elements/button.primary";
 import useReviews from "@/hooks/client/useReviews";
 import { Destination } from "@/constants/types";
+import { BiSolidSend } from "react-icons/bi";
 
 interface Props {
   destination: Destination;
@@ -21,7 +22,7 @@ const ReviewForm: FC<Props> = (props) => {
       className={`p-6 md:p-10 rounded-xl bg-lightgray flex flex-col gap-6 ${unbounded.className}`}
     >
       <div>
-        <h5 className="font-semibold text-dark text-xl">Write a Review</h5>
+        <h1 className="font-semibold text-dark text-xl">Write a Review</h1>
         <p
           className={`text-sm font-medium text-darkgray mt-3 ${montserrat.className}`}
         >
@@ -57,12 +58,13 @@ const ReviewForm: FC<Props> = (props) => {
         onChange={(e) => actions.handleChange(e.target.value, "comments")}
         error={state.errors.comments}
       />
-      <div className="flex justify-end">
+      <div className="flex justify-end mt-4">
         <ButtonPrimary
+          id="btn-form-review"
           disabled={state.loading}
           type="submit"
-          icon={<FaPencil className="text-lg md:text-xl" />}
-          title="Submit Review"
+          icon={<BiSolidSend />}
+          title="Submit"
         />
       </div>
     </form>

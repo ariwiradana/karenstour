@@ -7,6 +7,8 @@ interface UsePopularDestinationState {
   data: Destination[] | [];
   error: string | null;
   loading: boolean;
+  activeIndex: number;
+  slidesPerView: number;
 }
 
 interface UsePopularDestination {
@@ -14,6 +16,7 @@ interface UsePopularDestination {
   actions: {
     setFirstSlide: (value: boolean) => void;
     setLastSlide: (value: boolean) => void;
+    handleActiveIndex: (index: number, slidesPerView: number) => void;
   };
 }
 
@@ -25,12 +28,39 @@ const usePopularDestination = (
   const [data, setData] = useState<Destination[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [slidesPerView, setSlidesPerView] = useState<number>(1);
+
+  const handleActiveIndex = (index: number, slidesPerView: number) => {
+    setActiveIndex(index);
+    setSlidesPerView(slidesPerView);
+  };
+
+  const updateSlidesPerView = () => {
+    const width = window.innerWidth;
+    if (width >= 1024) {
+      setSlidesPerView(4);
+    } else if (width >= 768) {
+      setSlidesPerView(2);
+    } else {
+      setSlidesPerView(1);
+    }
+  };
+
+  useEffect(() => {
+    updateSlidesPerView();
+    window.addEventListener("resize", updateSlidesPerView);
+
+    return () => {
+      window.removeEventListener("resize", updateSlidesPerView);
+    };
+  }, []);
 
   useEffect(() => {
     const fetchPopularDestination = async () => {
       try {
         const response = await fetch(
-          "/api/destination?limit=10&sort=average_rating&order=asc"
+          "/api/destination?page=1&limit=7&sort=average_rating&order=asc"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");
@@ -58,6 +88,8 @@ const usePopularDestination = (
 
   return {
     state: {
+      activeIndex,
+      slidesPerView,
       firstSlide,
       lastSlide,
       data,
@@ -67,6 +99,7 @@ const usePopularDestination = (
     actions: {
       setFirstSlide,
       setLastSlide,
+      handleActiveIndex,
     },
   };
 };

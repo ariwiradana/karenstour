@@ -89,19 +89,19 @@ const BookingPage: FC<PageProps> = (props) => {
                   >
                     <td className="px-4 py-2 text-left text-admin-dark max-w-80">
                       <div>
-                        <h4 className="font-medium text-base">{booking.name}</h4>
+                        <span className="font-medium text-base">{booking.name}</span>
                         <div className="flex">
-                          <h6 className="text-darkgray text-sm">
+                          <span className="text-darkgray text-sm">
                             #{booking.id}
-                          </h6>
+                          </span>
                         </div>
                       </div>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{formatDate(booking.booking_date)}</h6>
+                      <span>{formatDate(booking.booking_date)}</span>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{booking.pax} Pax</h6>
+                      <span>{booking.pax} Pax</span>
                     </td>
                     <td className="px-4 py-2 text-center">
                       <div
@@ -117,13 +117,13 @@ const BookingPage: FC<PageProps> = (props) => {
                       </div>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{currencyIDR(booking.subtotal)}</h6>
+                      <span>{currencyIDR(booking.subtotal)}</span>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{currencyIDR(booking.tax)}</h6>
+                      <span>{currencyIDR(booking.tax)}</span>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{currencyIDR(booking.total)}</h6>
+                      <span>{currencyIDR(booking.total)}</span>
                     </td>
                     <td className="px-4 py-2 text-center text-admin-dark text-sm max-w-80">
                       {booking.payment_proof ? (
@@ -146,7 +146,7 @@ const BookingPage: FC<PageProps> = (props) => {
                           />
                         </button>
                       ) : (
-                        <h6>-</h6>
+                        <span>-</span>
                       )}
                     </td>
                     <td className="px-4 py-2">

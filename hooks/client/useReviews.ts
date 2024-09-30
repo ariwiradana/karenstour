@@ -16,10 +16,13 @@ export interface UseReviewsReturn {
     formData: FormData;
     errors: Record<string, string>;
     loading: boolean;
+    activeIndex: number;
+    slidesPerView: number;
   };
   actions: {
     handleChange: (value: string | number, name: string) => void;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    handleActiveIndex: (index: number, slidesPerView: number) => void;
   };
 }
 
@@ -34,6 +37,8 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
+  const [activeIndex, setActiveIndex] = useState<number>(0);
+  const [slidesPerView, setSlidesPerView] = useState<number>(3);
 
   const schema: ZodSchema = z.object({
     user_name: z.string().min(2, {
@@ -80,6 +85,11 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
 
   const handleChange = (value: string | number, name: string) => {
     setFormData((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  const handleActiveIndex = (index: number, slidesPerView: number) => {
+    setActiveIndex(index);
+    setSlidesPerView(slidesPerView);
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -140,10 +150,13 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
       formData,
       errors,
       loading,
+      activeIndex,
+      slidesPerView,
     },
     actions: {
       handleChange,
       handleSubmit,
+      handleActiveIndex,
     },
   };
 };

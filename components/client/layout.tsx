@@ -18,6 +18,10 @@ const Layout: FC<LayoutProps> = (props) => {
     <>
       <Head>
         <title>{props.pageTitle ?? ""}</title>
+        <meta
+          name="description"
+          content="Discover our reliable transportation tours for exploring top destinations. Book private or group tours with comfort, convenience, and expert local guides. Your journey starts here!"
+        />
       </Head>
       {props.still ? <NavbarStill /> : <Navbar />}
       <div className={montserrat.className}>{props.children}</div>

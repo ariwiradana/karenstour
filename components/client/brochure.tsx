@@ -35,10 +35,10 @@ const TourBrochure: FC<Props> = (props) => {
         <h1 className={`text-4xl font-bold text-dark`}>
           {props.destination.title}
         </h1>
-        <h6 className="text-xl font-semibold text-dark mt-4 mb-4">
+        <h1 className="text-xl font-semibold text-dark mt-4 mb-4">
           {currencyIDR(props.destination.price)} |{" "}
           {convertHoursToReadableFormat(props.destination.duration)}
-        </h6>
+        </h1>
         <div>
           <div className="grid grid-cols-4 gap-1 grid-rows-2 mt-10">
             <div className="relative w-full col-span-2 row-span-2 h-[50vh]">

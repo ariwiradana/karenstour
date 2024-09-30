@@ -19,8 +19,11 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
   };
 
   return (
-    <div className={`bg-lightgray rounded-lg overflow-hidden ${unbounded.className}`}>
+    <div
+      className={`bg-lightgray rounded-lg overflow-hidden ${unbounded.className}`}
+    >
       <button
+        aria-label={`btn-${title.replace(" ", "-").toLowerCase()}`}
         onClick={handleClickButton}
         className="w-full text-center text-white font-normal text-sm py-4 px-6 flex justify-center items-center focus:outline-none bg-primary"
       >

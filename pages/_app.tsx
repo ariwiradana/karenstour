@@ -17,7 +17,7 @@ export default function App({ Component, pageProps }: AppProps) {
 
   return (
     <>
-      <NextNProgress color="#81A263" />
+      <NextNProgress color="#317039" />
       <Component {...pageProps} />
       <Toaster />
     </>

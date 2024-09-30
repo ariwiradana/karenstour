@@ -98,7 +98,7 @@ const Sidebar: FC<Props> = (props) => {
               />
             </div>
             <div className={props.isCollapsed ? "hidden" : "hidden md:block"}>
-              <h4 className="font-semibold text-admin-dark">Admin</h4>
+              <h1 className="font-semibold text-admin-dark">Admin</h1>
               <p className="text-xs text-darkgray">Session ends in 9m 5s</p>
             </div>
           </div>

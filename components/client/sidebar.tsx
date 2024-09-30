@@ -67,10 +67,11 @@ const SidebarItem: FC<SidebarItemProps> = (props) => {
       >
         <div className="w-full text-left flex items-center justify-between hover:underline">
           <Link href={props.path}>
-            <h6>{props.title}</h6>
+            <h1>{props.title}</h1>
           </Link>
           {props.hasChild && (
             <button
+              aria-label="btn-toggle-nav-mobile"
               onClick={handleToggle}
               className="w-full flex justify-end py-1"
             >

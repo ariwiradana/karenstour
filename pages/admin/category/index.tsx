@@ -57,7 +57,7 @@ const AdminCategoryPage = () => {
                     className="text-left border-b border-b-gray-200"
                   >
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
-                      <h6>{category.name}</h6>
+                      <span>{category.name}</span>
                     </td>
                     <td className="px-4 py-2">
                       <div className="flex gap-x-2">

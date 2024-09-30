@@ -33,26 +33,26 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
           <>
             {state.data?.id ?? "" === props.id ? (
               <div className="max-w-md mx-auto my-10 p-6 bg-white rounded-xl border">
-                <h2 className="text-2xl font-bold mb-1 text-gray-700">
+                <h1 className="text-2xl font-bold mb-1 text-gray-700">
                   {!paid && !uploaded
                     ? "Upload Proof of Payment"
                     : "Payment Proof"}
-                </h2>
+                </h1>
                 {!paid && !uploaded ? (
-                  <h5 className="text-darkgray font-medium text-base mb-6">
+                  <h2 className="text-darkgray font-medium text-base mb-6">
                     Invoice #{props.id}
-                  </h5>
+                  </h2>
                 ) : (
                   <></>
                 )}
 
                 {paid || uploaded ? (
                   <div className="mt-4 p-4 bg-green-100 border border-green-300 rounded-lg">
-                    <h4 className="text-lg font-semibold text-green-800 mb-1">
+                    <h1 className="text-lg font-semibold text-green-800 mb-1">
                       {paid || uploaded
                         ? `Invoice #${props.id}`
                         : "Payment Already Paid"}
-                    </h4>
+                    </h1>
                     <p className="text-gray-700">
                       {uploaded && !paid
                         ? "Your proof of payment has been uploaded and is currently under review."
@@ -70,6 +70,7 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
 
                     <div className="flex justify-end">
                       <ButtonPrimary
+                        id="btn-payment-proof"
                         disabled={state.loading}
                         title="Upload"
                         type="submit"
@@ -80,9 +81,9 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
               </div>
             ) : (
               <div className="max-w-md mx-auto my-10 p-6 bg-white rounded-xl border">
-                <h2 className="text-2xl font-bold mb-1 text-red-700">
+                <h1 className="text-2xl font-bold mb-1 text-red-700">
                   Booking Not Found
-                </h2>
+                </h1>
                 <p className="text-gray-700 mb-4">
                   We couldn&apos;t find a booking associated with Invoice
                   <span className="font-semibold"> #{props.id}</span>. Please

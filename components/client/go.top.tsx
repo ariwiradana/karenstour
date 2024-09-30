@@ -13,6 +13,7 @@ const GoTop = () => {
       }`}
     >
       <button
+        aria-label="btn-go-tpp"
         className="border border-primary flex justify-between items-center rounded p-2 bg-white"
         onClick={actions.handleScrollToTop}
       >

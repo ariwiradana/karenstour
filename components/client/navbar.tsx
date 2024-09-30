@@ -48,13 +48,13 @@ const Navbar: FC<NavbarProps> = () => {
       <LeftSide close={actions.handleShowMenu} open={state.isShowMenu}>
         <Sidebar close={actions.handleShowMenu} />
       </LeftSide>
-      <nav
+      <ol
         className={`w-full flex justify-between items-center max-w-screen-xl transition-all ease-in-out duration-300 delay-75 mx-auto ${
           state.isTop ? "py-6" : "py-4"
         } md:py-0`}
       >
         <li className="list-none md:hidden flex items-center">
-          <button onClick={actions.handleShowMenu}>
+          <button aria-label="btn-menu-mobile" onClick={actions.handleShowMenu}>
             <RiMenu2Line
               className={`text-2xl transition-colors ease-in-out duration-300 delay-75 ${
                 state.isTop ? "text-white" : "text-dark"
@@ -62,41 +62,25 @@ const Navbar: FC<NavbarProps> = () => {
             />
           </button>
         </li>
-        <Link href="/">
-          <li
-            className={`relative hidden md:block transition-all ease-in-out duration-300 delay-75 ${
-              state.isTop ? "w-24 h-24" : "w-20 h-20"
-            }`}
-          >
-            <Image
-              priority
-              src="/images/logo.webp"
-              alt="Logo"
-              className="object-contain w-full"
-              fill
-              sizes="100px"
-            />
-          </li>
-        </Link>
+        <li>
+          <Link href="/">
+            <div
+              className={`relative hidden md:block transition-all ease-in-out duration-300 delay-75 ${
+                state.isTop ? "w-24 h-24" : "w-20 h-20"
+              }`}
+            >
+              <Image
+                priority
+                src="/images/logo.webp"
+                alt="Logo"
+                className="object-contain w-full"
+                fill
+                sizes="100px"
+              />
+            </div>
+          </Link>
+        </li>
         <li className="flex items-center gap-x-8">
-          {/* <div>
-            <SelectTextInput
-              className="transition-all ease-in-out duration-300 delay-75"
-              transparent={state.isTop}
-              id="select-locale"
-              onChange={(e) => {
-                actions.setLocale(e.target.value);
-                router.push(router.asPath, router.asPath, {
-                  locale: e.target.value,
-                });
-              }}
-              options={[
-                { key: "EN", value: "en" },
-                { key: "ID", value: "id" },
-              ]}
-              value={state.locale}
-            />
-          </div> */}
           <div
             className={`flex gap-x-4 transition-colors ease-in-out duration-300 delay-75 ${
               state.isTop ? "text-white" : "text-primary"
@@ -105,8 +89,9 @@ const Navbar: FC<NavbarProps> = () => {
             {socials?.map(({ icon, path }) => {
               return (
                 <Link
+                  aria-label={`social-${path}-label`}
                   target="_blank"
-                  key={`social-${path}`}
+                  key={`social-${path}-link`}
                   locale={state.locale}
                   href={path}
                 >
@@ -116,7 +101,7 @@ const Navbar: FC<NavbarProps> = () => {
             })}
           </div>
         </li>
-      </nav>
+      </ol>
     </div>
   );
 };

@@ -65,24 +65,24 @@ const Footer: FC = () => {
   function FooterLeft() {
     return (
       <div>
-        <h2 className="text-2xl uppercase font-bold text-dark mb-2">
+        <h1 className="text-2xl uppercase font-bold text-dark mb-2">
           {t("footer.title")}
-        </h2>
+        </h1>
         <div className="mt-8 w-auto">
           <p className="text-darkgray font-light text-xs">{t("footer.call")}</p>
           <Link target="_blank" href="tel:+6281246768627">
-            <h4 className="text-dark font-medium text-base lg:text-xl hover:text-primary transition-colors ease-in-out duration-200">
+            <h1 className="text-dark font-medium text-base lg:text-xl hover:text-primary transition-colors ease-in-out duration-200">
               {contact.phone}
-            </h4>
+            </h1>
           </Link>
         </div>
         <div className="mt-6">
           <p className="text-darkgray font-light text-xs">
             {t("footer.address")}
           </p>
-          <h4 className="text-dark font-medium text-base lg:text-xl">
+          <h2 className="text-dark font-medium text-base lg:text-xl">
             {contact.address}
-          </h4>
+          </h2>
         </div>
         <div className="mt-6">
           <p className="text-darkgray font-light text-xs">
@@ -91,7 +91,12 @@ const Footer: FC = () => {
           <div className="flex gap-x-4 mt-2">
             {socials?.map(({ icon, path }) => {
               return (
-                <Link target="_blank" key={`social-${path}`} href={path}>
+                <Link
+                  aria-label={`social-${path}-label`}
+                  target="_blank"
+                  key={`social-${path}`}
+                  href={path}
+                >
                   <div className="h-12 w-12 bg-[#81a26328] rounded-lg flex justify-center items-center transform hover:scale-110 transition-transform duration-500 ease-in-out">
                     {icon}
                   </div>

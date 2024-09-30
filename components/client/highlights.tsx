@@ -15,7 +15,7 @@ const HighlightItem: FC<HighlightItemProps> = (props) => {
     <div className="flex items-start gap-x-5 md:gap-x-3 lg:gap-x-5">
       <div>{props.icon}</div>
       <div className={unbounded.className}>
-        <h3 className="lg:text-xl text-lg text-white font-medium">{props.title}</h3>
+        <h1 className="lg:text-xl text-lg text-white font-medium">{props.title}</h1>
         <p className="text-sm text-white font-light mt-2 leading-6">
           {props.description}
         </p>

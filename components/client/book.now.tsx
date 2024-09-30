@@ -17,14 +17,13 @@ const BookNow: React.FC = () => {
       >
         <div className="flex flex-col gap-y-4">
           <div className="px-6 md:px-8 lg:px-0">
-            <h3 className="lg:text-3xl text-2xl font-bold text-white text-center">
+            <h1 className="lg:text-3xl text-2xl font-bold text-white text-center">
               Have Any Questions?
-            </h3>
+            </h1>
             <p className="text-white text-sm lg:text-base font-light max-w-3xl text-center leading-6 my-5">
-              Planning a trip can be overwhelming, but we&#39;re here to make it
-              simple. If you have any questions or need assistance with booking,
-              don&#39;t hesitate to reach out. Our team is ready to guide you
-              through every step of the way!
+              Planning a trip can be overwhelming, but we&ldquo;re here to help!
+              If you have questions or need booking assistance, feel free to
+              reach out. Our team is ready to guide you!
             </p>
           </div>
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-6 md:px-8 lg:px-0">
@@ -33,6 +32,7 @@ const BookNow: React.FC = () => {
               target="_blank"
             >
               <ButtonPrimary
+                id="button-book-now"
                 className="w-auto"
                 icon={<RiWhatsappLine className="text-2xl" />}
                 title="Chat with Us"

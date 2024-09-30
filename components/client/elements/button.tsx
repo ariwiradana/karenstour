@@ -8,15 +8,16 @@ interface Props extends React.ButtonHTMLAttributes<HTMLButtonElement> {
 }
 
 const CustomButton: FC<Props> = (props) => {
+  const id = `btn-${props.label.replace(" ", "-").toLowerCase()}`;
   return (
     <div className={`flex flex-col items-start w-auto ${montserrat.className}`}>
       <button
+        id={id}
         className={`text-white px-3 py-4 md:px-4 text-sm font-medium uppercase tracking-wider rounded focus:outline-none transition-all ease-in-out duration-500 group ${
           props.disabled
             ? "opacity-50 cursor-not-allowed bg-gray-300"
             : "opacity-100 bg-primary"
         }`}
-        id={props.id}
         {...props}
       >
         {props.icon ? (

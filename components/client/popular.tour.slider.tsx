@@ -7,6 +7,8 @@ import Container from "./container";
 import Title from "./elements/title";
 import usePopularDestination from "@/hooks/client/usePopularDestination";
 import CardShimmer from "./elements/card.shimmer";
+import Link from "next/link";
+import ButtonText from "./elements/button.text";
 
 interface PopularTourSliderProps {
   title: string;
@@ -21,15 +23,18 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
   return (
     <Container className="flex flex-col divide-y lg:divide-y-0">
       <div className="md:py-14 py-8">
-        <div className="flex justify-between items-end mb-6 lg:mb-8">
+        <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6">
           <Title
-            actionTitle={props.actionTitle}
-            action
+            action={false}
             path={props.link}
             title={props.title}
             description={props.description}
           />
+          <Link href={"/tour"}>
+            <ButtonText title="All Tours" />
+          </Link>
         </div>
+
         {state.loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
             <CardShimmer />
@@ -50,23 +55,25 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                 prevEl: ".slidePrev-btn",
                 nextEl: ".slideNext-btn",
               }}
+              slidesPerView={state.slidesPerView}
               breakpoints={{
                 0: {
-                  slidesPerView: 1,
                   spaceBetween: 16,
                 },
                 640: {
-                  slidesPerView: 1,
                   spaceBetween: 16,
                 },
                 768: {
-                  slidesPerView: 2,
                   spaceBetween: 20,
                 },
                 1024: {
-                  slidesPerView: 4,
                   spaceBetween: 24,
                 },
+              }}
+              onActiveIndexChange={(swiper) => {
+                const activeIndex = swiper.activeIndex;
+                const slidesPerView = swiper.params.slidesPerView;
+                actions.handleActiveIndex(activeIndex, slidesPerView as number);
               }}
               onSlideChange={(swiper) => {
                 if (swiper.activeIndex === 0) {
@@ -90,21 +97,44 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                   </SwiperSlide>
                 );
               })}
-              <div className="flex justify-start md:justify-center gap-x-4 mt-6 md:mt-10 lg:mt-0">
-                <button
-                  className={`${
-                    state.firstSlide ? "lg:hidden" : "lg:flex"
-                  } flex slidePrev-btn lg:absolute left-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-r-none lg:rounded-l-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-                >
-                  <BsChevronLeft className="text-dark lg:text-white lg:text-2xl" />
-                </button>
-                <button
-                  className={`${
-                    state.lastSlide ? "lg:hidden" : "lg:flex"
-                  } flex slideNext-btn lg:absolute right-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-l-none lg:rounded-r-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-                >
-                  <BsChevronRight className="text-dark lg:text-white lg:text-2xl" />
-                </button>
+              <div className="flex justify-between items-center mt-2 md:mt-10 lg:mt-0">
+                <div className="flex gap-x-2">
+                  {Array.from(
+                    {
+                      length: Math.ceil(
+                        state.data.length + 1 - state.slidesPerView
+                      ),
+                    },
+                    (_, index) => index
+                  ).map((item) => (
+                    <div
+                      key={`${item}-indicator`}
+                      className={`h-1 md:h-2 rounded-full ${
+                        item === state.activeIndex
+                          ? "bg-primary w-4"
+                          : "w-1 md:w-2 bg-gray-200"
+                      }`}
+                    ></div>
+                  ))}
+                </div>
+                <div className="flex justify-start md:justify-center gap-x-2 md:gap-x-4">
+                  <button
+                    aria-label="btn-slide-prev"
+                    className={`${
+                      state.firstSlide ? "lg:hidden" : "lg:flex"
+                    } flex slidePrev-btn lg:absolute left-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-r-none lg:rounded-l-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
+                  >
+                    <BsChevronLeft className="text-dark lg:text-white lg:text-2xl" />
+                  </button>
+                  <button
+                    aria-label="btn-slide-next"
+                    className={`${
+                      state.lastSlide ? "lg:hidden" : "lg:flex"
+                    } flex slideNext-btn lg:absolute right-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-l-none lg:rounded-r-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
+                  >
+                    <BsChevronRight className="text-dark lg:text-white lg:text-2xl" />
+                  </button>
+                </div>
               </div>
             </Swiper>
           </div>

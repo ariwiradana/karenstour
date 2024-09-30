@@ -21,13 +21,13 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
     >
       <div className={montserrat.className}>
         <p className="text-xs mb-1 font-medium text-darkgray">Trip Name</p>
-        <h5 className="font-semibold text-dark text-xl">
+        <h1 className="font-semibold text-dark text-xl">
           {props.state.data?.title}
-        </h5>
+        </h1>
       </div>
       <div className={montserrat.className}>
         <p className="text-xs mb-1 font-medium text-darkgray">Price</p>
-        <h5 className="font-semibold text-dark text-xl">
+        <h1 className="font-semibold text-dark text-xl">
           {currencyIDR(
             props.state.formData.pax * (props.state.data?.price ?? 0)
           )}
@@ -35,7 +35,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
             {" "}
             ({props.state.formData.pax} pax)
           </span>
-        </h5>
+        </h1>
       </div>
       <div className="flex gap-x-2">
         <CustomSelect2
@@ -118,6 +118,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
 
       <div className="flex justify-end">
         <ButtonPrimary
+          id="btn-form-booking"
           disabled={props.state.loadingSubmit}
           type="submit"
           icon={<RiShoppingBag4Fill className="text-2xl" />}

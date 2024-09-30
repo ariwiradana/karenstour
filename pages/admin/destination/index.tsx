@@ -63,42 +63,42 @@ const AdminDestinationPage = () => {
                   <tr key={destination.id} className="align-top">
                     <td className="border px-4 py-2 text-left text-dark text-sm md:text-base max-w-56">
                       <div className="mt-2">
-                        <h4 className="font-medium">{destination.title}</h4>
-                        <h6 className="text-darkgray text-sm mt-1">
+                        <h1 className="font-medium">{destination.title}</h1>
+                        <p className="text-darkgray text-sm mt-1">
                           {destination.slug}
-                        </h6>
+                        </p>
                       </div>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark text-base max-w-80">
                       <div>
                         <p className="text-darkgray text-sm">Thumbnail</p>
-                        <h4 className="font-medium">
+                        <h1 className="font-medium">
                           {destination.video_url ? "✅" : "❌"}
-                        </h4>
+                        </h1>
                       </div>
                       <div className="mt-1">
                         <p className="text-darkgray text-sm">Images</p>
-                        <h4 className="font-medium">
+                        <h1 className="font-medium">
                           {destination.images.length > 0
                             ? destination.images.length
                             : "-"}
-                        </h4>
+                        </h1>
                       </div>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
+                      <span className="font-medium">
                         {destination.category_name}
-                      </h6>
+                      </span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
+                      <span className="font-medium">
                         {convertHoursToReadableFormat(destination.duration)}
-                      </h6>
+                      </span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
-                      <h6 className="font-medium">
+                      <span className="font-medium">
                         {currencyIDR(destination.price)}
-                      </h6>
+                      </span>
                     </td>
                     <td className="border px-4 py-2">
                       <Link href={`/admin/destination/${destination.id}`}>

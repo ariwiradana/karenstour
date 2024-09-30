@@ -8,10 +8,13 @@ interface ButtonTextProps {
 }
 
 const ButtonText: FC<ButtonTextProps> = (props) => {
+  const id = `btn-${props.title.replace(" ", "-").toLowerCase()}`;
   return (
     <button
+      id={id}
+      aria-label={id}
       onClick={props.onClick}
-      className={`${unbounded.className} ${props.className} h-auto text-nowrap outline-none uppercase font-medium underline text-sm text-primary`}
+      className={`${unbounded.className} ${props.className} h-auto text-nowrap outline-none uppercase font-medium underline text-base text-primary`}
     >
       {props.title}
     </button>

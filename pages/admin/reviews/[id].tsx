@@ -37,9 +37,9 @@ const DetailReviewPage: FC<PageProps> = (props) => {
           className={`border border-gray-100 p-4 rounded-lg bg-lightgray mt-8 ${montserrat.className}`}
         >
           <div className="flex items-center mb-2">
-            <h3 className="text-lg font-semibold text-dark">
+            <h1 className="text-lg font-semibold text-dark">
               {state.review?.user_name}
-            </h3>
+            </h1>
             <span className="ml-2 text-darkgray text-sm">
               {formatDate(state.review.created_at)}
             </span>
