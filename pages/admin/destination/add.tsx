@@ -35,6 +35,7 @@ const AddDestinationPage: FC = () => {
           className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           <Input
+            accept="video/*"
             type="file"
             name="video"
             label="Video"
@@ -42,6 +43,7 @@ const AddDestinationPage: FC = () => {
             error={state.errors.video}
           />
           <Input
+            accept="image/*"
             multiple
             type="file"
             name="images"

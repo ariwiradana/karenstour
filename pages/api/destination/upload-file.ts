@@ -1,6 +1,8 @@
-import { errorResponse, successResponse } from "@/utils/response";
-import { put } from "@vercel/blob";
+import { errorResponse } from "@/utils/response";
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
+import getRawBody from "raw-body";
+import { promises as fs } from "fs";
+import path from "path";
 
 const allowedFileTypes: Record<string, string[]> = {
   image: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
@@ -48,16 +50,16 @@ export default async function handler(
   }
 
   try {
-    const blob = await put(
-      `${filepath}/${filename}.${filetype.split("/")[1]}`,
-      request,
-      {
-        access: "public",
-        multipart: true,
-      }
-    );
+    const rawBody = await getRawBody(request);
+    const fullfilename = `${filepath}/${filename}.${filetype.split("/")[1]}`;
+    const url = path.join(process.cwd(), "public/uploads", fullfilename);
+    await fs.mkdir(path.dirname(url), { recursive: true });
+    await fs.writeFile(url, rawBody);
 
-    return successResponse(response, "POST", "upload file", blob);
+    return response.status(200).json({
+      success: true,
+      data: { url: `/uploads/${fullfilename}` },
+    });
   } catch (error) {
     return errorResponse(response, error);
   }

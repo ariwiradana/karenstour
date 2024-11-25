@@ -1,5 +1,5 @@
+import sql from "@/lib/db";
 import { errorResponse, successResponse } from "@/utils/response";
-import { sql } from "@vercel/postgres";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
@@ -16,39 +16,43 @@ export default async function handler(
 
       const offset = (pageNumber - 1) * limitNumber;
 
-      const { rows } = await sql`
-        SELECT 
-            b.*, 
-            d.title as destination_title,
-            d.duration as destination_duration,
-            d.minimum_pax as destination_pax,
-            d.inclusions as destination_inclusions,
-            d.price as destination_price
-        FROM booking b
-        LEFT JOIN destination d 
-            ON b.destination_id = d.id
-        WHERE b.id ILIKE ${searchTerm}
-        OR b.name ILIKE ${searchTerm}
-        OR b.email ILIKE ${searchTerm}
-        OR b.status ILIKE ${searchTerm}
-        OR b.pickup_location ILIKE ${searchTerm}
-        ORDER BY b.updated_at DESC
-        LIMIT ${limitNumber}
-        OFFSET ${offset};
-    `;
+      const { rows } = await sql.query(
+        `
+            SELECT 
+                b.*, 
+                d.title AS destination_title,
+                d.duration AS destination_duration,
+                d.minimum_pax AS destination_pax,
+                d.inclusions AS destination_inclusions,
+                d.price AS destination_price
+            FROM booking b
+            LEFT JOIN destination d 
+                ON b.destination_id = d.id
+            WHERE b.id ILIKE $1
+            OR b.name ILIKE $1
+            OR b.email ILIKE $1
+            OR b.status ILIKE $1
+            OR b.pickup_location ILIKE $1
+            ORDER BY b.updated_at DESC
+            LIMIT $2
+            OFFSET $3;
+        `,
+        [searchTerm, limitNumber, offset]
+      );
 
-      const { rows: totalRows } = await sql`
-        SELECT COUNT(*)
-        FROM booking b
-        LEFT JOIN destination d 
-            ON b.destination_id = d.id
-        WHERE b.id ILIKE ${searchTerm}
-        OR b.name ILIKE ${searchTerm}
-        OR b.email ILIKE ${searchTerm}
-        OR b.status ILIKE ${searchTerm}
-      `;
-
-      console.log(rows);
+      const { rows: totalRows } = await sql.query(
+        `
+            SELECT COUNT(*)
+            FROM booking b
+            LEFT JOIN destination d 
+                ON b.destination_id = d.id
+            WHERE b.id ILIKE $1
+            OR b.name ILIKE $1
+            OR b.email ILIKE $1
+            OR b.status ILIKE $1;
+        `,
+        [searchTerm]
+      );
 
       return successResponse(
         response,
@@ -80,14 +84,30 @@ export default async function handler(
         updated_at,
       } = data;
 
-      await sql`
-      INSERT INTO booking 
-      (id, destination_id, name, email, booking_date, status, pax, pickup_location, subtotal, tax, tax_rate, total, created_at, updated_at)
-      VALUES (
-        ${id}, ${destination_id}, ${name}, ${email}, ${booking_date}, ${status}, ${pax}, ${pickup_location}, ${subtotal}, 
-        ${tax}, ${tax_rate}, ${total}, ${created_at}, ${updated_at}
-      );
-    `;
+      const query = `
+        INSERT INTO booking 
+        (id, destination_id, name, email, booking_date, status, pax, pickup_location, subtotal, tax, tax_rate, total, created_at, updated_at)
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14);
+      `;
+
+      const values = [
+        id,
+        destination_id,
+        name,
+        email,
+        booking_date,
+        status,
+        pax,
+        pickup_location,
+        subtotal,
+        tax,
+        tax_rate,
+        total,
+        created_at,
+        updated_at,
+      ];
+
+      await sql.query(query, values);
 
       return successResponse(response, "POST", "booking");
     } catch (error) {

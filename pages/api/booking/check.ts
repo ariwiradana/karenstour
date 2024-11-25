@@ -11,10 +11,10 @@ export default async function handler(
 
     if (id) {
       try {
-        const { rows } = await sql`SELECT * FROM booking WHERE id = ${
-          id as string
-        };`;
-
+        const { rows } = await sql.query(
+          `SELECT * FROM booking WHERE id = $1`,
+          [id]
+        );
         return successResponse(response, "GET", "check booking", rows[0]);
       } catch (error) {
         return errorResponse(response, error);

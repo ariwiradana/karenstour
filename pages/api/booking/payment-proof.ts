@@ -53,9 +53,10 @@ export default async function handler(
 
     if (id) {
       try {
-        const { rows } = await sql`SELECT * FROM proof_payment WHERE id = ${
-          id as string
-        };`;
+        const { rows } = await sql.query(
+          `SELECT * FROM proof_payment WHERE id = $1`,
+          [id]
+        );
         return successResponse(response, "GET", "proof payment", rows[0]);
       } catch (error) {
         return errorResponse(response, error);

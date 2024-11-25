@@ -1,8 +1,8 @@
 import { Destination } from "@/constants/types";
+import sql from "@/lib/db";
+import delLocal from "@/lib/delLocal";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { errorResponse, successResponse } from "@/utils/response";
-import { del } from "@vercel/blob";
-import { sql } from "@vercel/postgres";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
@@ -249,7 +249,7 @@ export default async function handler(
       await sql.query(queryDelete);
 
       for (const allURL of allURLS) {
-        await del(allURL);
+        await delLocal(allURL);
       }
 
       return successResponse(response, "DELETE", "destination");

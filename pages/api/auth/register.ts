@@ -2,8 +2,8 @@ import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
 // pages/api/auth/register.ts
 import bcrypt from "bcryptjs";
-import { sql } from "@vercel/postgres";
 import { errorResponse, successResponse } from "@/utils/response";
+import sql from "@/lib/db";
 
 export default async function register(
   req: NextApiRequest,
@@ -17,8 +17,10 @@ export default async function register(
     req.body;
 
   try {
-    const { rowCount } =
-      await sql`SELECT * FROM users WHERE username = ${username}`;
+    const { rowCount } = await sql.query(
+      `SELECT * FROM users WHERE username = $1`,
+      [username]
+    );
 
     if (rowCount && rowCount > 0) {
       return errorResponse(res, {

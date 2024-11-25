@@ -71,6 +71,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             </div>
           )}
           <Input
+            accept="video/*"
             type="file"
             name="video"
             label="Video"
@@ -79,6 +80,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           />
           <div className="flex flex-col gap-y-4">
             <Input
+              accept="image/*"
               multiple
               type="file"
               name="images"
@@ -188,7 +190,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
 
           <div className="flex justify-end">
             <ButtonPrimary
-              icon={<BiMap/>}
+              icon={<BiMap />}
               disabled={state.loading}
               title="Update Destination"
               type="submit"

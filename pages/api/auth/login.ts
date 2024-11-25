@@ -1,9 +1,9 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
-import { sql } from "@vercel/postgres";
 import { errorResponse, successResponse } from "@/utils/response";
 import { User } from "@/constants/types";
+import sql from "@/lib/db";
 
 export default async function login(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== "POST") {

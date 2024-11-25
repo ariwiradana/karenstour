@@ -1,8 +1,12 @@
+CREATE TABLE IF NOT EXISTS category (
+    id SERIAL PRIMARY KEY,
+    name VARCHAR(100) NOT NULL UNIQUE
+);                      
+
 CREATE TABLE IF NOT EXISTS destination (
     id SERIAL PRIMARY KEY,
-    category_id INTEGER REFERENCES category(id) ON DELETE SET NULL
+    category_id INTEGER REFERENCES category(id) ON DELETE SET NULL,
     images TEXT[],
-    ALTER TABLE destination,
     thumbnail_image VARCHAR(255),
     title VARCHAR(255) NOT NULL,
     slug VARCHAR(255) NOT NULL UNIQUE,
@@ -42,10 +46,12 @@ CREATE TABLE IF NOT EXISTS reviews (
     user_name VARCHAR(255) NOT NULL,
     created_at VARCHAR(50) NOT NULL,
     comments TEXT,
+    rating INTEGER,
     destination_id INTEGER REFERENCES destination(id) ON DELETE SET NULL
 );
 
-CREATE TABLE IF NOT EXISTS category (
+CREATE TABLE IF NOT EXISTS users (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNQUE
-);                      
+    username VARCHAR(255) NOT NULL UNIQUE,
+	password VARCHAR(255)
+);

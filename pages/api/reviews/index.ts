@@ -1,5 +1,5 @@
+import sql from "@/lib/db";
 import { errorResponse, successResponse } from "@/utils/response";
-import { sql } from "@vercel/postgres";
 import { NextApiResponse, NextApiRequest } from "next";
 
 export default async function handler(
@@ -103,9 +103,12 @@ export default async function handler(
       if (!id) {
         return errorResponse(response, "id is required");
       }
-      await sql`
+      await sql.query(
+        `
         DELETE FROM reviews
-        WHERE id = ${Number(id)};`;
+        WHERE id = $1`,
+        [id]
+      );
 
       return successResponse(response, "DELETE", "reviews");
     } catch (error) {
