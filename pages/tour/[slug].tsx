@@ -181,7 +181,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             className={`text-base font-medium mt-3 leading-8 description ${
               state.isExpanded
                 ? "line-clamp-none"
-                : "line-clamp-[8] md:line-clamp-[20]"
+                : "line-clamp-[8] md:line-clamp-[12]"
             }`}
           ></p>
           <button
