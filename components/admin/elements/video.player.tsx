@@ -19,6 +19,7 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
       <div className={`relative ${className}`}>
         {loading && <ShimmerLoader />}
         <video
+          playsInline
           className="absolute top-0 left-0 w-full h-full aspect-video"
           src={videoUrl}
           muted
