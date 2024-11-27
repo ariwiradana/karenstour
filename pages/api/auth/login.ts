@@ -22,14 +22,14 @@ export default async function login(req: NextApiRequest, res: NextApiResponse) {
     const { rows, rowCount } = await sql.query(queryCheck);
 
     if (rowCount === 0) {
-      return errorResponse(res, { message: "Username not found." });
+      return errorResponse(res, { message: "Invalid credentials." });
     }
 
     const user: User = rows[0];
     const isValid = await bcrypt.compare(password, user.password);
 
     if (!isValid) {
-      return errorResponse(res, { message: "Incorrect password." });
+      return errorResponse(res, { message: "Invalid credentials." });
     }
 
     const token = jwt.sign({ username }, process.env.JWT_SECRET as string, {
