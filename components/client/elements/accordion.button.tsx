@@ -20,7 +20,9 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
 
   return (
     <div
-      className={`bg-lightgray rounded-lg overflow-hidden ${unbounded.className}`}
+      className={`bg-lightgray rounded-lg overflow-hidden border border-dashed ${
+        unbounded.className
+      } ${isOpen ? "border-primary/10" : "border-transparent"}`}
     >
       <button
         aria-label={`btn-${title.replace(" ", "-").toLowerCase()}`}

@@ -19,15 +19,28 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
       onSubmit={props.actions.handleSubmit}
       className="flex flex-col gap-6 p-6"
     >
-      <div className="flex items-start justify-between gap-8 border-b pb-6 border-dashed">
-        <h1
-          className={`font-semibold text-dark text-2xl ${unbounded.className}`}
-        >
-          {props.state.data?.title}
-        </h1>
-        <div className={`${montserrat.className} flex flex-col items-end`}>
-          <p className="text-xs font-medium text-darkgray">Total Price</p>
-          <h1 className="font-semibold text-dark text-2xl text-right whitespace-nowrap">
+      <div className="flex flex-col items-start justify-between gap-6 border-b pb-6 border-dashed">
+        <div>
+          <p
+            className={`text-xs font-medium text-darkgray ${montserrat.className}`}
+          >
+            Tour Name
+          </p>
+          <h1
+            className={`font-semibold text-dark text-2xl ${unbounded.className}`}
+          >
+            {props.state.data?.title}
+          </h1>
+        </div>
+        <div>
+          <p
+            className={`text-xs font-medium text-darkgray ${montserrat.className}`}
+          >
+            Total Price
+          </p>
+          <h1
+            className={`font-semibold text-dark text-2xl text-right whitespace-nowrap ${unbounded.className}`}
+          >
             {currencyIDR(
               props.state.formData.pax * (props.state.data?.price ?? 0)
             )}
@@ -80,6 +93,20 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         error={props.state.errors.bookingDate}
       />
 
+      <CustomInputNumber
+        onChange={(e) =>
+          props.actions.handleChange(Number(e.target.value), "pax")
+        }
+        min={props.state.data?.minimum_pax}
+        max={10}
+        name="pax"
+        type="number"
+        label="Guest(s)"
+        value={props.state.formData.pax}
+        error={props.state.errors.pax}
+        info={`A minimum of ${props.state.data?.minimum_pax} participants (pax) is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
+      />
+
       <CustomTextarea
         rows={3}
         onChange={(e) =>
@@ -90,20 +117,6 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         value={props.state.formData.pickupLocation}
         error={props.state.errors.pickupLocation}
         info="Please enter the name of your pickup location (e.g., hotel name, address, or landmark)."
-      />
-
-      <CustomInputNumber
-        onChange={(e) =>
-          props.actions.handleChange(Number(e.target.value), "pax")
-        }
-        min={props.state.data?.minimum_pax}
-        max={10}
-        name="pax"
-        type="number"
-        label="Pax"
-        value={props.state.formData.pax}
-        error={props.state.errors.pax}
-        info={`A minimum of ${props.state.data?.minimum_pax} participants (pax) is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
       />
 
       <CustomTextarea
