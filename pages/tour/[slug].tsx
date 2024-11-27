@@ -42,7 +42,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
 
   if (state.loading)
     return (
-      <div className="w-screen h-screen flex justify-center items-center">
+      <div className="w-dvw h-dvh flex justify-center items-center">
         <LoaderIcon />
       </div>
     );
