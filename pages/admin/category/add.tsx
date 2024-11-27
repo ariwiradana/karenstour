@@ -5,15 +5,16 @@ import Input from "@/components/admin/elements/input";
 import ButtonPrimary from "@/components/admin/elements/button.primary";
 import { HiChevronLeft } from "react-icons/hi2";
 import { GetServerSideProps } from "next";
-import { Env } from "@/constants/types";
 import useAdminAddCategory from "@/hooks/admin/useAdminAddCategory";
 import { parse } from "cookie";
 import { BiCategory } from "react-icons/bi";
 
-interface PageProps extends Env {}
+interface PageProps {
+  authToken?: string;
+}
 
-const AdminAddCategoryPage: FC<PageProps> = () => {
-  const { state, actions } = useAdminAddCategory();
+const AdminAddCategoryPage: FC<PageProps> = ({authToken}) => {
+  const { state, actions } = useAdminAddCategory(authToken as string);
 
   return (
     <Layout>
@@ -45,7 +46,7 @@ const AdminAddCategoryPage: FC<PageProps> = () => {
 
           <div className="flex justify-end">
             <ButtonPrimary
-              icon={<BiCategory/>}
+              icon={<BiCategory />}
               disabled={state.loading}
               title="Add New Category"
               type="submit"
@@ -61,9 +62,6 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   req,
   res,
 }) => {
-  const serviceId = process.env.EMAILJS_SERVICE_ID ?? "";
-  const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? "";
-
   const cookie = req.headers.cookie || "";
   const authToken = parse(cookie).authToken;
 
@@ -71,14 +69,13 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     res.writeHead(302, { Location: "/admin/login" });
     res.end();
     return {
-      props: { serviceId, publicKey },
+      props: {},
     };
   }
 
   return {
     props: {
-      serviceId,
-      publicKey,
+      authToken,
     },
   };
 };

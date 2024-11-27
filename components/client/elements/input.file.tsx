@@ -21,6 +21,7 @@ const InputFile: FC<Props> = (props) => {
         {props.required ? "*" : ""}
       </p>
       <input
+        accept="image/*"
         placeholder={props.placeholder}
         readOnly
         className="bg-white min-h-12 px-3 text-base font-semibold w-full rounded-xl focus:outline-none border cursor-default"
@@ -31,6 +32,7 @@ const InputFile: FC<Props> = (props) => {
       />
 
       <input
+        accept="image/*"
         ref={buttonRef}
         type="file"
         onChange={props.onChange}

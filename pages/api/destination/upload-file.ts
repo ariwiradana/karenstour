@@ -3,6 +3,7 @@ import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 import getRawBody from "raw-body";
 import { promises as fs } from "fs";
 import path from "path";
+import { withAuth } from "@/lib/withAuth";
 
 const allowedFileTypes: Record<string, string[]> = {
   image: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
@@ -15,10 +16,7 @@ function bytesToMB(bytes: number): number {
   return bytes / (1024 * 1024);
 }
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   const { filename, filepath, filetype, filesize, category } = request.query;
 
   const maxFileSize =
@@ -63,10 +61,12 @@ export default async function handler(
   } catch (error) {
     return errorResponse(response, error);
   }
-}
+};
 
 export const config: PageConfig = {
   api: {
     bodyParser: false,
   },
 };
+
+export default withAuth(handler);

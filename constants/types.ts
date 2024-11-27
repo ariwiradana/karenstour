@@ -19,6 +19,7 @@ export interface Destination {
 export interface Env {
   serviceId: string;
   publicKey: string;
+  authToken: string;
 }
 
 export interface Booking {

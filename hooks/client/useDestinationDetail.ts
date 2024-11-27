@@ -66,11 +66,9 @@ const initialFormData = {
 
 const useDestinationDetail = (
   publicKey: string,
-  serviceId: string
+  serviceId: string,
+  slug: string
 ): UseDestinationDetail => {
-  const router = useRouter();
-  const slug = (router.query.slug as string) ?? "";
-
   const [data, setData] = useState<Destination | null>(null);
   const [toggleImage, setToggleImage] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -192,7 +190,7 @@ const useDestinationDetail = (
       schema.parse(formData);
       const templateId = "template_jtoz9nl";
       if (serviceId && publicKey) {
-        const createBooking = await fetch("/api/booking", {
+        const createBooking = await fetch("/api/client/booking", {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -281,7 +279,7 @@ const useDestinationDetail = (
     try {
       setLoading(true);
       const response = await fetch(
-        `/api/destination?slug=${encodeURIComponent(slug)}`
+        `/api/client/destination?slug=${encodeURIComponent(slug)}`
       );
       if (!response.ok) {
         throw new Error("Network response was not ok");

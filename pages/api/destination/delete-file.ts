@@ -1,13 +1,11 @@
 import { Destination } from "@/constants/types";
 import sql from "@/lib/db";
 import delLocal from "@/lib/delLocal";
+import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   const { url, destination_id, category } = request.query;
 
   try {
@@ -83,10 +81,12 @@ export default async function handler(
     // Handle any errors that occur
     return errorResponse(response, error);
   }
-}
+};
 
 export const config: PageConfig = {
   api: {
     bodyParser: false,
   },
 };
+
+export default withAuth(handler);

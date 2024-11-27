@@ -22,11 +22,13 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
   const [loading, setLoading] = useState<boolean>(true);
 
   const checkBooking = useCallback(async () => {
-    const existResponse = await fetch(`/api/booking/check?id=${id}`);
+    const existResponse = await fetch(`/api/client/booking/check?id=${id}`);
     const result = await existResponse.json();
 
+    console.log({ result });
+
     const uploadedResponse = await fetch(
-      `/api/booking?id=${encodeURIComponent(id)}`
+      `/api/client/booking?id=${encodeURIComponent(id)}`
     );
     const response = await uploadedResponse.json();
     const res = response.data;
@@ -63,7 +65,7 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
         const toastUpload = toast.loading("Uploading...");
 
         const response = await fetch(
-          `/api/booking/payment-proof?id=${id}&filetype=${file.type}`,
+          `/api/client/booking/payment-proof?id=${id}&filetype=${file.type}`,
           {
             method: "POST",
             body: file,

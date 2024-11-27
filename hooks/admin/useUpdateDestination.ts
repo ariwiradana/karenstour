@@ -6,6 +6,7 @@ import { Category, Destination, Options } from "@/constants/types";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
 import useAdminCategory from "./useAdminCategory";
+import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   uploaded_images?: string[] | [];
@@ -65,7 +66,10 @@ const isFileList = (value: any): value is FileList => {
   return value instanceof window.FileList;
 };
 
-const useUpdateDestination = (id: string | number): UseUpdateDestination => {
+const useUpdateDestination = (
+  id: string | number,
+  authToken: string
+): UseUpdateDestination => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [lightbox, setLightbox] = useState<boolean>(false);
@@ -85,7 +89,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
   const fetchDestinationBySlug = useCallback(async () => {
     const toastFetch = toast.loading("Load destination...");
     try {
-      const response = await fetch(`/api/destination?id=${id}`);
+      const response = await useFetch(`/api/destination?id=${id}`, authToken);
       const result = await response.json();
       if (result.success) {
         const data = result.data[0];
@@ -116,7 +120,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     if (formData.categoryId) {
       let url = `/api/category`;
       try {
-        const response = await fetch(url);
+        const response = await useFetch(url, authToken);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
@@ -185,11 +189,10 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     if ((newImages ?? [])?.length > -1) {
       try {
         setLoading(true);
-        const response = await fetch(
+        const response = await useFetch(
           `/api/destination/delete-file?url=${imageURL}&destination_id=${id}&category=images`,
-          {
-            method: "POST",
-          }
+          authToken,
+          "POST"
         );
         const result = await response.json();
         if (result.success) {
@@ -212,11 +215,10 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
     if (videoURL) {
       try {
         setLoading(true);
-        const response = await fetch(
+        const response = await useFetch(
           `/api/destination/delete-file?url=${videoURL}&destination_id=${id}&category=video_url`,
-          {
-            method: "POST",
-          }
+          authToken,
+          "POST"
         );
         const result = await response.json();
         if (result.success) {
@@ -239,13 +241,12 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
 
     try {
       setLoading(true);
-      const response = await fetch(`/api/destination?id=${id}`, {
-        method: "PUT",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(updatedDestination),
-      });
+      const response = await useFetch(
+        `/api/destination?id=${id}`,
+        authToken,
+        "PUT",
+        updatedDestination
+      );
       const result = await response.json();
       if (result.success) {
         setFormData((prevData) => ({
@@ -280,7 +281,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
         const uploadToast = toast.loading(`Video is uploading...`);
         try {
           const filepath = "destination/videos";
-          const response = await fetch(
+          const response = await useFetch(
             `/api/destination/upload-file?filename=${encodeURIComponent(
               filename
             )}&filepath=${encodeURIComponent(
@@ -288,19 +289,17 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
             )}&filetype=${fileVideo.type.toLowerCase()}&filesize=${
               fileVideo.size
             }&category=video`,
-            {
-              method: "POST",
-              body: fileVideo,
-            }
+            authToken,
+            "POST",
+            fileVideo
           );
           const result = await response.json();
           if (result.success) {
             if (formData.uploaded_video) {
-              await fetch(
+              await useFetch(
                 `/api/destination/delete-file?url=${formData.uploaded_video}&destination_id=${id}&category=video_url`,
-                {
-                  method: "POST",
-                }
+                authToken,
+                "POST"
               );
             }
             videoURL = result.data.url;
@@ -341,7 +340,7 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
           );
           try {
             const filepath = "destination/images";
-            const response = await fetch(
+            const response = await useFetch(
               `/api/destination/upload-file?filename=${encodeURIComponent(
                 filename
               )}&filepath=${encodeURIComponent(
@@ -349,10 +348,9 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
               )}&filetype=${image.type.toLowerCase()}&filesize=${
                 image.size
               }&category=image`,
-              {
-                method: "POST",
-                body: image,
-              }
+              authToken,
+              "POST",
+              image
             );
             const result = await response.json();
             if (result.success) {
@@ -394,13 +392,12 @@ const useUpdateDestination = (id: string | number): UseUpdateDestination => {
           thumbnail_image: formData.thumbnail_image,
         };
 
-        const updateDestination = await fetch(`/api/destination?id=${id}`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+        const updateDestination = await useFetch(
+          `/api/destination?id=${id}`,
+          authToken,
+          "PUT",
+          payload
+        );
         const updateDestinationResult = await updateDestination.json();
         if (updateDestinationResult.success) {
           toast.success(updateDestinationResult.message, {

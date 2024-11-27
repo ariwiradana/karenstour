@@ -4,7 +4,6 @@ import getRawBody from "raw-body";
 import { promises as fs } from "fs";
 import path from "path";
 import sql from "@/lib/db";
-import { withAuth } from "@/lib/withAuth";
 
 const allowedFileTypes: string[] = [
   "image/jpeg",
@@ -13,7 +12,10 @@ const allowedFileTypes: string[] = [
   "image/jpg",
 ];
 
-const handler = async (request: NextApiRequest, response: NextApiResponse) => {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   if (request.method === "POST") {
     try {
       const { id, filetype } = request.query;
@@ -62,12 +64,10 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       }
     }
   }
-};
+}
 
 export const config: PageConfig = {
   api: {
     bodyParser: false,
   },
 };
-
-export default withAuth(handler);

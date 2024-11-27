@@ -54,7 +54,7 @@ const useDestination = (): UseDestination => {
 
   const fetchCategories = useCallback(async () => {
     setLoading(true);
-    let url = `/api/category`;
+    let url = `/api/client/category`;
     try {
       const response = await fetch(url);
       if (!response.ok) {
@@ -109,7 +109,7 @@ const useDestination = (): UseDestination => {
   const fetchDestinations = useCallback(async () => {
     setLoading(true);
     try {
-      const url = `/api/destination?page=${page}&limit=${limit}&sort=${encodeURIComponent(
+      const url = `/api/client/destination?page=${page}&limit=${limit}&sort=${encodeURIComponent(
         sortBy
       )}&order=${encodeURIComponent(
         sortOrder

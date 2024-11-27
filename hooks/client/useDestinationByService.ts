@@ -27,7 +27,7 @@ const useDestinationByService = (id: number): UseDestinationByService => {
   useEffect(() => {
     const fetchDestinationByService = async () => {
       try {
-        const response = await fetch(`/api/destination?service=${id}&limit=8`);
+        const response = await fetch(`/api/client/destination?service=${id}&limit=8`);
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }

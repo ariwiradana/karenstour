@@ -46,6 +46,6 @@ export const successResponse = (
 };
 
 export const errorResponse = (res: NextApiResponse, error: any): void => {
-  console.log("Error : ", error.message);
+  console.log("Error : ", error);
   res.status(500).json({ success: false, message: error.message });
 };

@@ -14,13 +14,18 @@ import ImageShimmer from "@/components/client/elements/image.shimmer";
 import InputSelect from "@/components/admin/elements/select";
 import FsLightbox from "fslightbox-react";
 import { BiMap } from "react-icons/bi";
+import { parse } from "cookie";
 
 interface PageProps {
   id: string;
+  authToken: string;
 }
 
 const UpdateDestinationPage: FC<PageProps> = (props) => {
-  const { state, actions } = useUpdateDestination(props.id);
+  const { state, actions } = useUpdateDestination(
+    props.id,
+    props.authToken as string
+  );
 
   return (
     <Layout>
@@ -202,14 +207,28 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async (
-  context
-) => {
-  const { id } = context.params as { id: string };
+export const getServerSideProps: GetServerSideProps = async ({
+  req,
+  res,
+  params,
+}) => {
+  const id = (params?.id as string) || null;
+  const cookie = req.headers.cookie || "";
+
+  const authToken = parse(cookie).authToken;
+
+  if (!authToken) {
+    res.writeHead(302, { Location: "/admin/login" });
+    res.end();
+    return {
+      props: {},
+    };
+  }
 
   return {
     props: {
       id,
+      authToken,
     },
   };
 };

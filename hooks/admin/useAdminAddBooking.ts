@@ -10,6 +10,7 @@ import { capitalizeWords } from "@/utils/capitalizeWords";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import emailjs from "@emailjs/browser";
 import { useRouter } from "next/router";
+import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   name: string;
@@ -46,7 +47,8 @@ const initialFormData: FormData = {
 
 const useAdminAddBooking = (
   publicKey: string,
-  serviceId: string
+  serviceId: string,
+  authToken: string
 ): UseAdminAddBooking => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -73,7 +75,7 @@ const useAdminAddBooking = (
   const fetchDestinations = useCallback(async () => {
     try {
       let url = `/api/destination`;
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -147,13 +149,12 @@ const useAdminAddBooking = (
       const templateId = "template_jtoz9nl";
 
       if (serviceId && publicKey) {
-        const createBooking = await fetch("/api/booking", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(payload),
-        });
+        const createBooking = await useFetch(
+          "/api/booking",
+          authToken,
+          "POST",
+          payload
+        );
 
         const emailResponse = await emailjs.send(
           "service_r0xd3fi",

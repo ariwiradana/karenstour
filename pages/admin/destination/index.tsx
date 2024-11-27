@@ -11,8 +11,12 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
 
-const AdminDestinationPage = () => {
-  const { state, actions } = useAdminDestination();
+interface PageProps {
+  authToken:string
+}
+
+const AdminDestinationPage = (props:PageProps) => {
+  const { state, actions } = useAdminDestination(props.authToken as string);
 
   return (
     <Layout>
@@ -148,7 +152,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {},
+    props: {
+      authToken
+    },
   };
 };
 

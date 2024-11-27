@@ -1,13 +1,9 @@
 import sql from "@/lib/db";
+import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
-  // const verifiedToken = verifyToken(request, response);
-  // if (verifiedToken === null && request.query.isAdmin === "true") return;
 
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     interface QueryParams {
       limit?: number;
@@ -122,4 +118,6 @@ export default async function handler(
       .status(405)
       .json({ status: "error", message: "Method not allowed" });
   }
-}
+};
+
+export default withAuth(handler);

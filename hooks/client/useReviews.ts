@@ -61,7 +61,7 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
 
   const fetchReviews = useCallback(async () => {
     try {
-      const url = "/api/reviews";
+      const url = "/api/client/reviews";
       const response = await fetch(url);
 
       if (!response.ok) {
@@ -105,7 +105,7 @@ const useReviews = (destinationId?: number): UseReviewsReturn => {
         destination_id: destinationId,
         created_at: moment().format("YYYY-MM-DD HH:mm:ss"),
       };
-      const response = await fetch("/api/reviews", {
+      const response = await fetch("/api/client/reviews", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

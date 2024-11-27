@@ -7,7 +7,6 @@ import FormBooking from "@/components/client/form.booking";
 import Inclusion from "@/components/client/inclusion";
 import Layout from "@/components/client/layout";
 import { montserrat, unbounded } from "@/constants/font";
-import { Env } from "@/constants/types";
 import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
@@ -29,12 +28,18 @@ import Lightbox from "@/components/client/elements/lightbox";
 import TourBrochure from "@/components/client/brochure";
 import SEO from "@/components/client/seo";
 import NotFound from "@/components/client/not.found";
-interface PageProps extends Env {}
+
+interface PageProps {
+  serviceId: string;
+  publicKey: string;
+  slug: string;
+}
 
 const ServiceDetail: FC<PageProps> = (props) => {
   const { state, actions, refs } = useDestinationDetail(
     props.publicKey,
-    props.serviceId
+    props.serviceId,
+    props.slug
   );
 
   return (
@@ -389,14 +394,18 @@ const ServiceDetail: FC<PageProps> = (props) => {
   }
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async () => {
+export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+  params,
+}) => {
   const serviceId = process.env.EMAILJS_SERVICE_ID ?? "";
   const publicKey = process.env.EMAILJS_PUBLIC_KEY ?? "";
+  const slug = (params?.slug as string) || "";
 
   return {
     props: {
       serviceId,
       publicKey,
+      slug,
     },
   };
 };

@@ -60,7 +60,7 @@ const usePopularDestination = (
     const fetchPopularDestination = async () => {
       try {
         const response = await fetch(
-          "/api/destination?page=1&limit=7&sort=average_rating&order=asc"
+          "/api/client/destination?page=1&limit=7&sort=average_rating&order=asc"
         );
         if (!response.ok) {
           throw new Error("Network response was not ok");

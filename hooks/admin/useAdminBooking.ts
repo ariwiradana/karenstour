@@ -7,9 +7,9 @@ import toast from "react-hot-toast";
 import { formatDate } from "@/utils/dateFormatter";
 import emailjs from "@emailjs/browser";
 import moment from "moment";
-import { capitalizeWords } from "@/utils/capitalizeWords";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
+import { useFetch } from "@/lib/useFetch";
 
 type StatusStyle = {
   background: string;
@@ -38,7 +38,8 @@ interface UseAdminBookingReturn {
 
 const useAdminBooking = (
   publicKey: string,
-  serviceId: string
+  serviceId: string,
+  authToken: string
 ): UseAdminBookingReturn => {
   const [bookings, setBookings] = useState<Booking[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
@@ -91,7 +92,7 @@ const useAdminBooking = (
         url += `&search=${encodeURIComponent(query)}`;
       }
 
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
       const result = await response.json();
 
       if (result.success) {
@@ -218,17 +219,11 @@ const useAdminBooking = (
             handleInfoPaid(bookingData);
           }
 
-          fetch(`/api/booking?id=${bookingData.id}`, {
-            method: "PATCH",
-            headers: {
-              "Content-Type": "application/json",
+          useFetch(`/api/booking?id=${bookingData.id}`, authToken, "PATCH", {
+            updates: {
+              status: status !== "canceled" ? nextStatus : "canceled",
+              updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
             },
-            body: JSON.stringify({
-              updates: {
-                status: status !== "canceled" ? nextStatus : "canceled",
-                updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
-              },
-            }),
           })
             .then((response) => {
               if (!response.ok) {

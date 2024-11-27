@@ -1,11 +1,9 @@
 import { NextApiResponse, NextApiRequest } from "next";
-import { sql } from "@vercel/postgres";
 import { errorResponse, successResponse } from "@/utils/response";
+import sql from "@/lib/db";
+import { withAuth } from "@/lib/withAuth";
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     const { id } = request.query;
 
@@ -21,4 +19,6 @@ export default async function handler(
       }
     }
   }
-}
+};
+
+export default withAuth(handler);

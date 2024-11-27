@@ -1,5 +1,6 @@
 import { Category, Review } from "@/constants/types";
 import { customSwal } from "@/lib/sweetalert2";
+import { useFetch } from "@/lib/useFetch";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDebounce } from "use-debounce";
@@ -21,7 +22,7 @@ interface UseAdminCategory {
   };
 }
 
-const useAdminCategory = (): UseAdminCategory => {
+const useAdminCategory = (authToken: string): UseAdminCategory => {
   const [categories, setCategories] = useState<Category[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +44,7 @@ const useAdminCategory = (): UseAdminCategory => {
       url += `&search=${encodeURIComponent(query)}`;
     }
     try {
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -78,9 +79,11 @@ const useAdminCategory = (): UseAdminCategory => {
       .then((result) => {
         if (result.isConfirmed) {
           const toastDelete = toast.loading("Delete category...");
-          fetch(`/api/category?id=${encodeURIComponent(id)}`, {
-            method: "DELETE",
-          }).then((response) => {
+          useFetch(
+            `/api/category?id=${encodeURIComponent(id)}`,
+            authToken,
+            "DELETE"
+          ).then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
             }

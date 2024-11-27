@@ -1,5 +1,6 @@
 import { Review } from "@/constants/types";
 import { customSwal } from "@/lib/sweetalert2";
+import { useFetch } from "@/lib/useFetch";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDebounce } from "use-debounce";
@@ -11,12 +12,18 @@ interface UseAdminDetailReview {
   actions: {};
 }
 
-const useAdminDetailReview = (id: number): UseAdminDetailReview => {
+const useAdminDetailReview = (
+  id: number,
+  authToken: string
+): UseAdminDetailReview => {
   const [review, setReview] = useState<Review | null>(null);
 
   const fetchReviews = useCallback(async () => {
     try {
-      const response = await fetch(`/api/reviews?id=${Number(id)}`);
+      const response = await useFetch(
+        `/api/reviews?id=${Number(id)}`,
+        authToken
+      );
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }

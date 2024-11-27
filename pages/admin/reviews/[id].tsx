@@ -12,10 +12,14 @@ import { parse } from "cookie";
 
 interface PageProps {
   id: string;
+  authToken: string;
 }
 
 const DetailReviewPage: FC<PageProps> = (props) => {
-  const { state } = useAdminDetailReview(Number(props.id));
+  const { state } = useAdminDetailReview(
+    Number(props.id),
+    props.authToken as string
+  );
 
   if (!state.review) return <></>;
   return (
@@ -59,7 +63,7 @@ const DetailReviewPage: FC<PageProps> = (props) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps<PageProps> = async ({
+export const getServerSideProps: GetServerSideProps = async ({
   req,
   res,
   params,
@@ -81,6 +85,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   return {
     props: {
       id,
+      authToken,
     },
   };
 };

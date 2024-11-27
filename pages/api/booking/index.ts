@@ -1,11 +1,9 @@
 import sql from "@/lib/db";
+import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     try {
       const { limit = 10, page = 1, search = "" } = request.query;
@@ -142,4 +140,6 @@ export default async function handler(
       .status(405)
       .json({ status: "error", message: "Method not allowed" });
   }
-}
+};
+
+export default withAuth(handler);

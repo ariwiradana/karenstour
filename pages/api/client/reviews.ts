@@ -1,9 +1,11 @@
 import sql from "@/lib/db";
-import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
 
-const handler = async (request: NextApiRequest, response: NextApiResponse) => {
+export default async function handler(
+  request: NextApiRequest,
+  response: NextApiResponse
+) {
   if (request.method === "GET") {
     interface QueryParams {
       limit?: number;
@@ -95,28 +97,9 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     } catch (error) {
       return errorResponse(response, error);
     }
-  } else if (request.method === "DELETE") {
-    try {
-      const { id } = request.query;
-      if (!id) {
-        return errorResponse(response, "id is required");
-      }
-      await sql.query(
-        `
-        DELETE FROM reviews
-        WHERE id = $1`,
-        [id]
-      );
-
-      return successResponse(response, "DELETE", "reviews");
-    } catch (error) {
-      return errorResponse(response, error);
-    }
   } else {
     return response
       .status(405)
       .json({ status: "error", message: "Method not allowed" });
   }
-};
-
-export default withAuth(handler);
+}

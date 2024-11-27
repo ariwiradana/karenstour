@@ -1,14 +1,12 @@
 import { Destination } from "@/constants/types";
 import sql from "@/lib/db";
 import delLocal from "@/lib/delLocal";
+import { withAuth } from "@/lib/withAuth";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
 
-export default async function handler(
-  request: NextApiRequest,
-  response: NextApiResponse
-) {
+const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     interface QueryParams {
       slug?: string;
@@ -261,4 +259,6 @@ export default async function handler(
       .status(405)
       .json({ status: "error", message: "Method not allowed" });
   }
-}
+};
+
+export default withAuth(handler);

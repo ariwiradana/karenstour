@@ -1,5 +1,6 @@
 import { Review } from "@/constants/types";
 import { customSwal } from "@/lib/sweetalert2";
+import { useFetch } from "@/lib/useFetch";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDebounce } from "use-debounce";
@@ -21,7 +22,7 @@ interface UseAdminReview {
   };
 }
 
-const useAdminReview = (): UseAdminReview => {
+const useAdminReview = (authToken: string): UseAdminReview => {
   const [reviews, setReviews] = useState<Review[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -43,7 +44,7 @@ const useAdminReview = (): UseAdminReview => {
       url += `&search=${encodeURIComponent(query)}`;
     }
     try {
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -77,9 +78,11 @@ const useAdminReview = (): UseAdminReview => {
       })
       .then((result) => {
         if (result.isConfirmed) {
-          fetch(`/api/reviews?id=${encodeURIComponent(id)}`, {
-            method: "DELETE",
-          }).then((response) => {
+          useFetch(
+            `/api/reviews?id=${encodeURIComponent(id)}`,
+            authToken,
+            "DELETE"
+          ).then((response) => {
             if (!response.ok) {
               throw new Error("Network response was not ok");
             }

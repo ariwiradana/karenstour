@@ -1,5 +1,6 @@
 import { Destination } from "@/constants/types";
 import { customSwal } from "@/lib/sweetalert2";
+import { useFetch } from "@/lib/useFetch";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import Swal from "sweetalert2";
@@ -27,7 +28,7 @@ interface UseAdminDestination {
   };
 }
 
-const useAdminDestination = (): UseAdminDestination => {
+const useAdminDestination = (authToken: string): UseAdminDestination => {
   const [data, setData] = useState<Destination[] | []>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -45,7 +46,7 @@ const useAdminDestination = (): UseAdminDestination => {
       if (query.trim()) {
         url += `&search=${encodeURIComponent(query)}`;
       }
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
 
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -98,9 +99,11 @@ const useAdminDestination = (): UseAdminDestination => {
       .then((result) => {
         if (result.isConfirmed) {
           const deleteToast = toast.loading("Delete destination...");
-          fetch(`/api/destination?id=${encodeURIComponent(id)}`, {
-            method: "DELETE",
-          })
+          useFetch(
+            `/api/destination?id=${encodeURIComponent(id)}`,
+            authToken,
+            "DELETE"
+          )
             .then((response) => {
               if (!response.ok) {
                 throw new Error("Network response was not ok");

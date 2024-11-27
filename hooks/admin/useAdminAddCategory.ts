@@ -11,6 +11,7 @@ import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { formatDate } from "@/utils/dateFormatter";
 import emailjs from "@emailjs/browser";
 import { useRouter } from "next/router";
+import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   name: string;
@@ -35,7 +36,7 @@ const initialFormData: FormData = {
   name: "",
 };
 
-const useAdminAddCategory = (): UseAdminAddCategory => {
+const useAdminAddCategory = (authToken: string): UseAdminAddCategory => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -44,11 +45,9 @@ const useAdminAddCategory = (): UseAdminAddCategory => {
   const router = useRouter();
 
   const schema = z.object({
-    name: z
-      .string()
-      .min(2, {
-        message: "The category name must be at least 2 characters long.",
-      }),
+    name: z.string().min(2, {
+      message: "The category name must be at least 2 characters long.",
+    }),
   });
 
   const handleChange = (value: string | number, name: string) => {
@@ -68,13 +67,12 @@ const useAdminAddCategory = (): UseAdminAddCategory => {
 
       const toastCreate = toast.loading("Creating new category...");
 
-      const response = await fetch("/api/category", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(payload),
-      });
+      const response = await useFetch(
+        "/api/category",
+        authToken,
+        "POST",
+        payload
+      );
 
       const result = await response.json();
 

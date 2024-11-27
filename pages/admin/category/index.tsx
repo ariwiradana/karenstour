@@ -9,8 +9,12 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
 
-const AdminCategoryPage = () => {
-  const { state, actions } = useAdminCategory();
+interface PageProps {
+  authToken?: string;
+}
+
+const AdminCategoryPage = (props: PageProps) => {
+  const { state, actions } = useAdminCategory(props.authToken as string);
 
   return (
     <Layout>
@@ -104,7 +108,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {},
+    props: {
+      authToken,
+    },
   };
 };
 

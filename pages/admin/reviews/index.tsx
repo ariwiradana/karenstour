@@ -7,8 +7,12 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa6";
 
-const AdminReviewPage = () => {
-  const { state, actions } = useAdminReview();
+interface PageProps {
+  authToken: string
+}
+
+const AdminReviewPage = (props: PageProps) => {
+  const { state, actions } = useAdminReview(props.authToken as string);
 
   return (
     <Layout>
@@ -112,7 +116,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {},
+    props: {
+      authToken
+    },
   };
 };
 

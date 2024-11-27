@@ -2,25 +2,26 @@ import ButtonPrimary from "@/components/admin/elements/button.primary";
 import ButtonPrimaryIcon from "@/components/admin/elements/button.primary.icon";
 import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
-import { Env } from "@/constants/types";
+import ImageShimmer from "@/components/client/elements/image.shimmer";
 import useAdminBooking from "@/hooks/admin/useAdminBooking";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { formatDate } from "@/utils/dateFormatter";
 import { Pagination } from "@mui/material";
 import { parse } from "cookie";
 import { GetServerSideProps } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { BiPlus } from "react-icons/bi";
 import Swal from "sweetalert2";
 
-interface PageProps extends Env {
+interface PageProps {
+  serviceId: string;
+  publicKey: string;
   authToken?: string;
 }
 
 const BookingPage: FC<PageProps> = (props) => {
-  const { state, actions } = useAdminBooking(props.publicKey, props.serviceId);
+  const { state, actions } = useAdminBooking(props.publicKey, props.serviceId, props.authToken as string);
 
   return (
     <Layout>
@@ -89,7 +90,9 @@ const BookingPage: FC<PageProps> = (props) => {
                   >
                     <td className="px-4 py-2 text-left text-admin-dark max-w-80">
                       <div>
-                        <span className="font-medium text-base">{booking.name}</span>
+                        <span className="font-medium text-base">
+                          {booking.name}
+                        </span>
                         <div className="flex">
                           <span className="text-darkgray text-sm">
                             #{booking.id}
@@ -136,13 +139,14 @@ const BookingPage: FC<PageProps> = (props) => {
                               showConfirmButton: false,
                             });
                           }}
-                          className="relative w-full aspect-video p-4 rounded overflow-hidden"
+                          className="relative w-full aspect-[4/3] p-4 rounded overflow-hidden"
                         >
-                          <Image
+                          <ImageShimmer
+                            priority
                             src={booking.payment_proof}
                             alt="Booking Image"
-                            layout="fill"
-                            objectFit="cover"
+                            fill
+                            className="object-cover rounded"
                           />
                         </button>
                       ) : (
@@ -241,6 +245,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     props: {
       serviceId,
       publicKey,
+      authToken,
     },
   };
 };

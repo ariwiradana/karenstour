@@ -1,6 +1,5 @@
 import Layout from "@/components/admin/layout";
 import Link from "next/link";
-import { FC } from "react";
 import Input from "@/components/admin/elements/input";
 import ButtonPrimary from "@/components/admin/elements/button.primary";
 import { HiChevronLeft } from "react-icons/hi2";
@@ -12,8 +11,12 @@ import { GetServerSideProps } from "next";
 import { parse } from "cookie";
 import { BiMap } from "react-icons/bi";
 
-const AddDestinationPage: FC = () => {
-  const { state, actions } = useAdminAddDestination();
+interface PageProps {
+  authToken: string
+}
+const AddDestinationPage = (props: PageProps) => {
+  
+  const { state, actions } = useAdminAddDestination(props.authToken as string);
 
   return (
     <Layout>
@@ -135,7 +138,9 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
   }
 
   return {
-    props: {},
+    props: {
+      authToken
+    },
   };
 };
 

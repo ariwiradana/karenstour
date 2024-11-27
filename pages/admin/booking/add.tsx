@@ -7,17 +7,21 @@ import useAdminAddBooking from "@/hooks/admin/useAdminAddBooking";
 import moment from "moment";
 import SearchableSelect from "@/components/admin/elements/input.searchable";
 import { GetServerSideProps } from "next";
-import { Env } from "@/constants/types";
 import { parse } from "cookie";
 import Input from "@/components/admin/elements/input";
 import { BiClipboard } from "react-icons/bi";
 
-interface PageProps extends Env {}
+interface PageProps {
+  serviceId: string;
+  publicKey: string;
+  authToken?: string;
+}
 
 const AddDestinationPage: FC<PageProps> = (props) => {
   const { state, actions } = useAdminAddBooking(
     props.publicKey,
-    props.serviceId
+    props.serviceId,
+    props.authToken as string
   );
 
   return (
@@ -147,6 +151,7 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
     props: {
       serviceId,
       publicKey,
+      authToken,
     },
   };
 };

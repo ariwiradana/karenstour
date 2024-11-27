@@ -6,6 +6,7 @@ import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
 import { Category, Options } from "@/constants/types";
 import useAdminCategory from "./useAdminCategory";
+import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   images: FileList | null;
@@ -53,7 +54,7 @@ const isFileList = (value: any): value is FileList => {
   return value instanceof window.FileList;
 };
 
-const useAdminAddDestination = (): UseAdminAddDestination => {
+const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -63,7 +64,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
     setLoading(true);
     let url = `/api/category`;
     try {
-      const response = await fetch(url);
+      const response = await useFetch(url, authToken);
       if (!response.ok) {
         throw new Error("Network response was not ok");
       }
@@ -144,7 +145,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
         const uploadToast = toast.loading(`Video is uploading...`);
         try {
           const filepath = "destination/videos";
-          const response = await fetch(
+          const response = await useFetch(
             `/api/destination/upload-file?filename=${encodeURIComponent(
               filename
             )}&filepath=${encodeURIComponent(
@@ -152,10 +153,9 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
             )}&filetype=${fileVideo.type.toLowerCase()}&filesize=${
               fileVideo.size
             }&category=video`,
-            {
-              method: "POST",
-              body: fileVideo,
-            }
+            authToken,
+            "POST",
+            fileVideo
           );
           const result = await response.json();
           if (result.success) {
@@ -191,7 +191,7 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
           );
           try {
             const filepath = `destination/images`;
-            const response = await fetch(
+            const response = await useFetch(
               `/api/destination/upload-file?filename=${encodeURIComponent(
                 filename
               )}&filepath=${encodeURIComponent(
@@ -199,10 +199,9 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
               )}&filetype=${image.type.toLowerCase()}&filesize&${
                 image.size
               }&category=image`,
-              {
-                method: "POST",
-                body: image,
-              }
+              authToken,
+              "POST",
+              image
             );
             const result = await response.json();
             if (result.success) {
@@ -247,13 +246,12 @@ const useAdminAddDestination = (): UseAdminAddDestination => {
             category_id: formData.categoryId ?? "",
           };
 
-          const createDestination = await fetch("/api/destination", {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify(payload),
-          });
+          const createDestination = await useFetch(
+            "/api/destination",
+            authToken,
+            "POST",
+            payload
+          );
           const createDestinationResult = await createDestination.json();
           if (createDestinationResult.success) {
             toast.success(createDestinationResult.message, {
