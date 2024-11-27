@@ -3,13 +3,18 @@ import sql from "@/lib/db";
 import delLocal from "@/lib/delLocal";
 import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
+import { del } from "@vercel/blob";
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   const { url, destination_id, category } = request.query;
 
   try {
-    await delLocal(url as string);
+    if (process.env.NODE_ENV === "production") {
+      await del(url as string);
+    } else {
+      await delLocal(url as string);
+    }
 
     const queryGet = {
       text: "SELECT * FROM destination WHERE id = $1",

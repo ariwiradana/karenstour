@@ -4,6 +4,7 @@ import getRawBody from "raw-body";
 import { promises as fs } from "fs";
 import path from "path";
 import { withAuth } from "@/lib/withAuth";
+import { put } from "@vercel/blob";
 
 const allowedFileTypes: Record<string, string[]> = {
   image: ["image/jpeg", "image/png", "image/jpg", "image/webp"],
@@ -49,15 +50,23 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
   try {
     const rawBody = await getRawBody(request);
-    const fullfilename = `${filepath}/${filename}.${filetype.split("/")[1]}`;
-    const url = path.join(process.cwd(), "public/uploads", fullfilename);
-    await fs.mkdir(path.dirname(url), { recursive: true });
-    await fs.writeFile(url, rawBody);
+    const fullpath = `${filepath}/${filename}.${filetype.split("/")[1]}`;
 
-    return response.status(200).json({
-      success: true,
-      data: { url: `/uploads/${fullfilename}` },
-    });
+    if (process.env.NODE_ENV === "production") {
+      const data = await put(fullpath, rawBody, {
+        access: "public",
+        multipart: true,
+      });
+      return response.status(200).json({ success: true, data });
+    } else {
+      const url = path.join(process.cwd(), "public/uploads", fullpath);
+      await fs.mkdir(path.dirname(url), { recursive: true });
+      await fs.writeFile(url, rawBody);
+      return response.status(200).json({
+        success: true,
+        data: { url: `/uploads/${fullpath}` },
+      });
+    }
   } catch (error) {
     return errorResponse(response, error);
   }

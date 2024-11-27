@@ -4,6 +4,7 @@ import getRawBody from "raw-body";
 import { promises as fs } from "fs";
 import path from "path";
 import sql from "@/lib/db";
+import { put } from "@vercel/blob";
 
 const allowedFileTypes: string[] = [
   "image/jpeg",
@@ -32,11 +33,20 @@ export default async function handler(
       }
 
       const rawBody = await getRawBody(request);
-      const fullfilename = `payment_proof/${id}.${filetype.split("/")[1]}`;
-      const url = path.join(process.cwd(), "public/uploads", fullfilename);
-      await fs.mkdir(path.dirname(url), { recursive: true });
-      await fs.writeFile(url, rawBody);
-      const insertedURL = `/uploads/${fullfilename}`;
+      const fullpath = `payment_proof/${id}.${filetype.split("/")[1]}`;
+
+      if (process.env.NODE_ENV === "production") {
+        await put(fullpath, rawBody, {
+          access: "public",
+          multipart: true,
+        });
+      } else {
+        const url = path.join(process.cwd(), "public/uploads", fullpath);
+        await fs.mkdir(path.dirname(url), { recursive: true });
+        await fs.writeFile(url, rawBody);
+      }
+
+      const insertedURL = `/uploads/${fullpath}`;
 
       if (insertedURL) {
         const res = await sql.query(

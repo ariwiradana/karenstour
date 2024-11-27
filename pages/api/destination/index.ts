@@ -4,6 +4,7 @@ import delLocal from "@/lib/delLocal";
 import { withAuth } from "@/lib/withAuth";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { errorResponse, successResponse } from "@/utils/response";
+import { del } from "@vercel/blob";
 import { NextApiResponse, NextApiRequest } from "next";
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
@@ -247,7 +248,11 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       await sql.query(queryDelete);
 
       for (const allURL of allURLS) {
-        await delLocal(allURL);
+        if (process.env.NODE_ENV === "production") {
+          await del(allURL);
+        } else {
+          await delLocal(allURL);
+        }
       }
 
       return successResponse(response, "DELETE", "destination");
