@@ -5,7 +5,7 @@ import React from "react";
 const NotFound = () => {
   return (
     <div
-      className={`flex items-center justify-center h-screen bg-gray-100 ${montserrat.className}`}
+      className={`flex items-center justify-center w-full h-dvh bg-gray-100 ${montserrat.className}`}
     >
       <div className="text-center">
         <h1 className="text-6xl font-bold text-dark mb-4">404</h1>
