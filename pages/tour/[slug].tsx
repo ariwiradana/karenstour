@@ -374,7 +374,9 @@ const ServiceDetail: FC<PageProps> = (props) => {
             <BiSolidMap className="w-full h-full text-primary" />
           </div>
           <div>
-            <h2 className="text-darkgray text-base font-medium">Tour</h2>
+            <h2 className="text-darkgray text-base font-medium">
+              Tour Category
+            </h2>
             <p className="text-base md:text-lg text-dark font-semibold">
               {state.data.category_name}
             </p>
