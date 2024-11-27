@@ -26,7 +26,6 @@ import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
 import Lightbox from "@/components/client/elements/lightbox";
-import generatePDF from "react-to-pdf";
 import TourBrochure from "@/components/client/brochure";
 interface PageProps extends Env {}
 
@@ -106,7 +105,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 title="Book by Form"
                 content={<FormBooking state={state} actions={actions} />}
               />
-              <Accordion
+              {/* <Accordion
                 title="Download Packages"
                 onClick={() => {
                   if (refs && refs.brochureRef) {
@@ -115,7 +114,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     });
                   }
                 }}
-              />
+              /> */}
             </div>
             <BookingInfo />
             {state.data && <ReviewForm destination={state.data} />}
