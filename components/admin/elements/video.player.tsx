@@ -25,7 +25,8 @@ const VideoPlayer: React.FC<VideoPlayerProps> = ({
           muted
           onLoadedData={() => setLoading(false)}
           loop
-          controls
+          controls={false}
+          autoPlay
         />
       </div>
     </div>

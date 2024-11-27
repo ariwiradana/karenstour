@@ -17,6 +17,7 @@ interface FormData {
   duration: number;
   price: number;
   inclusions: string[];
+  inventory: string[];
   video?: File | null;
 }
 
@@ -47,6 +48,7 @@ const initialFormData: FormData = {
   duration: 1,
   price: 0,
   inclusions: [],
+  inventory: [],
   video: null,
 };
 
@@ -108,6 +110,9 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
     }),
     inclusions: z.array(z.string()).min(1, {
       message: "At least one inclusion must be provided.",
+    }),
+    inventory: z.array(z.string()).min(1, {
+      message: "At least one inventory must be provided.",
     }),
     video: z
       .any()
@@ -242,6 +247,7 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
             duration: formData.duration,
             price: Number(formData.price),
             inclusions: formData.inclusions,
+            inventory: formData.inventory,
             video_url: videoURL ?? "",
             category_id: formData.categoryId ?? "",
           };

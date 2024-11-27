@@ -11,13 +11,7 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
-import {
-  BiCheck,
-  BiSolidMap,
-  BiSolidStar,
-  BiSolidTime,
-  BiSolidUser,
-} from "react-icons/bi";
+import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
@@ -28,6 +22,10 @@ import Lightbox from "@/components/client/elements/lightbox";
 import TourBrochure from "@/components/client/brochure";
 import SEO from "@/components/client/seo";
 import NotFound from "@/components/client/not.found";
+import { LoaderIcon } from "react-hot-toast";
+import Inventory from "@/components/client/inventory";
+import { Rating } from "@mui/material";
+import { FaStar } from "react-icons/fa6";
 
 interface PageProps {
   serviceId: string;
@@ -42,6 +40,13 @@ const ServiceDetail: FC<PageProps> = (props) => {
     props.slug
   );
 
+  if (state.loading)
+    return (
+      <div className="w-screen h-screen flex justify-center items-center">
+        <LoaderIcon />
+      </div>
+    );
+
   return (
     <>
       <SEO
@@ -52,6 +57,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
         } | Karens Tour`}
         description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
       />
+
       {state.data ? (
         <Layout still>
           <div ref={refs?.brochureRef} style={{ display: "none" }}>
@@ -60,11 +66,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
           <Lightbox
             slideIndex={state.lightboxIndex}
             show={state.lightbox}
-            images={
-              state.data?.thumbnail_image
-                ? [state.data.thumbnail_image, ...state.data.images.slice(1)]
-                : state.data?.images ?? []
-            }
+            images={state.data?.images}
             video={state.data?.video_url}
           />
           {state.data?.slug && (
@@ -84,13 +86,22 @@ const ServiceDetail: FC<PageProps> = (props) => {
             {state.data && (
               <Title title={state.data?.title ?? ""} action={false} />
             )}
-            {state.data?.category_name && (
-              <p
-                className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
-              >
-                {state.data?.category_name}
-              </p>
+            {Number(state.data.review_count) > 1 && (
+              <div className="flex items-center gap-x-2">
+                <Rating
+                  value={state.data.average_rating}
+                  name="rating"
+                  size="small"
+                  icon={<FaStar />}
+                  emptyIcon={<FaStar className="text-gray-200" />}
+                  readOnly
+                />
+                <p className={`${montserrat.className} text-sm text-dark/60`}>
+                  ({state.data.review_count} Reviews)
+                </p>
+              </div>
             )}
+
             <GalleryDetail />
 
             <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
@@ -112,6 +123,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 </div>
                 <ServiceDetail />
                 <Description />
+                <Inventory state={state} actions={actions} />
                 <Inclusion state={state} actions={actions} />
               </div>
               <div className="col-span-2 flex flex-col gap-6 md:gap-10">
@@ -169,12 +181,12 @@ const ServiceDetail: FC<PageProps> = (props) => {
             className={`text-base font-medium mt-3 leading-8 description ${
               state.isExpanded
                 ? "line-clamp-none"
-                : "line-clamp-4 md:line-clamp-[16]"
+                : "line-clamp-8 md:line-clamp-[20]"
             }`}
           ></p>
           <button
             aria-label="btn-expand-desc"
-            className="text-primary underline font-semibold text-base mt-4 hover:underline"
+            className="text-primary underline font-semibold text-base mt-4 md:mt-6 hover:underline"
             onClick={actions.handleToggleExpanded}
           >
             {state.isExpanded ? "Read Less" : "Read More"}
@@ -218,17 +230,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <div
         className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
       >
-        {state.data?.average_rating && (
-          <div
-            className={`absolute top-4 right-4 px-2 py-1 rounded-lg flex justify-center items-center bg-primary gap-1 shadow z-10 ${unbounded.className}`}
-          >
-            <BiSolidStar className="text-white text-base" />
-            <span className="text-white text-xs md:text-sm">
-              {state.data.average_rating}
-            </span>
-          </div>
-        )}
-
         {state.loading ? (
           <>
             <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
@@ -278,7 +279,12 @@ const ServiceDetail: FC<PageProps> = (props) => {
               <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine h-full aspect-video">
                 <ImageShimmer
                   sizes="400px"
-                  onClick={() => actions.handleToggleLightbox(1)}
+                  onClick={() =>
+                    actions.handleToggleLightbox(
+                      state.data?.thumbnail_image ??
+                        (state.data?.images[0] as string)
+                    )
+                  }
                   priority
                   alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
                   className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
@@ -320,11 +326,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 >
                   <ImageShimmer
                     sizes="200px"
-                    onClick={() =>
-                      actions.handleToggleLightbox(
-                        state.data?.video_url ? index + 1 : index + 2
-                      )
-                    }
+                    onClick={() => actions.handleToggleLightbox(image)}
                     priority
                     alt={`image-${index + 1}-${state.data?.slug}`}
                     className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
@@ -334,18 +336,19 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   {isLastImage && (
                     <button
                       aria-label="btn-toggle-lightbox"
-                      onClick={() =>
-                        actions.handleToggleLightbox(
-                          state.data?.video_url
-                            ? state.slicedImages.length
-                            : state.slicedImages.length + 1
-                        )
-                      }
+                      onClick={() => actions.handleToggleLightbox(image)}
                     >
                       <div className="absolute inset-0 bg-black bg-opacity-50 hover:bg-opacity-70 transition-all ease-in-out duration-500 flex items-center justify-center cursor-pointer">
                         <div className="text-white text-xs md:text-base font-light p-2 text-center">
                           <p className={unbounded.className}>
-                            + {state.remainingImages?.length} Photos
+                            +{" "}
+                            {(state.data?.images as string[]).length -
+                              state.slicedImages.length -
+                              (state.data?.thumbnail_image &&
+                              !state.data.video_url
+                                ? 1
+                                : 0)}{" "}
+                            Photos
                           </p>
                         </div>
                       </div>
@@ -364,10 +367,22 @@ const ServiceDetail: FC<PageProps> = (props) => {
     if (!state.data) return <></>;
     return (
       <div
-        className={`flex flex-wrap gap-y-4 gap-x-8 lg:gap-x-10 capitalize ${montserrat.className}`}
+        className={`flex flex-col md:flex-row md:flex-wrap gap-4 capitalize ${montserrat.className}`}
       >
-        <div className="flex gap-x-2 items-start">
-          <div className="w-5 min-w-5 md:w-6 md:min-w-6 mt-1">
+        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
+          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
+            <BiSolidMap className="w-full h-full text-primary" />
+          </div>
+          <div>
+            <h2 className="text-darkgray text-base font-medium">Tour</h2>
+            <p className="text-base md:text-lg text-dark font-semibold">
+              {state.data.category_name}
+            </p>
+          </div>
+        </div>
+
+        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
+          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
             <BiSolidTime className="w-full h-full text-primary" />
           </div>
           <div>
@@ -378,8 +393,8 @@ const ServiceDetail: FC<PageProps> = (props) => {
           </div>
         </div>
 
-        <div className="flex gap-x-2 items-start">
-          <div className="w-5 min-w-5 md:w-6 md:min-w-6 mt-1">
+        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
+          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
             <BiSolidUser className="w-full h-full text-primary" />
           </div>
           <div>

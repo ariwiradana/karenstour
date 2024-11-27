@@ -46,7 +46,7 @@ export interface UseDestinationDetail {
   };
   actions: {
     handleToggleExpanded: () => void;
-    handleToggleLightbox: (index: number) => void;
+    handleToggleLightbox: (image: string) => void;
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
     handleChange: (value: number | string, name: string) => void;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
@@ -81,12 +81,11 @@ const useDestinationDetail = (
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
 
-  console.log(errors);
-
   const brochureRef = useRef<HTMLDivElement | null>(null);
 
-  const handleToggleLightbox = (index: number) => {
-    setLightboxIndex(index);
+  const handleToggleLightbox = (image: string) => {
+    const imageIndex = data?.images.findIndex((img) => img === image) as number;
+    setLightboxIndex(imageIndex + 1);
     setLightbox(!lightbox);
   };
 
@@ -310,7 +309,9 @@ const useDestinationDetail = (
   };
 
   const hasVideo = data?.video_url ? true : false;
-  const images = hasVideo ? data?.images ?? [] : data?.images?.slice(1) ?? [];
+  const images = hasVideo
+    ? data?.images ?? []
+    : data?.images?.slice(data?.thumbnail_image ? 2 : 0) ?? [];
 
   const slicedImages =
     images.length > gridNumberImage ? images?.slice(0, gridNumberImage) : [];

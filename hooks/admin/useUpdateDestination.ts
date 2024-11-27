@@ -5,7 +5,6 @@ import { useRouter } from "next/router";
 import { Category, Destination, Options } from "@/constants/types";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
-import useAdminCategory from "./useAdminCategory";
 import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
@@ -19,6 +18,7 @@ interface FormData {
   duration: number;
   price: number;
   inclusions: string[];
+  inventory: string[];
   video?: File | null;
   uploaded_video?: string;
 }
@@ -59,6 +59,7 @@ const initialFormData: FormData = {
   duration: 1,
   price: 0,
   inclusions: [],
+  inventory: [],
   video: null,
 };
 
@@ -100,6 +101,7 @@ const useUpdateDestination = (
           title: data.title,
           description: data.description,
           inclusions: data.inclusions,
+          inventory: data.inventory,
           duration: data.duration,
           pax: data.minimum_pax,
           price: data.price,
@@ -165,6 +167,9 @@ const useUpdateDestination = (
     }),
     inclusions: z.array(z.string()).min(1, {
       message: "At least one inclusion must be provided.",
+    }),
+    inventory: z.array(z.string()).min(1, {
+      message: "At least one inventory must be provided.",
     }),
     video: z
       .any()
@@ -387,6 +392,7 @@ const useUpdateDestination = (
           duration: formData.duration,
           price: Number(formData.price),
           inclusions: formData.inclusions,
+          inventory: formData.inventory,
           video_url: videoURL ?? formData.uploaded_video,
           category_id: formData.categoryId,
           thumbnail_image: formData.thumbnail_image,

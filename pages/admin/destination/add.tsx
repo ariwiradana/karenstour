@@ -12,10 +12,9 @@ import { parse } from "cookie";
 import { BiMap } from "react-icons/bi";
 
 interface PageProps {
-  authToken: string
+  authToken: string;
 }
 const AddDestinationPage = (props: PageProps) => {
-  
   const { state, actions } = useAdminAddDestination(props.authToken as string);
 
   return (
@@ -83,6 +82,13 @@ const AddDestinationPage = (props: PageProps) => {
             chips={state.formData.inclusions}
             error={state.errors.inclusions}
           />
+          <InputChip
+            label="What to Bring?"
+            id="inventory"
+            onChange={(value) => actions.handleChange(value, "inventory")}
+            chips={state.formData.inventory}
+            error={state.errors.inventory}
+          />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
               full
@@ -139,7 +145,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
-      authToken
+      authToken,
     },
   };
 };

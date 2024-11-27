@@ -139,14 +139,15 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         duration,
         price,
         inclusions,
+        inventory,
         video_url,
         category_id,
       }: Destination = request.body;
 
       const query = {
         text: `
-          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10)
+          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id, inventory)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, &11)
           RETURNING *;
         `,
         values: [
@@ -160,6 +161,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           inclusions,
           video_url,
           category_id,
+          inventory,
         ],
       };
       const { rows } = await sql.query(query);
@@ -181,6 +183,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         video_url,
         category_id,
         thumbnail_image,
+        inventory,
       }: Destination = request.body;
 
       const { id } = request.query;
@@ -190,8 +193,8 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
                 UPDATE destination
                 SET images = $1, title = $2, slug = $3, minimum_pax = $4,
                     description = $5, duration = $6, price = $7,
-                    inclusions = $8, video_url = $9, category_id = $10, thumbnail_image = $11
-                WHERE id = $12
+                    inclusions = $8, video_url = $9, category_id = $10, thumbnail_image = $11, inventory = $12
+                WHERE id = $13
                 RETURNING *;
             `,
         values: [
@@ -206,6 +209,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           video_url,
           category_id,
           thumbnail_image,
+          inventory,
           id,
         ],
       };

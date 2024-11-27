@@ -3,7 +3,7 @@ import { FC } from "react";
 import CustomInput from "./elements/input";
 import { RiShoppingBag4Fill } from "react-icons/ri";
 import CustomTextarea from "./elements/textarea";
-import { montserrat } from "@/constants/font";
+import { montserrat, unbounded } from "@/constants/font";
 import moment from "moment";
 import ButtonPrimary from "./elements/button.primary";
 import { currencyIDR } from "@/utils/currencyFormatter";
@@ -19,24 +19,22 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
       onSubmit={props.actions.handleSubmit}
       className="flex flex-col gap-6 p-6"
     >
-      <div className={montserrat.className}>
-        <p className="text-xs mb-1 font-medium text-darkgray">Trip Name</p>
-        <h1 className="font-semibold text-dark text-xl">
+      <div className="flex items-start justify-between gap-8 border-b pb-6 border-dashed">
+        <h1
+          className={`font-semibold text-dark text-2xl ${unbounded.className}`}
+        >
           {props.state.data?.title}
         </h1>
+        <div className={`${montserrat.className} flex flex-col items-end`}>
+          <p className="text-xs font-medium text-darkgray">Total Price</p>
+          <h1 className="font-semibold text-dark text-2xl text-right whitespace-nowrap">
+            {currencyIDR(
+              props.state.formData.pax * (props.state.data?.price ?? 0)
+            )}
+          </h1>
+        </div>
       </div>
-      <div className={montserrat.className}>
-        <p className="text-xs mb-1 font-medium text-darkgray">Price</p>
-        <h1 className="font-semibold text-dark text-xl">
-          {currencyIDR(
-            props.state.formData.pax * (props.state.data?.price ?? 0)
-          )}
-          <span className="text-sm text-darkgray font-normal">
-            {" "}
-            ({props.state.formData.pax} pax)
-          </span>
-        </h1>
-      </div>
+
       <div className="flex gap-x-2">
         <CustomSelect2
           className="min-h-12 border border-gray-100"

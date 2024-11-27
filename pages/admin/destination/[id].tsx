@@ -163,8 +163,15 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             label="Inclusions"
             id="inclusions"
             onChange={(value) => actions.handleChange(value, "inclusions")}
-            chips={state.formData.inclusions}
+            chips={state.formData.inclusions || []}
             error={state.errors.inclusions}
+          />
+          <InputChip
+            label="What to Bring"
+            id="inventory"
+            onChange={(value) => actions.handleChange(value, "inventory")}
+            chips={state.formData.inventory || []}
+            error={state.errors.inventory}
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input

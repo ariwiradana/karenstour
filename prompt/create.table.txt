@@ -15,6 +15,7 @@ CREATE TABLE IF NOT EXISTS destination (
     duration INTEGER NOT NULL,
     price INTEGER NOT NULL,
     inclusions TEXT[],
+    inventory TEXT[],
     video_url VARCHAR(255)
 );
 

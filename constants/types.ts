@@ -7,10 +7,12 @@ export interface Destination {
   slug: string;
   minimum_pax: number;
   inclusions: string[] | [];
+  inventory: string[] | [];
   description: string;
   duration: number;
   price: number;
   average_rating: number;
+  review_count?: number | string;
   category_id: number;
   category_name: string;
   location?: string;

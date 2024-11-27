@@ -81,3 +81,10 @@ button:disabled {
 .description li {
   color: #6f787f;
 }
+
+.description h1,
+.description h2,
+.description h3,
+.description h4 {
+  @apply text-xl mb-4;
+}
