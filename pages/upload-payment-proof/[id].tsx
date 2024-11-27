@@ -2,6 +2,7 @@ import Container from "@/components/client/container";
 import ButtonPrimary from "@/components/client/elements/button.primary";
 import InputFile from "@/components/client/elements/input.file";
 import Layout from "@/components/client/layout";
+import SEO from "@/components/client/seo";
 import { montserrat } from "@/constants/font";
 import useProofPayment from "@/hooks/client/useProofPayment";
 import { GetServerSideProps } from "next";
@@ -19,7 +20,13 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
   const uploaded = state.data?.payment_proof;
 
   return (
-    <Layout still pageTitle="Upload Payment Proof">
+    <Layout still>
+      <SEO
+        url={typeof window !== "undefined" ? window.location.origin : ""}
+        image="/images/logo.png"
+        title="Bali Tour Experience | Karens Tour"
+        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+      />
       <Container
         className={`min-h-[60vh] md:min-h-[50vh] flex items-center ${montserrat.className}`}
       >

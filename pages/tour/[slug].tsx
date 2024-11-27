@@ -27,6 +27,8 @@ import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
 import Lightbox from "@/components/client/elements/lightbox";
 import TourBrochure from "@/components/client/brochure";
+import SEO from "@/components/client/seo";
+import NotFound from "@/components/client/not.found";
 interface PageProps extends Env {}
 
 const ServiceDetail: FC<PageProps> = (props) => {
@@ -36,76 +38,88 @@ const ServiceDetail: FC<PageProps> = (props) => {
   );
 
   return (
-    <Layout still pageTitle={state.data?.title ?? "Karen's Tour & Travel"}>
-      <div ref={refs?.brochureRef} style={{ display: "none" }}>
-        <TourBrochure destination={state.data ?? undefined} />
-      </div>
-      <Lightbox
-        slideIndex={state.lightboxIndex}
-        show={state.lightbox}
-        images={
-          state.data?.thumbnail_image
-            ? [state.data.thumbnail_image, ...state.data.images.slice(1)]
-            : state.data?.images ?? []
-        }
-        video={state.data?.video_url}
+    <>
+      <SEO
+        url={typeof window !== "undefined" ? window.location.origin : ""}
+        image="/images/logo.png"
+        title={`${
+          state.data ? state.data?.title : "Bali Tour Experience"
+        } | Karens Tour`}
+        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
       />
-      {state.data?.slug && (
-        <Breadcrumb
-          title="Tour"
-          navigations={[
-            { title: "Home", path: "/" },
-            { title: "Tour", path: "/tour" },
-            {
-              title: state.data?.title ?? "",
-              path: `/tour/${state.data?.slug ?? ""}`,
-            },
-          ]}
-        />
-      )}
-      <Container className="py-10 lg:py-16">
-        {state.data && <Title title={state.data?.title ?? ""} action={false} />}
-        {state.data?.category_name && (
-          <p
-            className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
-          >
-            {state.data?.category_name}
-          </p>
-        )}
-        <GalleryDetail />
-
-        <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
-          <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
-            <div className={montserrat.className}>
-              {state.loading ? (
-                <div className="w-60 shine h-4 bg-black rounded"></div>
-              ) : (
-                <h1 className={`text-3xl lg:text-4xl text-dark font-bold`}>
-                  {currencyIDR(state.data?.price ?? 0)}{" "}
-                  <span className="text-xs text-darkgray">/ pax</span>
-                </h1>
-              )}
-
-              <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
-                The price are includes transportation, admission fees, and all
-                other relevant costs.
-              </p>
-            </div>
-            <ServiceDetail />
-            <Description />
-            <Inclusion state={state} actions={actions} />
+      {state.data ? (
+        <Layout still>
+          <div ref={refs?.brochureRef} style={{ display: "none" }}>
+            <TourBrochure destination={state.data ?? undefined} />
           </div>
-          <div className="col-span-2 flex flex-col gap-6 md:gap-10">
-            <div className="flex flex-col gap-y-2">
-              <Accordion
-                title="Book by Whatsapp"
-                onClick={() => window.open(contact.whatsapp, "_blank")}
-              />
-              <Accordion
-                title="Book by Form"
-                content={<FormBooking state={state} actions={actions} />}
-              />
-              {/* <Accordion
+          <Lightbox
+            slideIndex={state.lightboxIndex}
+            show={state.lightbox}
+            images={
+              state.data?.thumbnail_image
+                ? [state.data.thumbnail_image, ...state.data.images.slice(1)]
+                : state.data?.images ?? []
+            }
+            video={state.data?.video_url}
+          />
+          {state.data?.slug && (
+            <Breadcrumb
+              title="Tour"
+              navigations={[
+                { title: "Home", path: "/" },
+                { title: "Tour", path: "/tour" },
+                {
+                  title: state.data?.title ?? "",
+                  path: `/tour/${state.data?.slug ?? ""}`,
+                },
+              ]}
+            />
+          )}
+          <Container className="py-10 lg:py-16">
+            {state.data && (
+              <Title title={state.data?.title ?? ""} action={false} />
+            )}
+            {state.data?.category_name && (
+              <p
+                className={`${montserrat.className} text-lg md:text-xl font-semibold text-primary`}
+              >
+                {state.data?.category_name}
+              </p>
+            )}
+            <GalleryDetail />
+
+            <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
+              <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
+                <div className={montserrat.className}>
+                  {state.loading ? (
+                    <div className="w-60 shine h-4 bg-black rounded"></div>
+                  ) : (
+                    <h1 className={`text-3xl lg:text-4xl text-dark font-bold`}>
+                      {currencyIDR(state.data?.price ?? 0)}{" "}
+                      <span className="text-xs text-darkgray">/ pax</span>
+                    </h1>
+                  )}
+
+                  <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
+                    The price are includes transportation, admission fees, and
+                    all other relevant costs.
+                  </p>
+                </div>
+                <ServiceDetail />
+                <Description />
+                <Inclusion state={state} actions={actions} />
+              </div>
+              <div className="col-span-2 flex flex-col gap-6 md:gap-10">
+                <div className="flex flex-col gap-y-2">
+                  <Accordion
+                    title="Book by Whatsapp"
+                    onClick={() => window.open(contact.whatsapp, "_blank")}
+                  />
+                  <Accordion
+                    title="Book by Form"
+                    content={<FormBooking state={state} actions={actions} />}
+                  />
+                  {/* <Accordion
                 title="Download Packages"
                 onClick={() => {
                   if (refs && refs.brochureRef) {
@@ -115,20 +129,24 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   }
                 }}
               /> */}
+                </div>
+                <BookingInfo />
+                {state.data && <ReviewForm destination={state.data} />}
+              </div>
             </div>
-            <BookingInfo />
-            {state.data && <ReviewForm destination={state.data} />}
-          </div>
-        </div>
-      </Container>
-      {state.data && (
-        <PopularTourSlider
-          exceptionId={state.data?.id}
-          title="Other Popular Tours"
-          description="Discover Bali with our featured tours"
-        />
+          </Container>
+          {state.data && (
+            <PopularTourSlider
+              exceptionId={state.data?.id}
+              title="Other Popular Tours"
+              description="Discover Bali with our featured tours"
+            />
+          )}
+        </Layout>
+      ) : (
+        <NotFound />
       )}
-    </Layout>
+    </>
   );
 
   function Description() {

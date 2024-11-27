@@ -12,6 +12,7 @@ import { Category } from "@/constants/types";
 import { BiCheck } from "react-icons/bi";
 import { BsFilter } from "react-icons/bs";
 import CustomSelect from "@/components/client/elements/select";
+import SEO from "@/components/client/seo";
 
 interface Props {}
 
@@ -19,10 +20,13 @@ const ServiceList: FC<Props> = () => {
   const { ref, state, actions } = useDestination();
 
   return (
-    <Layout
-      still
-      pageTitle="Discover Bali with Our Travel Packages | Karen's Tour & Travel"
-    >
+    <Layout still>
+      <SEO
+        url={typeof window !== "undefined" ? window.location.origin : ""}
+        image="/images/logo.png"
+        title="Bali Tour Experience | Karens Tour"
+        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+      />
       <Breadcrumb
         title="Tour"
         navigations={[

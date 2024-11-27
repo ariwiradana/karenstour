@@ -1,11 +1,6 @@
 import Link from "next/link";
 import React, { FC } from "react";
-import {
-  RiWhatsappLine,
-  RiInstagramLine,
-  RiMenu2Line,
-  RiMailLine,
-} from "react-icons/ri";
+import { RiWhatsappLine, RiMenu2Line, RiMailLine } from "react-icons/ri";
 import Image from "next/image";
 import LeftSide from "./leftside";
 import useNavbar from "@/hooks/client/useNavbar";
@@ -26,10 +21,10 @@ const socials: Social[] = [
     path: contact.whatsapp,
     icon: <RiWhatsappLine className="text-xl" />,
   },
-  {
-    path: contact.instagram,
-    icon: <RiInstagramLine className="text-xl" />,
-  },
+  // {
+  //   path: contact.instagram,
+  //   icon: <RiInstagramLine className="text-xl" />,
+  // },
   {
     path: contact.email,
     icon: <RiMailLine className="text-xl" />,

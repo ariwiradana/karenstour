@@ -2,7 +2,7 @@ import React, { FC, ReactNode } from "react";
 import Container from "./container";
 import { unbounded } from "@/constants/font";
 import Link from "next/link";
-import { RiInstagramFill, RiMailFill, RiWhatsappFill } from "react-icons/ri";
+import { RiMailFill, RiWhatsappFill } from "react-icons/ri";
 import Image from "next/image";
 import { t } from "i18next";
 import { contact } from "@/constants/data";
@@ -17,10 +17,10 @@ const socials: Social[] = [
     path: contact.whatsapp,
     icon: <RiWhatsappFill className="text-primary text-2xl" />,
   },
-  {
-    path: contact.instagram,
-    icon: <RiInstagramFill className="text-primary text-2xl" />,
-  },
+  // {
+  //   path: contact.instagram,
+  //   icon: <RiInstagramFill className="text-primary text-2xl" />,
+  // },
   {
     path: contact.email,
     icon: <RiMailFill className="text-primary text-2xl" />,
