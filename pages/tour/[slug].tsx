@@ -123,8 +123,8 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 </div>
                 <ServiceDetail />
                 <Description />
-                <Inventory state={state} actions={actions} />
                 <Inclusion state={state} actions={actions} />
+                <Inventory state={state} actions={actions} />
               </div>
               <div className="col-span-2 flex flex-col gap-6 md:gap-10">
                 <div className="flex flex-col gap-y-2">
