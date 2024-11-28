@@ -31,7 +31,7 @@ const ServiceList: FC<Props> = () => {
         title="Tour"
         navigations={[
           { title: "Home", path: "/" },
-          { title: "Tour", path: "/tour" },
+          { title: "Tours", path: "/tour" },
         ]}
       />
       <Container className={`py-12 lg:py-24 ${unbounded.className}`}>

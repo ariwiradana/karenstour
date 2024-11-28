@@ -67,7 +67,7 @@ const Hero: FC = () => {
                   <div className="md:mt-12 mt-6">
                     <Link href="/tour">
                       <ButtonPrimary
-                        id="button-explore-tours"
+                        id="button-explore-destination"
                         icon={<MdArrowOutward />}
                         title="Explore Tours"
                       />

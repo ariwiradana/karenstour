@@ -48,8 +48,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
       </div>
     );
 
-  console.log({ state });
-
   return (
     <>
       <SEO
@@ -78,10 +76,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
           />
           {state.data?.slug && (
             <Breadcrumb
-              title="Tour"
+              title="Tours"
               navigations={[
                 { title: "Home", path: "/" },
-                { title: "Tour", path: "/tour" },
+                { title: "Tours", path: "/tour" },
                 {
                   title: state.data?.title ?? "",
                   path: `/tour/${state.data?.slug ?? ""}`,
