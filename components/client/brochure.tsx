@@ -2,7 +2,6 @@
 import { FC } from "react";
 import Image from "next/image";
 import { Destination } from "@/constants/types";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { montserrat } from "@/constants/font";
 
@@ -36,8 +35,7 @@ const TourBrochure: FC<Props> = (props) => {
           {props.destination.title}
         </h1>
         <h1 className="text-xl font-semibold text-dark mt-4 mb-4">
-          {currencyIDR(props.destination.price)} |{" "}
-          {convertHoursToReadableFormat(props.destination.duration)}
+          {currencyIDR(props.destination.price)} | {props.destination.duration}
         </h1>
         <div>
           <div className="grid grid-cols-4 gap-1 grid-rows-2 mt-10">

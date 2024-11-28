@@ -4,7 +4,6 @@ import React, { FC } from "react";
 import { Destination } from "@/constants/types";
 import ImageShimmer from "./image.shimmer";
 import { BiSolidStar, BiSolidTime, BiSolidUser } from "react-icons/bi";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 
 interface DestinationCardProps {
@@ -43,15 +42,19 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
             >
               {props.data.title}
             </h1>
-            <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
-              <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
-                <BiSolidUser className="text-primary text-2xl" />
-                {props.data.minimum_pax} Guest
-                {props.data.minimum_pax > 1 && "s"}
-              </h4>
-              <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
-                <BiSolidTime className="text-primary text-2xl" />
-                {convertHoursToReadableFormat(props.data.duration)}
+            <div
+              className={`flex flex-wrap gap-x-4 gap-y-2 mb-3 ${montserrat.className}`}
+            >
+              {props.data.minimum_pax > 0 && (
+                <h4 className="flex items-start gap-x-2 text-base font-medium text-dark">
+                  <BiSolidUser className="text-primary text-2xl min-w-7" />
+                  {props.data.minimum_pax} Guest
+                  {props.data.minimum_pax > 1 && "s"}
+                </h4>
+              )}
+              <h4 className="flex items-center gap-x-2 text-base font-medium text-dark">
+                <BiSolidTime className="text-primary text-2xl min-w-7" />
+                {props.data.duration}
               </h4>
             </div>
           </div>

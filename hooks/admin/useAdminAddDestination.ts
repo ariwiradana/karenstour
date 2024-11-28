@@ -13,7 +13,7 @@ interface FormData {
   categories: string[];
   pax: number;
   description: string;
-  duration: number;
+  duration: string;
   price: number;
   inclusions: string[];
   inventory: string[];
@@ -44,7 +44,7 @@ const initialFormData: FormData = {
   categories: [],
   pax: 1,
   description: "",
-  duration: 1,
+  duration: "",
   price: 0,
   inclusions: [],
   inventory: [],
@@ -100,9 +100,7 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       message: "The number of participants must be at least 1.",
     }),
     description: z.string().nullable(),
-    duration: z.any().refine((value) => !isNaN(value), {
-      message: "The duration must be at least 1 hour.",
-    }),
+    duration: z.string().min(1, "The duration cannot be empty."),
     price: z.any().refine((value) => !isNaN(value), {
       message: "The price must be a valid number.",
     }),

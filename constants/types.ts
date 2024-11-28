@@ -9,7 +9,7 @@ export interface Destination {
   inclusions: string[] | [];
   inventory: string[] | [];
   description: string;
-  duration: number;
+  duration: string;
   price: number;
   average_rating: number;
   review_count?: number | string;
@@ -38,7 +38,7 @@ export interface Booking {
   pax: number;
   destination_id: number;
   destination_title: string;
-  destination_duration: number;
+  destination_duration: string;
   destination_inclusions: string[];
   destination_price: number;
   subtotal: number;

@@ -3,7 +3,6 @@ import ButtonPrimaryIcon from "@/components/admin/elements/button.primary.icon";
 import Input from "@/components/admin/elements/input";
 import Layout from "@/components/admin/layout";
 import useAdminDestination from "@/hooks/admin/useAdminDestination";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { Pagination } from "@mui/material";
 import { parse } from "cookie";
@@ -97,7 +96,7 @@ const AdminDestinationPage = (props: PageProps) => {
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
                       <span className="font-medium">
-                        {convertHoursToReadableFormat(destination.duration)}
+                        {destination.duration}
                       </span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">

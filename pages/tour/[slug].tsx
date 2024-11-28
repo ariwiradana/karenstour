@@ -26,7 +26,6 @@ import Inventory from "@/components/client/inventory";
 import { Rating } from "@mui/material";
 import { FaStar } from "react-icons/fa6";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 
 interface PageProps {
   serviceId: string;
@@ -113,14 +112,16 @@ const ServiceDetail: FC<PageProps> = (props) => {
               <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
                 <div className={montserrat.className}>
                   <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
-                    <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
-                      <BiSolidUser className="text-primary text-2xl" />
-                      {state.data.minimum_pax} Guest
-                      {state.data.minimum_pax > 1 && "s"}
-                    </h4>
+                    {state.data.minimum_pax > 0 && (
+                      <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
+                        <BiSolidUser className="text-primary text-2xl" />
+                        {state.data.minimum_pax} Guest
+                        {state.data.minimum_pax > 1 && "s"}
+                      </h4>
+                    )}
                     <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
                       <BiSolidTime className="text-primary text-2xl" />
-                      {convertHoursToReadableFormat(state.data.duration)}
+                      {state.data.duration}
                     </h4>
                   </div>
                   <h1

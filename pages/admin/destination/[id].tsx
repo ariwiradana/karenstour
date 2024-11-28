@@ -195,9 +195,8 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           />
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Input
-              type="number"
               name="duration"
-              label="Duration (eg. Hour)"
+              label="Duration"
               onChange={(e) => actions.handleChange(e.target.value, "duration")}
               value={state.formData.duration}
               error={state.errors.duration}

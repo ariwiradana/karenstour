@@ -9,7 +9,6 @@ import toast from "react-hot-toast";
 import { generateIds } from "@/utils/generateIds";
 import { capitalizeWords } from "@/utils/capitalizeWords";
 import moment from "moment";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { calculateTotalPrice } from "@/utils/calculateTotalPrice";
 
 interface FormData {
@@ -159,7 +158,7 @@ const useDestinationDetail = (
       customer_name: capitalizeWords(`${formData.nameTitle}. ${formData.name}`),
       customer_email: formData.email,
       destination: formData.title,
-      duration: convertHoursToReadableFormat(data?.duration ?? 0),
+      duration: data?.duration ?? "",
       pax: formData.pax,
       booking_date: formatDate(formData.bookingDate),
       pickup_location: capitalizeWords(formData.pickupLocation),

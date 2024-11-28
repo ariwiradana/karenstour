@@ -138,7 +138,7 @@ const useAdminBooking = (
       name: bookingData.name,
       destination: bookingData.destination_title,
       booking_date: formatDate(bookingData.booking_date),
-      duration: convertHoursToReadableFormat(bookingData.destination_duration),
+      duration: bookingData.destination_duration,
       pax: bookingData.pax,
       inclusions: bookingData?.destination_inclusions.join(", "),
       pickup_location: bookingData.pickup_location,
