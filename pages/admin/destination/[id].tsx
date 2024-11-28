@@ -11,10 +11,11 @@ import VideoPlayer from "@/components/admin/elements/video.player";
 import { BsX } from "react-icons/bs";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
-import InputSelect from "@/components/admin/elements/select";
 import FsLightbox from "fslightbox-react";
 import { BiMap } from "react-icons/bi";
 import { parse } from "cookie";
+import InputCheckbox from "@/components/admin/elements/input.checkbox";
+import { montserrat } from "@/constants/font";
 
 interface PageProps {
   id: string;
@@ -76,6 +77,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             </div>
           )}
           <Input
+            id="video"
             accept="video/*"
             type="file"
             name="video"
@@ -85,6 +87,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           />
           <div className="flex flex-col gap-y-4">
             <Input
+              id="images"
               accept="image/*"
               multiple
               type="file"
@@ -144,15 +147,32 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             value={state.formData.title}
             error={state.errors.title}
           />
-          <InputSelect
-            label="Category"
-            onChange={(e) =>
-              actions.handleChange(Number(e.target.value), "categoryId")
-            }
-            value={state.formData.categoryId ?? ""}
-            error={state.errors.categoryId}
-            options={state.categoryOptions}
-          />
+          <div>
+            <p
+              className={`block text-gray-700 mb-1 text-sm ${montserrat.className}`}
+            >
+              Category
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {state.categoryOptions.map((category) => {
+                const categoryChecked = state.formData.categories.includes(
+                  category.value
+                );
+                return (
+                  <InputCheckbox
+                    checked={categoryChecked}
+                    id={`category-${category.value}`}
+                    key={`category-${category.value}`}
+                    onChange={(e) =>
+                      actions.handleChange(e.target.value, "categories")
+                    }
+                    label={category.label}
+                    value={category.value}
+                  />
+                );
+              })}
+            </div>
+          </div>
           <InputTextEditor
             label="Description"
             onChange={(value) => actions.handleChange(value, "description")}

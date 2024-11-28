@@ -12,7 +12,7 @@ interface FormData {
   images: FileList | null;
   thumbnail_image?: string;
   title: string;
-  categoryId: number | null;
+  categories: string[];
   pax: number;
   description: string;
   duration: number;
@@ -53,7 +53,7 @@ const initialFormData: FormData = {
   images: null,
   thumbnail_image: "",
   title: "",
-  categoryId: null,
+  categories: [],
   pax: 1,
   description: "",
   duration: 1,
@@ -107,9 +107,22 @@ const useUpdateDestination = (
           price: data.price,
           uploaded_images: data.images,
           uploaded_video: data.video_url,
-          categoryId: data.category_id,
+          categories: data.categories || [],
           thumbnail_image: data.thumbnail_image,
         }));
+
+        const categoryResponse = await useFetch(`/api/category`, authToken);
+        const categoryResult = await categoryResponse.json();
+
+        if (categoryResult.success) {
+          const options: Options[] = categoryResult.data.map(
+            (category: Category) => ({
+              label: category.name,
+              value: category.name,
+            })
+          );
+          setCategoryOptions(options);
+        }
       } else {
         toast.error(result.message, { id: toastFetch });
       }
@@ -117,33 +130,6 @@ const useUpdateDestination = (
       toast.error(error.message);
     }
   }, []);
-
-  const fetchCategories = useCallback(async () => {
-    if (formData.categoryId) {
-      let url = `/api/category`;
-      try {
-        const response = await useFetch(url, authToken);
-        if (!response.ok) {
-          throw new Error("Network response was not ok");
-        }
-        const result = await response.json();
-
-        if (result.success) {
-          const options: Options[] = result.data.map((category: Category) => ({
-            label: category.name,
-            value: category.id,
-          }));
-          setCategoryOptions(options);
-        }
-      } catch (error: any) {
-        console.log(error);
-      }
-    }
-  }, [formData]);
-
-  useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
 
   useEffect(() => {
     fetchDestinationBySlug();
@@ -154,7 +140,6 @@ const useUpdateDestination = (
       message: "Please select at least one image file.",
     }),
     title: z.string().min(5, "The title must be at least 5 characters long."),
-    categoryId: z.number(),
     pax: z.any().refine((value) => !isNaN(value), {
       message: "The number of participants must be at least 1.",
     }),
@@ -184,8 +169,23 @@ const useUpdateDestination = (
     value: string | number | string[] | File | FileList | null,
     name: string
   ) => {
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    if (name === "categories") {
+      let newCategories = [...formData.categories];
+      if (newCategories.includes(value as string)) {
+        newCategories = newCategories.filter((c) => c !== value);
+      } else {
+        newCategories.push(value as string);
+      }
+      setFormData((prevState) => ({
+        ...prevState,
+        categories: newCategories,
+      }));
+      console.log({ newCategories, value });
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
   };
+  console.log({ formData });
 
   const handleRemoveImage = async (imageURL: string) => {
     const newImages = formData.uploaded_images?.filter(
@@ -264,6 +264,13 @@ const useUpdateDestination = (
     } finally {
       setLoading(false);
     }
+  };
+
+  const clearFileInput = () => {
+    const videoInput = document.getElementById("video") as HTMLInputElement;
+    const imagesInput = document.getElementById("images") as HTMLInputElement;
+    if (videoInput) videoInput.value = "";
+    if (imagesInput) imagesInput.value = "";
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -394,7 +401,7 @@ const useUpdateDestination = (
           inclusions: formData.inclusions,
           inventory: formData.inventory,
           video_url: videoURL ?? formData.uploaded_video,
-          category_id: formData.categoryId,
+          categories: formData.categories,
           thumbnail_image: formData.thumbnail_image,
         };
 
@@ -409,14 +416,7 @@ const useUpdateDestination = (
           toast.success(updateDestinationResult.message, {
             id: uploadToast,
           });
-          setFormData((prevData) => ({
-            ...prevData,
-            video: null,
-            images: null,
-            uploaded_images: [],
-            uploaded_video: "",
-          }));
-          router.back();
+          clearFileInput();
         } else {
           toast.error(updateDestinationResult.message);
         }

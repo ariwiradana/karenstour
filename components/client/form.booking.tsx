@@ -104,7 +104,9 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         label="Guest(s)"
         value={props.state.formData.pax}
         error={props.state.errors.pax}
-        info={`A minimum of ${props.state.data?.minimum_pax} participants (pax) is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
+        info={`A minimum of ${props.state.data?.minimum_pax} guest${
+          Number(props.state.data?.minimum_pax) > 1 && "s"
+        } is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
       />
 
       <CustomTextarea

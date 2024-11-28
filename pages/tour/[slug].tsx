@@ -11,14 +11,7 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
-import {
-  BiCheck,
-  BiSolidDirections,
-  BiSolidMap,
-  BiSolidTime,
-  BiSolidUser,
-} from "react-icons/bi";
-import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
+import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
 import { currencyIDR } from "@/utils/currencyFormatter";
@@ -33,6 +26,7 @@ import Inventory from "@/components/client/inventory";
 import { Rating } from "@mui/material";
 import { FaStar } from "react-icons/fa6";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
+import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 
 interface PageProps {
   serviceId: string;
@@ -53,6 +47,8 @@ const ServiceDetail: FC<PageProps> = (props) => {
         <LoaderIcon />
       </div>
     );
+
+  console.log({ state });
 
   return (
     <>
@@ -118,21 +114,44 @@ const ServiceDetail: FC<PageProps> = (props) => {
             <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
               <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
                 <div className={montserrat.className}>
-                  {state.loading ? (
-                    <div className="w-60 shine h-4 bg-black rounded"></div>
-                  ) : (
-                    <h1 className={`text-3xl lg:text-4xl text-dark font-bold`}>
-                      {currencyIDR(state.data?.price ?? 0)}{" "}
-                      <span className="text-xs text-darkgray">/ pax</span>
-                    </h1>
-                  )}
-
+                  <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
+                    <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
+                      <BiSolidUser className="text-primary text-2xl" />
+                      {state.data.minimum_pax} Guest
+                      {state.data.minimum_pax > 1 && "s"}
+                    </h4>
+                    <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
+                      <BiSolidTime className="text-primary text-2xl" />
+                      {convertHoursToReadableFormat(state.data.duration)}
+                    </h4>
+                  </div>
+                  <h1
+                    className={`text-3xl lg:text-4xl text-dark font-medium ${unbounded.className}`}
+                  >
+                    {currencyIDR(state.data?.price ?? 0)}{" "}
+                    <span
+                      className={`text-xs text-darkgray ${montserrat.className}`}
+                    >
+                      / person
+                    </span>
+                  </h1>
                   <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
                     The price are includes transportation, admission fees, and
                     all other relevant costs.
                   </p>
+                  <div className="flex flex-wrap gap-2 md:gap-3 mt-3 md:mt-4">
+                    {state.data?.categories?.map((c) => (
+                      <div
+                        key={c}
+                        className={`text-sm ${montserrat.className}`}
+                      >
+                        <p className="bg-primary/10 py-2 md:py-3 md:px-4 px-3 text-primary rounded-lg font-medium">
+                          {c}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
                 </div>
-                <ServiceDetail />
                 <Description />
                 <Inclusion state={state} actions={actions} />
                 <Inventory state={state} actions={actions} />
@@ -147,16 +166,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     title="Book by Form"
                     content={<FormBooking state={state} actions={actions} />}
                   />
-                  {/* <Accordion
-                title="Download Packages"
-                onClick={() => {
-                  if (refs && refs.brochureRef) {
-                    generatePDF(refs.brochureRef, {
-                      filename: `${state.data?.title}.pdf`,
-                    });
-                  }
-                }}
-              /> */}
                 </div>
                 <BookingInfo />
                 {state.data && <ReviewForm destination={state.data} />}
@@ -241,12 +250,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <div
         className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
       >
-        <div className="absolute bottom-4 left-4 z-10 flex gap-x-2 items-center bg-dark/20 backdrop-blur-md px-3 py-2 rounded-lg">
-          <BiSolidDirections className="text-base text-white" />
-          <p className="text-xs text-white font-medium">
-            {state.data?.category_name}
-          </p>
-        </div>
         {state.loading ? (
           <>
             <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
@@ -356,39 +359,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
             })}
           </>
         )}
-      </div>
-    );
-  }
-
-  function ServiceDetail() {
-    if (!state.data) return <></>;
-    return (
-      <div
-        className={`flex flex-col md:flex-row md:flex-wrap gap-4 capitalize ${montserrat.className}`}
-      >
-        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
-          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
-            <BiSolidTime className="w-full h-full text-primary" />
-          </div>
-          <div>
-            <h2 className="text-darkgray text-base font-medium">Duration</h2>
-            <p className="text-base md:text-lg text-dark font-semibold">
-              {convertHoursToReadableFormat(state.data.duration)}
-            </p>
-          </div>
-        </div>
-
-        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
-          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
-            <BiSolidUser className="w-full h-full text-primary" />
-          </div>
-          <div>
-            <h3 className="text-darkgray text-base font-medium">Minimum Pax</h3>
-            <p className="text-base md:text-lg text-dark font-semibold">
-              {state.data.minimum_pax} Pax
-            </p>
-          </div>
-        </div>
       </div>
     );
   }

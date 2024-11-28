@@ -38,32 +38,21 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         </div>
         <div className="flex flex-col justify-between">
           <div>
-            <p
-              className={`font-medium text-dark/60 text-sm mt-4 mb-1 ${montserrat.className}`}
-            >
-              {props.data.category_name}
-            </p>
             <h1
-              className={`font-medium text-dark text-lg md:text-xl mb-3 line-clamp-2 ${unbounded.className}`}
+              className={`font-medium text-dark text-lg md:text-xl mb-3 line-clamp-2 mt-4 ${unbounded.className}`}
             >
               {props.data.title}
             </h1>
-            <div
-              className={`flex my-2 gap-y-1 gap-x-4 ${montserrat.className}`}
-            >
-              <div className="flex gap-x-2 items-center">
-                <BiSolidTime className="text-xl text-primary" />
-                <p className="text-base text-primary font-medium">
-                  {convertHoursToReadableFormat(props.data.duration)}
-                </p>
-              </div>
-
-              <div className="flex gap-x-2 items-center">
-                <BiSolidUser className="text-xl text-primary" />
-                <p className="text-base text-primary font-medium">
-                  {props.data.minimum_pax} pax
-                </p>
-              </div>
+            <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
+              <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
+                <BiSolidUser className="text-primary text-2xl" />
+                {props.data.minimum_pax} Guest
+                {props.data.minimum_pax > 1 && "s"}
+              </h4>
+              <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
+                <BiSolidTime className="text-primary text-2xl" />
+                {convertHoursToReadableFormat(props.data.duration)}
+              </h4>
             </div>
           </div>
           <p

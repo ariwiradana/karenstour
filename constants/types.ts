@@ -13,8 +13,7 @@ export interface Destination {
   price: number;
   average_rating: number;
   review_count?: number | string;
-  category_id: number;
-  category_name: string;
+  categories: string[];
   location?: string;
 }
 

@@ -17,7 +17,6 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       order?: string;
       search?: string;
       id?: number;
-      category_names?: string;
     }
 
     const {
@@ -28,36 +27,28 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       order,
       search = "",
       id,
-      category_names,
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
     const values: (string | number)[] = [searchTerm];
 
-    // Main query
     let text = `
-    SELECT 
-      d.*, 
-      ROUND(AVG(r.rating), 1) AS average_rating, 
-      COUNT(r.id) AS review_count, 
-      c.id AS category_id, 
-      c.name AS category_name
-    FROM destination d
-    LEFT JOIN reviews r ON d.id = r.destination_id
-    LEFT JOIN category c ON d.category_id = c.id
-    WHERE d.title ILIKE $1
-  `;
+      SELECT 
+        d.*, 
+        ROUND(AVG(r.rating), 1) AS average_rating, 
+        COUNT(r.id) AS review_count
+      FROM destination d
+      LEFT JOIN reviews r ON d.id = r.destination_id
+      WHERE d.title ILIKE $1
+    `;
 
-    // Count query
     let countText = `
-    SELECT COUNT(DISTINCT d.id) AS total_count
-    FROM destination d
-    LEFT JOIN reviews r ON d.id = r.destination_id
-    LEFT JOIN category c ON d.category_id = c.id
-    WHERE d.title ILIKE $1
-  `;
+      SELECT COUNT(DISTINCT d.id) AS total_count
+      FROM destination d
+      LEFT JOIN reviews r ON d.id = r.destination_id
+      WHERE d.title ILIKE $1
+    `;
 
-    // Add filters based on id, slug, and category_names
     if (id) {
       const valueIndex = values.length + 1;
       text += ` AND d.id = $${valueIndex}`;
@@ -72,23 +63,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       values.push(slug);
     }
 
-    if (category_names) {
-      const categoryArray = category_names
-        .split(",")
-        .map((name) => name.trim());
-      if (categoryArray.length > 0) {
-        const placeholders = categoryArray
-          .map((_, i) => `$${values.length + i + 1}`)
-          .join(", ");
-        text += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
-        countText += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
-        categoryArray.forEach((name) => {
-          values.push(`%${name}%`);
-        });
-      }
-    }
-
-    text += " GROUP BY d.id, c.id";
+    text += " GROUP BY d.id";
 
     // Sorting logic
     const validSortColumns = ["d.duration", "d.price", "average_rating"];
@@ -141,12 +116,12 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         inclusions,
         inventory,
         video_url,
-        category_id,
+        categories,
       }: Destination = request.body;
 
       const query = {
         text: `
-          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id, inventory)
+          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, categories, inventory)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
           RETURNING *;
         `,
@@ -160,7 +135,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           price,
           inclusions,
           video_url,
-          category_id,
+          categories,
           inventory,
         ],
       };
@@ -181,7 +156,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         price,
         inclusions,
         video_url,
-        category_id,
+        categories,
         thumbnail_image,
         inventory,
       }: Destination = request.body;
@@ -193,7 +168,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
                 UPDATE destination
                 SET images = $1, title = $2, slug = $3, minimum_pax = $4,
                     description = $5, duration = $6, price = $7,
-                    inclusions = $8, video_url = $9, category_id = $10, thumbnail_image = $11, inventory = $12
+                    inclusions = $8, video_url = $9, categories = $10, thumbnail_image = $11, inventory = $12
                 WHERE id = $13
                 RETURNING *;
             `,
@@ -207,7 +182,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           price,
           inclusions,
           video_url,
-          category_id,
+          categories,
           thumbnail_image,
           inventory,
           id,

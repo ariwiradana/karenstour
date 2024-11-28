@@ -12,10 +12,10 @@ import Link from "next/link";
 import { BiPlus } from "react-icons/bi";
 
 interface PageProps {
-  authToken:string
+  authToken: string;
 }
 
-const AdminDestinationPage = (props:PageProps) => {
+const AdminDestinationPage = (props: PageProps) => {
   const { state, actions } = useAdminDestination(props.authToken as string);
 
   return (
@@ -91,7 +91,7 @@ const AdminDestinationPage = (props:PageProps) => {
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
                       <span className="font-medium">
-                        {destination.category_name}
+                        {destination.categories.join(", ")}
                       </span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
@@ -153,7 +153,7 @@ export const getServerSideProps: GetServerSideProps = async ({ req, res }) => {
 
   return {
     props: {
-      authToken
+      authToken,
     },
   };
 };

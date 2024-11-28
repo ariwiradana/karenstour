@@ -6,10 +6,11 @@ import { HiChevronLeft } from "react-icons/hi2";
 import InputChip from "@/components/admin/elements/input.chip";
 import useAdminAddDestination from "@/hooks/admin/useAdminAddDestination";
 import InputTextEditor from "@/components/admin/elements/input.texteditor";
-import InputSelect from "@/components/admin/elements/select";
 import { GetServerSideProps } from "next";
 import { parse } from "cookie";
 import { BiMap } from "react-icons/bi";
+import InputCheckbox from "@/components/admin/elements/input.checkbox";
+import { montserrat } from "@/constants/font";
 
 interface PageProps {
   authToken: string;
@@ -60,15 +61,32 @@ const AddDestinationPage = (props: PageProps) => {
             value={state.formData.title}
             error={state.errors.title}
           />
-          <InputSelect
-            label="Category"
-            onChange={(e) =>
-              actions.handleChange(Number(e.target.value), "categoryId")
-            }
-            value={state.formData.categoryId?.toString()}
-            error={state.errors.categoryId}
-            options={state.categoryOptions}
-          />
+          <div>
+            <p
+              className={`block text-gray-700 mb-1 text-sm ${montserrat.className}`}
+            >
+              Category
+            </p>
+            <div className="flex flex-wrap gap-2">
+              {state.categoryOptions.map((category) => {
+                const categoryChecked = state.formData.categories.includes(
+                  category.value
+                );
+                return (
+                  <InputCheckbox
+                    checked={categoryChecked}
+                    id={`category-${category.value}`}
+                    key={`category-${category.value}`}
+                    onChange={(e) =>
+                      actions.handleChange(e.target.value, "categories")
+                    }
+                    label={category.label}
+                    value={category.value}
+                  />
+                );
+              })}
+            </div>
+          </div>
           <InputTextEditor
             label="Description"
             onChange={(value) => actions.handleChange(value, "description")}

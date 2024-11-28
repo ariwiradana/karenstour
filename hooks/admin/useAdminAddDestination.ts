@@ -5,13 +5,12 @@ import { useRouter } from "next/router";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
 import { Category, Options } from "@/constants/types";
-import useAdminCategory from "./useAdminCategory";
 import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   images: FileList | null;
   title: string;
-  categoryId: number | null;
+  categories: string[];
   pax: number;
   description: string;
   duration: number;
@@ -42,7 +41,7 @@ interface UseAdminAddDestination {
 const initialFormData: FormData = {
   images: null,
   title: "",
-  categoryId: null,
+  categories: [],
   pax: 1,
   description: "",
   duration: 1,
@@ -75,7 +74,7 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       if (result.success) {
         const options: Options[] = result.data.map((category: Category) => ({
           label: category.name,
-          value: category.id,
+          value: category.name,
         }));
         setCategoryOptions(options);
       }
@@ -97,7 +96,6 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       message: "Please select at least one image file.",
     }),
     title: z.string().min(5, "The title must be at least 5 characters long."),
-    categoryId: z.number(),
     pax: z.any().refine((value) => !isNaN(value), {
       message: "The number of participants must be at least 1.",
     }),
@@ -127,11 +125,29 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
     value: string | number | string[] | File | FileList | null,
     name: string
   ) => {
-    setFormData((prevState) => ({ ...prevState, [name]: value }));
+    if (name === "categories") {
+      let newCategories = [...formData.categories];
+      if (newCategories.includes(value as string)) {
+        newCategories = newCategories.filter((c) => c !== value);
+      } else {
+        newCategories.push(value as string);
+      }
+      setFormData((prevState) => ({
+        ...prevState,
+        categories: newCategories,
+      }));
+      console.log({ newCategories, value });
+    } else {
+      setFormData((prevState) => ({ ...prevState, [name]: value }));
+    }
   };
+
+  console.log({ formData });
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    console.log({ formData });
 
     try {
       setLoading(true);
@@ -249,7 +265,7 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
             inclusions: formData.inclusions,
             inventory: formData.inventory,
             video_url: videoURL ?? "",
-            category_id: formData.categoryId ?? "",
+            categories: formData.categories ?? [],
           };
 
           const createDestination = await useFetch(

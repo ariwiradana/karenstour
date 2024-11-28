@@ -30,18 +30,15 @@ export default async function handler(
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
-    const values: (string | number)[] = [searchTerm];
+    const values: (string | number | string[])[] = [searchTerm];
 
     let text = `
     SELECT 
       d.*, 
       ROUND(AVG(r.rating), 1) AS average_rating, 
-      COUNT(r.id) AS review_count, 
-      c.id AS category_id, 
-      c.name AS category_name
+      COUNT(r.id) AS review_count
     FROM destination d
     LEFT JOIN reviews r ON d.id = r.destination_id
-    LEFT JOIN category c ON d.category_id = c.id
     WHERE d.title ILIKE $1
   `;
 
@@ -50,7 +47,6 @@ export default async function handler(
     SELECT COUNT(DISTINCT d.id) AS total_count
     FROM destination d
     LEFT JOIN reviews r ON d.id = r.destination_id
-    LEFT JOIN category c ON d.category_id = c.id
     WHERE d.title ILIKE $1
   `;
 
@@ -70,22 +66,16 @@ export default async function handler(
     }
 
     if (category_names) {
-      const categoryArray = category_names
-        .split(",")
-        .map((name) => name.trim());
-      if (categoryArray.length > 0) {
-        const placeholders = categoryArray
-          .map((_, i) => `$${values.length + i + 1}`)
-          .join(", ");
-        text += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
-        countText += ` AND c.name ILIKE ANY(ARRAY[${placeholders}])`;
-        categoryArray.forEach((name) => {
-          values.push(`%${name}%`);
-        });
-      }
+      const categoryNames = category_names.split(","); // ['Airport Transfer', 'Culture']
+      const valueIndex = values.length + 1;
+      text += ` AND d.categories && $${valueIndex}`;
+      countText += ` AND d.categories && $${valueIndex}`; // Also apply to count query
+      values.push(categoryNames); // Pass the array of category names as a value
     }
 
-    text += " GROUP BY d.id, c.id";
+    text += " GROUP BY d.id";
+
+    console.log(text, values);
 
     const validSortColumns = ["d.duration", "d.price", "average_rating"];
     const validSortOrders = ["ASC", "DESC"];
@@ -118,7 +108,7 @@ export default async function handler(
         },
       ] = await Promise.all([
         sql.query(text, values),
-        sql.query(countText, values),
+        sql.query(countText, values), // Apply values to both queries
       ]);
 
       return successResponse(response, "GET", "destination", rows, total_count);
