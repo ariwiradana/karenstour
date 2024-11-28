@@ -48,7 +48,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
               {props.data.minimum_pax > 0 && (
                 <h4 className="flex items-start gap-x-2 text-base font-medium text-dark">
                   <BiSolidUser className="text-primary text-2xl min-w-7" />
-                  {props.data.minimum_pax} Guest
+                  Minimum {props.data.minimum_pax} Guest
                   {props.data.minimum_pax > 1 && "s"}
                 </h4>
               )}
