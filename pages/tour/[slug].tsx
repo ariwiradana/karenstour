@@ -11,7 +11,13 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC } from "react";
-import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
+import {
+  BiCheck,
+  BiSolidDirections,
+  BiSolidMap,
+  BiSolidTime,
+  BiSolidUser,
+} from "react-icons/bi";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
@@ -87,7 +93,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
               <Title title={state.data?.title ?? ""} action={false} />
             )}
             {Number(state.data.review_count) > 1 && (
-              <div className="flex items-center gap-x-2">
+              <div className="flex items-center gap-x-2 mt-1">
                 <Rating
                   value={state.data.average_rating}
                   name="rating"
@@ -230,6 +236,12 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <div
         className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
       >
+        <div className="absolute bottom-4 left-4 z-10 flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg">
+          <BiSolidDirections className="text-base text-white" />
+          <p className="text-xs text-white font-medium">
+            {state.data?.category_name}
+          </p>
+        </div>
         {state.loading ? (
           <>
             <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
@@ -294,26 +306,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     (state.data?.images[0] as string)
                   }
                 />
-                <div className="absolute bottom-4 left-4 z-10">
-                  <button
-                    aria-label="btn-show-map"
-                    className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform"
-                  >
-                    <BiSolidMap className="text-base text-white" />
-                    <div className="text-left">
-                      <Link
-                        target="_blank"
-                        href={`https://www.google.com/maps/search/?api=1&query=${
-                          state.data?.title ?? state.data?.location
-                        }`}
-                      >
-                        <p className="text-xs text-white font-medium">
-                          Show on Map
-                        </p>
-                      </Link>
-                    </div>
-                  </button>
-                </div>
               </div>
             )}
             {state.slicedImages?.map((image, index) => {
@@ -369,20 +361,6 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <div
         className={`flex flex-col md:flex-row md:flex-wrap gap-4 capitalize ${montserrat.className}`}
       >
-        <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
-          <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
-            <BiSolidMap className="w-full h-full text-primary" />
-          </div>
-          <div>
-            <h2 className="text-darkgray text-base font-medium">
-              Tour Category
-            </h2>
-            <p className="text-base md:text-lg text-dark font-semibold">
-              {state.data.category_name}
-            </p>
-          </div>
-        </div>
-
         <div className="flex gap-x-2 md:gap-x-4 items-start md:items-center md:bg-primary/5 md:p-4 rounded-lg">
           <div className="w-5 min-w-5 md:w-7 md:min-w-7 mt-1 md:mt-0">
             <BiSolidTime className="w-full h-full text-primary" />
