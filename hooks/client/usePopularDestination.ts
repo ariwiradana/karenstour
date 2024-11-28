@@ -39,7 +39,7 @@ const usePopularDestination = (
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width >= 1024) {
-      setSlidesPerView(3);
+      setSlidesPerView(4);
     } else if (width >= 768) {
       setSlidesPerView(2);
     } else {
