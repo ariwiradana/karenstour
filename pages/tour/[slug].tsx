@@ -61,7 +61,11 @@ const ServiceDetail: FC<PageProps> = (props) => {
         title={`${
           state.data ? state.data?.title : "Bali Tour Experience"
         } | Karens Tour`}
-        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+        description={
+          state.data
+            ? state.data?.description
+            : `Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali.`
+        }
       />
 
       {state.data ? (
