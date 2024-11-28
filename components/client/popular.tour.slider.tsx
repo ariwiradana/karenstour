@@ -1,8 +1,7 @@
 import React, { FC } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Grid, Navigation } from "swiper/modules";
+import { Autoplay, Grid } from "swiper/modules";
 import DestinationCard from "./elements/destination.card";
-import { BsChevronLeft, BsChevronRight } from "react-icons/bs";
 import Container from "./container";
 import Title from "./elements/title";
 import usePopularDestination from "@/hooks/client/usePopularDestination";
@@ -69,10 +68,6 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                 pauseOnMouseEnter: true,
               }}
               className="group"
-              navigation={{
-                prevEl: ".slidePrev-btn",
-                nextEl: ".slideNext-btn",
-              }}
               slidesPerView={state.slidesPerView}
               breakpoints={{
                 0: {
@@ -106,7 +101,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                   actions.setLastSlide(false);
                 }
               }}
-              modules={[Autoplay, Navigation, Grid]}
+              modules={[Autoplay, Grid]}
             >
               {state.data.map((obj) => {
                 return (
@@ -115,45 +110,6 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
                   </SwiperSlide>
                 );
               })}
-              <div className="flex justify-between items-center mt-2 md:mt-10 lg:mt-0">
-                <div className="flex gap-x-2 md:hidden">
-                  {Array.from(
-                    {
-                      length: Math.ceil(
-                        state.data.length + 1 - state.slidesPerView
-                      ),
-                    },
-                    (_, index) => index
-                  ).map((item) => (
-                    <div
-                      key={`${item}-indicator`}
-                      className={`h-1 md:h-2 rounded-full ${
-                        item === state.activeIndex
-                          ? "bg-primary w-4"
-                          : "w-1 md:w-2 bg-gray-200"
-                      }`}
-                    ></div>
-                  ))}
-                </div>
-                <div className="flex justify-start md:justify-center gap-x-2 lg:gap-x-4">
-                  <button
-                    aria-label="btn-slide-prev"
-                    className={`${
-                      state.firstSlide ? "lg:hidden" : "lg:flex"
-                    } flex slidePrev-btn lg:absolute left-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-r-none lg:rounded-l-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-                  >
-                    <BsChevronLeft className="text-dark lg:text-white lg:text-2xl" />
-                  </button>
-                  <button
-                    aria-label="btn-slide-next"
-                    className={`${
-                      state.lastSlide ? "lg:hidden" : "lg:flex"
-                    } flex slideNext-btn lg:absolute right-0 rounded-full w-8 h-8 lg:w-auto lg:h-full lg:rounded-l-none lg:rounded-r-xl group-hover:lg:opacity-100 lg:opacity-0 transition-opacity duration-300 ease-in-out lg:px-4 inset-y-0 justify-center items-center z-30 bg-gray-200 lg:bg-white lg:bg-opacity-10 backdrop-blur-sm`}
-                  >
-                    <BsChevronRight className="text-dark lg:text-white lg:text-2xl" />
-                  </button>
-                </div>
-              </div>
             </Swiper>
           </div>
         )}
