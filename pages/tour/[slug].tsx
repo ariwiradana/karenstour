@@ -32,6 +32,7 @@ import { LoaderIcon } from "react-hot-toast";
 import Inventory from "@/components/client/inventory";
 import { Rating } from "@mui/material";
 import { FaStar } from "react-icons/fa6";
+import { removeHtmlTags } from "@/utils/removeHTMLTag";
 
 interface PageProps {
   serviceId: string;
@@ -63,7 +64,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
         } | Karens Tour`}
         description={
           state.data
-            ? state.data?.description
+            ? removeHtmlTags(state.data?.description)
             : `Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali.`
         }
       />
