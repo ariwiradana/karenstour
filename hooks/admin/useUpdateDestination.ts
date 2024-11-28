@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 import { z, ZodSchema } from "zod";
 import toast from "react-hot-toast";
-import { useRouter } from "next/router";
 import { Category, Destination, Options } from "@/constants/types";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
@@ -79,8 +78,6 @@ const useUpdateDestination = (
   const [destination, setDestination] = useState<Destination | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
-  const router = useRouter();
-
   const handleToggleLightbox = (index: number) => {
     console.log(index);
     setLightbox(!lightbox);
@@ -110,21 +107,27 @@ const useUpdateDestination = (
           categories: data.categories || [],
           thumbnail_image: data.thumbnail_image,
         }));
-
-        const categoryResponse = await useFetch(`/api/category`, authToken);
-        const categoryResult = await categoryResponse.json();
-
-        if (categoryResult.success) {
-          const options: Options[] = categoryResult.data.map(
-            (category: Category) => ({
-              label: category.name,
-              value: category.name,
-            })
-          );
-          setCategoryOptions(options);
-        }
       } else {
         toast.error(result.message, { id: toastFetch });
+      }
+    } catch (error: any) {
+      toast.error(error.message);
+    }
+  }, []);
+
+  const fetchCategoryOptions = useCallback(async () => {
+    try {
+      const categoryResponse = await useFetch(`/api/category`, authToken);
+      const categoryResult = await categoryResponse.json();
+
+      if (categoryResult.success) {
+        const options: Options[] = categoryResult.data.map(
+          (category: Category) => ({
+            label: category.name,
+            value: category.name,
+          })
+        );
+        setCategoryOptions(options);
       }
     } catch (error: any) {
       toast.error(error.message);
@@ -134,6 +137,10 @@ const useUpdateDestination = (
   useEffect(() => {
     fetchDestinationBySlug();
   }, [fetchDestinationBySlug]);
+
+  useEffect(() => {
+    fetchCategoryOptions();
+  }, [fetchCategoryOptions]);
 
   const schema: ZodSchema = z.object({
     images: z.any().refine((value) => value === null || isFileList(value), {
