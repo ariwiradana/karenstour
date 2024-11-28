@@ -39,6 +39,7 @@ const AdminLoginPage: FC = () => {
             label="Password"
             id="password"
             name="password"
+            type="password"
             onChange={actions.handleChange}
             value={state.formData.password}
             placeholder="Enter your password"
