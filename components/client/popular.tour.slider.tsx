@@ -53,11 +53,11 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
         </div>
 
         {state.loading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8">
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
-            <CardShimmer />
+            <CardShimmer className="lg:hidden" />
           </div>
         ) : (
           <div className="relative">

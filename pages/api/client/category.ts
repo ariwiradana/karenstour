@@ -7,7 +7,9 @@ export default async function handler(
 ) {
   if (request.method === "GET") {
     try {
-      const { rows } = await sql.query(`SELECT * FROM category`);
+      const { rows } = await sql.query(
+        `SELECT * FROM category ORDER BY name ASC`
+      );
 
       return successResponse(response, "GET", "category", rows);
     } catch (error) {

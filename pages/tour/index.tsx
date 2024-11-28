@@ -48,7 +48,7 @@ const ServiceList: FC<Props> = () => {
               Filter
             </h1>
             <div
-              className={` grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
+              className={`grid grid-cols-2 md:flex flex-wrap gap-2 lg:gap-6 ${montserrat.className}`}
             >
               <div className="md:flex items-center hidden">
                 <BsFilter className="text-2xl text-dark" />
@@ -145,14 +145,14 @@ const ServiceList: FC<Props> = () => {
 
         <div className="mt-4 md:mt-6">
           {state.loading ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8">
               <CardShimmer />
               <CardShimmer />
               <CardShimmer />
-              <CardShimmer />
+              <CardShimmer className="lg:hidden" />
             </div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8">
               {state.data.map((obj) => (
                 <DestinationCard key={obj.id} data={obj} />
               ))}
