@@ -37,7 +37,7 @@ const ServiceList: FC<Props> = () => {
       <Container className={`py-12 lg:py-24 ${unbounded.className}`}>
         <div className="lg:mb-10" ref={ref.topRef}>
           <Title
-            title={"Discover Bali with Our Travel Packages"}
+            title={"Discover Bali with Our Tour Packages"}
             description={`Experience Bali with ease through our ${state.service} services.`}
             action={false}
           />
