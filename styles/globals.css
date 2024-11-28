@@ -65,7 +65,7 @@ button:disabled {
 }
 
 .description ol {
-  @apply ml-4 list-decimal;
+  @apply ml-2 list-decimal;
 }
 
 .description li {
