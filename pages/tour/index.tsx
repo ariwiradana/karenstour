@@ -85,14 +85,14 @@ const ServiceList: FC<Props> = () => {
                         key: "Price: High to Low",
                         value: "d.price-desc",
                       },
-                      {
-                        key: "Shortest Duration",
-                        value: "d.duration-asc",
-                      },
-                      {
-                        key: "Longest Duration",
-                        value: "d.duration-desc",
-                      },
+                      // {
+                      //   key: "Shortest Duration",
+                      //   value: "d.duration-asc",
+                      // },
+                      // {
+                      //   key: "Longest Duration",
+                      //   value: "d.duration-desc",
+                      // },
                     ]}
                   />
                   {state.categories.map((category: Category) => (
