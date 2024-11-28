@@ -236,7 +236,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
       <div
         className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
       >
-        <div className="absolute bottom-4 left-4 z-10 flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg">
+        <div className="absolute bottom-4 left-4 z-10 flex gap-x-2 items-center bg-dark/20 backdrop-blur-md px-3 py-2 rounded-lg">
           <BiSolidDirections className="text-base text-white" />
           <p className="text-xs text-white font-medium">
             {state.data?.category_name}
