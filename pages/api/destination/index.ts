@@ -147,7 +147,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       const query = {
         text: `
           INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id, inventory)
-          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, &11)
+          VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
           RETURNING *;
         `,
         values: [
