@@ -145,7 +145,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                         key={c}
                         className={`text-sm ${montserrat.className}`}
                       >
-                        <p className="bg-primary/10 py-2 md:py-3 md:px-4 px-3 text-primary rounded-lg font-medium">
+                        <p className="bg-primary/10 py-1 px-2 text-primary rounded-lg font-medium">
                           {c}
                         </p>
                       </div>
