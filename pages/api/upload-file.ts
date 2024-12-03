@@ -1,7 +1,7 @@
 import { errorResponse } from "@/utils/response";
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 import { v2 as cloudinary } from "cloudinary";
-import multiparty from "multiparty";
+import { IncomingForm, Fields, Files } from "formidable";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -12,25 +12,28 @@ cloudinary.config({
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   try {
-    const form = new multiparty.Form();
-    const parsedForm = await new Promise<{ fields: any; files: any }>(
+    const parsedForm = await new Promise<{ fields: Fields; files: Files }>(
       (resolve, reject) => {
+        const form = new IncomingForm();
         form.parse(request, (err, fields, files) => {
           if (err) reject(err);
           else resolve({ fields, files });
         });
       }
     );
-    const { files } = parsedForm;
-    const file = files.file[0];
 
-    const result = await cloudinary.uploader.upload(file.path, {
-      transformation: {
-        width: 1920,
-        crop: "scale",
-      },
-    });
-    return response.status(200).json({ success: true, data: result });
+    const { files } = parsedForm;
+    const { file } = files as Files;
+
+    if (file?.length) {
+      const result = await cloudinary.uploader.upload(file[0].filepath, {
+        transformation: {
+          width: 1920,
+          crop: "scale",
+        },
+      });
+      return response.status(200).json({ success: true, data: result });
+    }
   } catch (error) {
     return errorResponse(response, error);
   }

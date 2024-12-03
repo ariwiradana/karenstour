@@ -122,7 +122,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
                     )}
                     {state.formData.thumbnail_image === image && (
                       <p className="absolute top-2 left-2 z-10 bg-white bg-opacity-80 px-2 py-1 text-xs font-medium rounded transition-all ease-in-out duration-500">
-                        {image}
+                        Thumbnail
                       </p>
                     )}
                     <ImageShimmer
