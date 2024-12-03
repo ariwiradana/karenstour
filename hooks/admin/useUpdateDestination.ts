@@ -6,7 +6,7 @@ import { convertToSlug } from "@/utils/convertToSlug";
 import { generateFilename } from "@/utils/generateFilename";
 import { useFetch } from "@/lib/useFetch";
 
-interface FormData {
+interface Form {
   uploaded_images?: string[] | [];
   images: FileList | null;
   thumbnail_image?: string;
@@ -23,7 +23,7 @@ interface FormData {
 }
 
 interface UseUpdateDestinationState {
-  formData: FormData;
+  formData: Form;
   errors: Record<string, string>;
   loading: boolean;
   destination: Destination | null;
@@ -47,7 +47,7 @@ interface UseUpdateDestination {
   };
 }
 
-const initialFormData: FormData = {
+const initialFormData: Form = {
   uploaded_images: [],
   images: null,
   thumbnail_image: "",
@@ -74,7 +74,7 @@ const useUpdateDestination = (
   const [loading, setLoading] = useState<boolean>(false);
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [slideIndex, setSlideIndex] = useState<number>(0);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<Form>(initialFormData);
   const [destination, setDestination] = useState<Destination | null>(null);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
@@ -110,6 +110,7 @@ const useUpdateDestination = (
       } else {
         toast.error(result.message, { id: toastFetch });
       }
+      fetchCategoryOptions();
     } catch (error: any) {
       toast.error(error.message);
     }
@@ -137,10 +138,6 @@ const useUpdateDestination = (
   useEffect(() => {
     fetchDestinationBySlug();
   }, [fetchDestinationBySlug]);
-
-  useEffect(() => {
-    fetchCategoryOptions();
-  }, [fetchCategoryOptions]);
 
   const schema: ZodSchema = z.object({
     images: z.any().refine((value) => value === null || isFileList(value), {
@@ -190,7 +187,6 @@ const useUpdateDestination = (
       setFormData((prevState) => ({ ...prevState, [name]: value }));
     }
   };
-  console.log({ formData });
 
   const handleRemoveImage = async (imageURL: string) => {
     const newImages = formData.uploaded_images?.filter(
@@ -294,22 +290,18 @@ const useUpdateDestination = (
       const video = formData.video;
       if (video) {
         const fileVideo = video instanceof FileList ? video[0] : video;
-        const filename = generateFilename("video");
         const uploadToast = toast.loading(`Video is uploading...`);
         try {
-          const filepath = "destination/videos";
-          const response = await useFetch(
-            `/api/destination/upload-file?filename=${encodeURIComponent(
-              filename
-            )}&filepath=${encodeURIComponent(
-              filepath
-            )}&filetype=${fileVideo.type.toLowerCase()}&filesize=${
-              fileVideo.size
-            }&category=video`,
-            authToken,
-            "POST",
-            fileVideo
-          );
+          const fd = new FormData();
+          fd.append("file", fileVideo);
+
+          const response = await fetch(`/api/upload-file`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: fd,
+          });
           const result = await response.json();
           if (result.success) {
             if (formData.uploaded_video) {
@@ -319,7 +311,7 @@ const useUpdateDestination = (
                 "POST"
               );
             }
-            videoURL = result.data.url;
+            videoURL = result.data.secure_url;
             toast.success(`Video uploaded successfully!`, {
               id: uploadToast,
               duration: 3000,
@@ -351,27 +343,24 @@ const useUpdateDestination = (
         let i = 0;
         for (const image of Array.from(images)) {
           i++;
-          const filename = generateFilename("image");
           const uploadToast = toast.loading(
             `Image ${i} of ${images.length} is uploading...`
           );
           try {
-            const filepath = "destination/images";
-            const response = await useFetch(
-              `/api/destination/upload-file?filename=${encodeURIComponent(
-                filename
-              )}&filepath=${encodeURIComponent(
-                filepath
-              )}&filetype=${image.type.toLowerCase()}&filesize=${
-                image.size
-              }&category=image`,
-              authToken,
-              "POST",
-              image
-            );
+            const fdImg = new FormData();
+            fdImg.append("file", image);
+
+            const response = await fetch(`/api/upload-file`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: fdImg,
+            });
+
             const result = await response.json();
             if (result.success) {
-              allImages.push(result.data.url);
+              allImages.push(result.data.secure_url);
               toast.success(
                 `Image ${i} of ${images.length} uploaded successfully!`,
                 {
@@ -422,6 +411,7 @@ const useUpdateDestination = (
             id: uploadToast,
           });
           clearFileInput();
+          fetchDestinationBySlug();
         } else {
           toast.error(updateDestinationResult.message);
         }

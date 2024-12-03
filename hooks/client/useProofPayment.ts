@@ -25,8 +25,6 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
     const existResponse = await fetch(`/api/client/booking/check?id=${id}`);
     const result = await existResponse.json();
 
-    console.log({ result });
-
     const uploadedResponse = await fetch(
       `/api/client/booking?id=${encodeURIComponent(id)}`
     );
@@ -63,28 +61,43 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
     if (file) {
       try {
         const toastUpload = toast.loading("Uploading...");
+        const fd = new FormData();
+        fd.append("file", file);
 
-        const response = await fetch(
-          `/api/client/booking/payment-proof?id=${id}&filetype=${file.type}`,
-          {
-            method: "POST",
-            body: file,
+        const response = await fetch(`/api/client/upload-file`, {
+          method: "POST",
+          body: fd,
+        });
+        const result = await response.json();
+        if (result.success) {
+          const payload = {
+            id: id,
+            url: result.data.secure_url,
+          };
+          const responseBooking = await fetch(
+            `/api/client/booking/payment-proof`,
+            {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(payload),
+            }
+          );
+          if (!responseBooking.ok) {
+            const errorData = await responseBooking.json();
+            console.error("Error:", errorData);
+            toast.error(errorData.message, {
+              id: toastUpload,
+            });
+          } else {
+            const resultBooking = await responseBooking.json();
+            toast.success(resultBooking.message, {
+              id: toastUpload,
+            });
+            checkBooking();
+            setFile(null);
           }
-        );
-
-        if (!response.ok) {
-          const errorData = await response.json();
-          console.error("Error:", errorData);
-          toast.error(errorData.message, {
-            id: toastUpload,
-          });
-        } else {
-          const result = await response.json();
-          toast.success(result.message, {
-            id: toastUpload,
-          });
-          checkBooking();
-          setFile(null);
         }
       } catch (error: any) {
         console.error("Fetch error:", error);

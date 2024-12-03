@@ -20,7 +20,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "dtl8vkidvbofoyti.public.blob.vercel-storage.com",
+        hostname: "res.cloudinary.com",
         port: "",
       },
       {

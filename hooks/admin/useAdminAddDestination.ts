@@ -7,7 +7,7 @@ import { generateFilename } from "@/utils/generateFilename";
 import { Category, Options } from "@/constants/types";
 import { useFetch } from "@/lib/useFetch";
 
-interface FormData {
+interface Form {
   images: FileList | null;
   title: string;
   categories: string[];
@@ -21,7 +21,7 @@ interface FormData {
 }
 
 interface UseAdminAddDestinationState {
-  formData: FormData;
+  formData: Form;
   errors: Record<string, string>;
   loading: boolean;
   categoryOptions: Options[] | [];
@@ -38,7 +38,7 @@ interface UseAdminAddDestination {
   };
 }
 
-const initialFormData: FormData = {
+const initialFormData: Form = {
   images: null,
   title: "",
   categories: [],
@@ -58,7 +58,7 @@ const isFileList = (value: any): value is FileList => {
 const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState<boolean>(false);
-  const [formData, setFormData] = useState<FormData>(initialFormData);
+  const [formData, setFormData] = useState<Form>(initialFormData);
   const [categoryOptions, setCategoryOptions] = useState<Options[] | []>([]);
 
   const fetchCategories = useCallback(async () => {
@@ -160,25 +160,20 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       const video = formData.video;
       if (video) {
         const fileVideo = video instanceof FileList ? video[0] : video;
-        const filename = generateFilename("video");
         const uploadToast = toast.loading(`Video is uploading...`);
         try {
-          const filepath = "destination/videos";
-          const response = await useFetch(
-            `/api/destination/upload-file?filename=${encodeURIComponent(
-              filename
-            )}&filepath=${encodeURIComponent(
-              filepath
-            )}&filetype=${fileVideo.type.toLowerCase()}&filesize=${
-              fileVideo.size
-            }&category=video`,
-            authToken,
-            "POST",
-            fileVideo
-          );
+          const fd = new FormData();
+          fd.append("file", fileVideo);
+          const response = await fetch(`/api/upload-file`, {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${authToken}`,
+            },
+            body: fd,
+          });
           const result = await response.json();
           if (result.success) {
-            videoURL = result.data.url;
+            videoURL = result.data.secure_url;
             toast.success(`Video uploaded successfully!`, {
               id: uploadToast,
               duration: 3000,
@@ -199,32 +194,26 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
         }
       }
 
-      // Upload images if they exist
       if (images && images.length > 0) {
         let i = 0;
         for (const image of Array.from(images)) {
           i++;
-          const filename = generateFilename("image");
           const uploadToast = toast.loading(
             `Image ${i} of ${images.length} is uploading...`
           );
           try {
-            const filepath = `destination/images`;
-            const response = await useFetch(
-              `/api/destination/upload-file?filename=${encodeURIComponent(
-                filename
-              )}&filepath=${encodeURIComponent(
-                filepath
-              )}&filetype=${image.type.toLowerCase()}&filesize&${
-                image.size
-              }&category=image`,
-              authToken,
-              "POST",
-              image
-            );
+            const fd = new FormData();
+            fd.append("file", image);
+            const response = await fetch(`/api/upload-file`, {
+              method: "POST",
+              headers: {
+                Authorization: `Bearer ${authToken}`,
+              },
+              body: fd,
+            });
             const result = await response.json();
             if (result.success) {
-              allImages.push(result.data.url);
+              allImages.push(result.data.secure_url);
               toast.success(
                 `Image ${i} of ${images.length} uploaded successfully!`,
                 {

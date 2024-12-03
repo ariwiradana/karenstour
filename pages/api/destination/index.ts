@@ -1,11 +1,18 @@
 import { Destination } from "@/constants/types";
 import sql from "@/lib/db";
-import delLocal from "@/lib/delLocal";
 import { withAuth } from "@/lib/withAuth";
 import { convertToSlug } from "@/utils/convertToSlug";
 import { errorResponse, successResponse } from "@/utils/response";
-import { del } from "@vercel/blob";
 import { NextApiResponse, NextApiRequest } from "next";
+import { v2 as cloudinary } from "cloudinary";
+import { getCloudinaryID } from "@/utils/getCloudinaryId";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
 
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
@@ -219,20 +226,16 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         allURLS.push(videoURL);
       }
 
+      const allPublicIDs = allURLS.map((url) => getCloudinaryID(url));
+      if (allPublicIDs.length > 0)
+        await cloudinary.api.delete_resources(allPublicIDs);
+
       const queryDelete = {
         text: "DELETE FROM destination WHERE id = $1 RETURNING *;",
         values: [id],
       };
 
       await sql.query(queryDelete);
-
-      for (const allURL of allURLS) {
-        if (process.env.NODE_ENV === "production") {
-          await del(allURL);
-        } else {
-          await delLocal(allURL);
-        }
-      }
 
       return successResponse(response, "DELETE", "destination");
     } catch (error) {
