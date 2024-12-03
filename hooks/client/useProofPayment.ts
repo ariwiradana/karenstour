@@ -1,5 +1,4 @@
-import { Booking, PaymentProof } from "@/constants/types";
-import { getFileExtension } from "@/utils/getFileExtention";
+import { Booking } from "@/constants/types";
 import React, { useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 

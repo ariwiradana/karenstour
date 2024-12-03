@@ -38,6 +38,13 @@ const AddDestinationPage = (props: PageProps) => {
           className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           <Input
+            name="title"
+            label="Title"
+            onChange={(e) => actions.handleChange(e.target.value, "title")}
+            value={state.formData.title}
+            error={state.errors.title}
+          />
+          <Input
             accept="video/*"
             type="file"
             name="video"
@@ -54,13 +61,7 @@ const AddDestinationPage = (props: PageProps) => {
             onChange={(e) => actions.handleChange(e.target.files, "images")}
             error={state.errors.images}
           />
-          <Input
-            name="title"
-            label="Title"
-            onChange={(e) => actions.handleChange(e.target.value, "title")}
-            value={state.formData.title}
-            error={state.errors.title}
-          />
+
           <div>
             <p
               className={`block text-gray-700 mb-1 text-sm ${montserrat.className}`}

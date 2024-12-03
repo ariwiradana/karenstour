@@ -58,6 +58,13 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           onSubmit={actions.handleSubmit}
           className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
+          <Input
+            disabled
+            name="title"
+            label="Title"
+            value={state.formData.title}
+            error={state.errors.title}
+          />
           {state.formData.uploaded_video && (
             <div className="relative w-full h-full">
               <VideoPlayer
@@ -139,14 +146,6 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
               </div>
             )}
           </div>
-
-          <Input
-            name="title"
-            label="Title"
-            onChange={(e) => actions.handleChange(e.target.value, "title")}
-            value={state.formData.title}
-            error={state.errors.title}
-          />
           <div>
             <p
               className={`block text-gray-700 mb-1 text-sm ${montserrat.className}`}

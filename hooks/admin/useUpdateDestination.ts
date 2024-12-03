@@ -196,7 +196,9 @@ const useUpdateDestination = (
       try {
         setLoading(true);
         const response = await useFetch(
-          `/api/destination/delete-file?url=${imageURL}&destination_id=${id}&category=images`,
+          `/api/destination/delete-file?url=${encodeURIComponent(
+            imageURL
+          )}&destination_id=${encodeURIComponent(id)}&category=images`,
           authToken,
           "POST"
         );
@@ -222,7 +224,9 @@ const useUpdateDestination = (
       try {
         setLoading(true);
         const response = await useFetch(
-          `/api/destination/delete-file?url=${videoURL}&destination_id=${id}&category=video_url`,
+          `/api/destination/delete-file?url=${encodeURIComponent(
+            videoURL
+          )}&destination_id=${encodeURIComponent(id)}&category=video_url`,
           authToken,
           "POST"
         );
@@ -306,7 +310,9 @@ const useUpdateDestination = (
           if (result.success) {
             if (formData.uploaded_video) {
               await useFetch(
-                `/api/destination/delete-file?url=${formData.uploaded_video}&destination_id=${id}&category=video_url`,
+                `/api/destination/delete-file?url=${encodeURIComponent(
+                  formData.uploaded_video
+                )}&destination_id=${encodeURIComponent(id)}&category=video_url`,
                 authToken,
                 "POST"
               );

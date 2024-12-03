@@ -1,10 +1,10 @@
 import { Destination } from "@/constants/types";
 import sql from "@/lib/db";
-import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import type { NextApiResponse, NextApiRequest, PageConfig } from "next";
 import { v2 as cloudinary } from "cloudinary";
 import { getCloudinaryID } from "@/utils/getCloudinaryId";
+import { withAuth } from "@/lib/withAuth";
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_NAME,
@@ -18,7 +18,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
   try {
     const publicId = getCloudinaryID(url as string);
-    await cloudinary.uploader.destroy(publicId);
+    const result = await cloudinary.uploader.destroy(publicId);
 
     const queryGet = {
       text: "SELECT * FROM destination WHERE id = $1",
@@ -61,13 +61,13 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
     const query = {
       text: `
-          UPDATE destination
-          SET images = $1, title = $2, slug = $3, minimum_pax = $4,
-              description = $5, duration = $6, price = $7,
-              inclusions = $8, video_url = $9, thumbnail_image = $10
-          WHERE id = $11
-          RETURNING *;
-        `,
+            UPDATE destination
+            SET images = $1, title = $2, slug = $3, minimum_pax = $4,
+                description = $5, duration = $6, price = $7,
+                inclusions = $8, video_url = $9, thumbnail_image = $10
+            WHERE id = $11
+            RETURNING *;
+          `,
       values: [
         images,
         title,
@@ -84,9 +84,11 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     };
 
     const { rows } = await sql.query(query);
-    return successResponse(response, "POST", "delete file", rows);
+    return successResponse(response, "POST", "delete file", {
+      rows,
+      result,
+    });
   } catch (error) {
-    // Handle any errors that occur
     return errorResponse(response, error);
   }
 };
