@@ -3,6 +3,17 @@ import { withAuth } from "@/lib/withAuth";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
 
+import { v2 as cloudinary } from "cloudinary";
+import { getCloudinaryID } from "@/utils/getCloudinaryId";
+import { Review } from "@/constants/types";
+
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
 const handler = async (request: NextApiRequest, response: NextApiResponse) => {
   if (request.method === "GET") {
     interface QueryParams {
@@ -101,14 +112,21 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       if (!id) {
         return errorResponse(response, "id is required");
       }
-      await sql.query(
-        `
-        DELETE FROM reviews
-        WHERE id = $1`,
+
+      const { rows } = await sql.query(
+        `SELECT photos FROM reviews WHERE id = $1`,
         [id]
       );
 
-      return successResponse(response, "DELETE", "reviews");
+      if (rows[0]) {
+        const currentReview: Review = rows[0];
+        if (currentReview.photos && currentReview.photos.length > 0) {
+          const publicIds = currentReview.photos.map((p) => getCloudinaryID(p));
+          await cloudinary.api.delete_resources(publicIds);
+        }
+        await sql.query(`DELETE FROM reviews WHERE id = $1`, [id]);
+        return successResponse(response, "DELETE", "reviews");
+      }
     } catch (error) {
       return errorResponse(response, error);
     }

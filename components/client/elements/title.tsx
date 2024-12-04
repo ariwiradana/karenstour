@@ -26,13 +26,15 @@ const Title: FC<TitleProps> = (props) => {
         >
           {props.title}
         </h1>
-        <p
-          className={`text-darkgray text-lg ${
-            !props.center ? "lg:max-w-[70dvw]" : ""
-          } ${montserrat.className}`}
-        >
-          {props.description}
-        </p>
+        {props.description && (
+          <p
+            className={`text-darkgray text-lg ${
+              !props.center ? "lg:max-w-[70dvw]" : ""
+            } ${montserrat.className}`}
+          >
+            {props.description}
+          </p>
+        )}
       </div>
       {props.action && (
         <Link href={props.path || "/tour"}>

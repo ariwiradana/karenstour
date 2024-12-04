@@ -12,9 +12,16 @@ export default async function handler(
       page?: number;
       search?: string;
       id?: number;
+      destination_id?: number;
     }
 
-    const { limit, page, search = "", id }: QueryParams = request.query;
+    const {
+      limit,
+      page,
+      search = "",
+      id,
+      destination_id,
+    }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
 
@@ -37,22 +44,30 @@ export default async function handler(
     const countQueryParams: (string | number)[] = [searchTerm];
 
     if (id) {
-      query += ` AND r.id = $2`;
-      countQuery += ` AND r.id = $2`;
+      query += ` AND r.id = $${queryParams.length + 1}`;
+      countQuery += ` AND r.id = $${countQueryParams.length + 1}`;
       queryParams.push(id);
       countQueryParams.push(id);
     }
+
+    if (destination_id) {
+      query += ` AND r.destination_id = $${queryParams.length + 1}`;
+      countQuery += ` AND r.destination_id = $${countQueryParams.length + 1}`;
+      queryParams.push(destination_id);
+      countQueryParams.push(destination_id);
+    }
+
+    query += ` ORDER BY r.created_at DESC`;
+
     if (limit && page) {
       const limitValue = Number(limit) || 10;
       const offsetValue = (Number(page) - 1) * limitValue || 0;
 
-      const startParamIndex = id ? 3 : 2;
-
-      query += ` LIMIT $${startParamIndex} OFFSET $${startParamIndex + 1}`;
-      countQuery += ` LIMIT $${startParamIndex} OFFSET $${startParamIndex + 1}`;
+      query += ` LIMIT $${queryParams.length + 1} OFFSET $${
+        queryParams.length + 2
+      }`;
 
       queryParams.push(limitValue, offsetValue);
-      countQueryParams.push(limitValue, offsetValue);
     }
 
     try {
@@ -73,8 +88,14 @@ export default async function handler(
     }
   } else if (request.method === "POST") {
     try {
-      const { destination_id, user_name, rating, created_at, comments } =
-        request.body;
+      const {
+        destination_id,
+        user_name,
+        rating,
+        created_at,
+        comments,
+        photos,
+      } = request.body;
 
       if (!destination_id) {
         return errorResponse(response, "id is required");
@@ -82,9 +103,16 @@ export default async function handler(
 
       const query = {
         text: `
-          INSERT INTO reviews (user_name, rating, created_at, comments, destination_id)
-          VALUES ($1, $2, $3, $4, $5)`,
-        values: [user_name, rating, created_at, comments, destination_id],
+          INSERT INTO reviews (user_name, rating, created_at, comments, destination_id, photos)
+          VALUES ($1, $2, $3, $4, $5, $6)`,
+        values: [
+          user_name,
+          rating,
+          created_at,
+          comments,
+          destination_id,
+          photos,
+        ],
       };
 
       const { rowCount } = await sql.query(query);

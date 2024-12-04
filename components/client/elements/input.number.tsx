@@ -46,7 +46,7 @@ const CustomInputNumber: FC<Props> = ({
 
   return (
     <div className={`flex flex-col ${montserrat.className}`}>
-      <p className="text-xs mb-1 font-medium text-darkgray ml-2">
+      <p className="text-sm mb-1 font-medium text-darkgray ml-1">
         {label}
         {required ? "*" : ""}
       </p>
@@ -66,9 +66,7 @@ const CustomInputNumber: FC<Props> = ({
           type="number"
           value={value}
           onChange={onChange}
-          className={`bg-white min-h-12 px-3 text-base font-semibold w-full text-center rounded-none focus:outline-none border disabled pointer-events-none ${
-            error ? "border-red-500 focus:border-red-500" : "border-gray-100"
-          } focus:border-gray-200 transition-all ease-in-out duration-500 ${
+          className={`bg-gray-50 min-h-12 px-3 text-base font-semibold w-full text-center rounded-none focus:outline-none disabled pointer-events-none transition-all ease-in-out duration-500 border border-gray-100 ${
             disabled ? "text-darkgray opacity-95" : "opacity-100"
           }`}
           disabled={disabled}
@@ -87,9 +85,9 @@ const CustomInputNumber: FC<Props> = ({
         </button>
       </div>
       {error ? (
-        <p className="text-xs mt-1 ml-2 text-red-500">{error}</p>
+        <p className="text-xs mt-1 ml-1 text-red-500">{error}</p>
       ) : info ? (
-        <p className="text-xs mt-1 ml-2 text-darkgray">{info}</p>
+        <p className="text-xs mt-1 ml-1 text-darkgray">{info}</p>
       ) : null}
     </div>
   );

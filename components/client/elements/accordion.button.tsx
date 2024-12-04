@@ -20,7 +20,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
 
   return (
     <div
-      className={`bg-lightgray rounded-lg overflow-hidden border border-dashed ${
+      className={`bg-lightgray rounded-xl overflow-hidden border border-dashed ${
         unbounded.className
       } ${isOpen ? "border-primary/10" : "border-transparent"}`}
     >

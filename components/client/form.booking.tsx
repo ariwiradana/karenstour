@@ -3,43 +3,28 @@ import { FC } from "react";
 import CustomInput from "./elements/input";
 import { RiShoppingBag4Fill } from "react-icons/ri";
 import CustomTextarea from "./elements/textarea";
-import { montserrat, unbounded } from "@/constants/font";
+import { montserrat } from "@/constants/font";
 import moment from "moment";
 import ButtonPrimary from "./elements/button.primary";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import CustomInputNumber from "./elements/input.number";
-import CustomSelect2 from "./elements/select2";
+import ButtonSecondary from "./elements/button.secondary";
 
 const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
   const formattedDate = moment(bookingDate).format("YYYY-MM-DD");
 
   return (
-    <form
-      onSubmit={props.actions.handleSubmit}
-      className="flex flex-col gap-6 p-6"
-    >
-      <div className="flex flex-col items-start justify-between gap-6 border-b pb-6 border-dashed">
+    <form onSubmit={props.actions.handleSubmit} className="flex flex-col gap-6">
+      <div className="grid lg:grid-cols-2 gap-6 border-b pb-6 border-dashed">
         <div>
           <p
-            className={`text-xs font-medium text-darkgray ${montserrat.className}`}
-          >
-            Tour Name
-          </p>
-          <h1
-            className={`font-semibold text-dark text-2xl ${unbounded.className}`}
-          >
-            {props.state.data?.title}
-          </h1>
-        </div>
-        <div>
-          <p
-            className={`text-xs font-medium text-darkgray ${montserrat.className}`}
+            className={`text-sm font-medium text-darkgray ${montserrat.className}`}
           >
             Total Price
           </p>
           <h1
-            className={`font-semibold text-dark text-2xl text-right whitespace-nowrap ${unbounded.className}`}
+            className={`font-bold text-dark text-3xl whitespace-nowrap ${montserrat.className}`}
           >
             {currencyIDR(
               props.state.formData.pax * (props.state.data?.price ?? 0)
@@ -48,88 +33,88 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         </div>
       </div>
 
-      <div className="flex gap-x-2">
-        <CustomSelect2
-          className="min-h-12 border border-gray-100"
-          label="Title"
-          name="name"
-          value={props.state.formData.nameTitle}
-          id="nameTitle"
-          onChange={(e) =>
-            props.actions.handleChange(e.target.value, "nameTitle")
-          }
-          options={[
-            { key: "Mr", value: "mr" },
-            { key: "Mrs", value: "mrs" },
-            { key: "Ms", value: "ms" },
-          ]}
-        />
+      <div className="grid lg:grid-cols-2 gap-6">
+        <div className="flex gap-x-2">
+          <CustomInput
+            onChange={(e) => props.actions.handleChange(e.target.value, "name")}
+            name="name"
+            label="Fullname"
+            value={props.state.formData.name}
+            error={props.state.errors.name}
+          />
+        </div>
+
         <CustomInput
-          onChange={(e) => props.actions.handleChange(e.target.value, "name")}
-          name="name"
-          label="Fullname"
-          value={props.state.formData.name}
-          error={props.state.errors.name}
+          onChange={(e) => props.actions.handleChange(e.target.value, "email")}
+          name="email"
+          type="email"
+          label="Email"
+          value={props.state.formData.email}
+          error={props.state.errors.email}
         />
       </div>
 
-      <CustomInput
-        onChange={(e) => props.actions.handleChange(e.target.value, "email")}
-        name="email"
-        type="email"
-        label="Email"
-        value={props.state.formData.email}
-        error={props.state.errors.email}
-      />
+      <div className="grid lg:grid-cols-2 gap-6">
+        <CustomInput
+          onChange={(e) =>
+            props.actions.handleChange(e.target.value, "bookingDate")
+          }
+          type="date"
+          name="bookingDate"
+          label="Booking Date"
+          value={formattedDate}
+          error={props.state.errors.bookingDate}
+        />
 
-      <CustomInput
-        onChange={(e) =>
-          props.actions.handleChange(e.target.value, "bookingDate")
-        }
-        type="date"
-        name="bookingDate"
-        label="Booking Date"
-        value={formattedDate}
-        error={props.state.errors.bookingDate}
-      />
+        <CustomInputNumber
+          onChange={(e) =>
+            props.actions.handleChange(Number(e.target.value), "pax")
+          }
+          min={props.state.data?.minimum_pax}
+          max={10}
+          name="pax"
+          type="number"
+          label="Guest(s)"
+          value={props.state.formData.pax}
+          error={props.state.errors.pax}
+          info={`A minimum of ${props.state.data?.minimum_pax} guest${
+            Number(props.state.data?.minimum_pax) > 1 && "s"
+          } is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
+        />
+      </div>
 
-      <CustomInputNumber
-        onChange={(e) =>
-          props.actions.handleChange(Number(e.target.value), "pax")
-        }
-        min={props.state.data?.minimum_pax}
-        max={10}
-        name="pax"
-        type="number"
-        label="Guest(s)"
-        value={props.state.formData.pax}
-        error={props.state.errors.pax}
-        info={`A minimum of ${props.state.data?.minimum_pax} guest${
-          Number(props.state.data?.minimum_pax) > 1 && "s"
-        } is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
-      />
+      <div className="grid lg:grid-cols-2 gap-6">
+        <CustomTextarea
+          rows={3}
+          onChange={(e) =>
+            props.actions.handleChange(e.target.value, "pickupLocation")
+          }
+          name="pickupLocation"
+          label="Pickup Address"
+          value={props.state.formData.pickupLocation}
+          error={props.state.errors.pickupLocation}
+          info="Please enter the name of your pickup location (e.g., hotel name, address, or landmark)."
+        />
 
-      <CustomTextarea
-        rows={3}
-        onChange={(e) =>
-          props.actions.handleChange(e.target.value, "pickupLocation")
-        }
-        name="pickupLocation"
-        label="Pickup Address"
-        value={props.state.formData.pickupLocation}
-        error={props.state.errors.pickupLocation}
-        info="Please enter the name of your pickup location (e.g., hotel name, address, or landmark)."
-      />
+        <CustomTextarea
+          rows={3}
+          name="message"
+          label="Message"
+          value={props.state.formData.message}
+          onChange={(e) =>
+            props.actions.handleChange(e.target.value, "message")
+          }
+          error={props.state.errors.message}
+        />
+      </div>
 
-      <CustomTextarea
-        name="message"
-        label="Message"
-        value={props.state.formData.message}
-        onChange={(e) => props.actions.handleChange(e.target.value, "message")}
-        error={props.state.errors.message}
-      />
-
-      <div className="flex justify-end">
+      <div className="flex justify-end gap-x-2">
+        <ButtonSecondary
+          type="button"
+          id="btn-cancel-booking"
+          title="Cancel"
+          onClick={props.actions.handleToggleModal}
+        />
         <ButtonPrimary
           id="btn-form-booking"
           disabled={props.state.loadingSubmit}

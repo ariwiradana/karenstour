@@ -23,9 +23,8 @@ import SEO from "@/components/client/seo";
 import NotFound from "@/components/client/not.found";
 import { LoaderIcon } from "react-hot-toast";
 import Inventory from "@/components/client/inventory";
-import { Rating } from "@mui/material";
-import { FaStar } from "react-icons/fa6";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
+import Modal from "@/components/client/elements/modal";
 
 interface PageProps {
   serviceId: string;
@@ -62,6 +61,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
         }
       />
 
+      <Modal isOpen={state.isOpen} onClose={actions.handleToggleModal}>
+        <FormBooking state={state} actions={actions} />
+      </Modal>
+
       {state.data ? (
         <Layout still>
           <div ref={refs?.brochureRef} style={{ display: "none" }}>
@@ -90,25 +93,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
             {state.data && (
               <Title title={state.data?.title ?? ""} action={false} />
             )}
-            {Number(state.data.review_count) > 1 && (
-              <div className="flex items-center gap-x-2 mt-1">
-                <Rating
-                  value={state.data.average_rating}
-                  name="rating"
-                  size="small"
-                  icon={<FaStar />}
-                  emptyIcon={<FaStar className="text-gray-200" />}
-                  readOnly
-                />
-                <p className={`${montserrat.className} text-sm text-dark/60`}>
-                  ({state.data.review_count} Reviews)
-                </p>
-              </div>
-            )}
 
             <GalleryDetail />
 
-            <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10">
+            <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10 relative">
               <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
                 <div className={montserrat.className}>
                   <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
@@ -155,21 +143,25 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 <Inclusion state={state} actions={actions} />
                 <Inventory state={state} actions={actions} />
               </div>
-              <div className="col-span-2 flex flex-col gap-6 md:gap-10">
+              <div className="col-span-2 flex flex-col gap-6 md:gap-10 sticky top-20 md:h-[60vh] z-10">
                 <div className="flex flex-col gap-y-2">
                   <Accordion
                     title="Book by Whatsapp"
                     onClick={() => window.open(contact.whatsapp, "_blank")}
                   />
                   <Accordion
+                    onClick={actions.handleToggleModal}
                     title="Book by Form"
-                    content={<FormBooking state={state} actions={actions} />}
                   />
                 </div>
                 <BookingInfo />
-                {state.data && <ReviewForm destination={state.data} />}
               </div>
             </div>
+            {state.data && (
+              <div className="mt-6 md:mt-8 lg:mt-10">
+                <ReviewForm destination={state.data} />
+              </div>
+            )}
           </Container>
           {state.data && (
             <PopularTourSlider

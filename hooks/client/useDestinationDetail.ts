@@ -39,6 +39,7 @@ export interface UseDestinationDetail {
     images: string[];
     lightbox: boolean;
     lightboxIndex: number;
+    isOpen: boolean;
   };
   refs?: {
     brochureRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -49,6 +50,7 @@ export interface UseDestinationDetail {
     handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
     handleChange: (value: number | string, name: string) => void;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
+    handleToggleModal: () => void;
   };
 }
 
@@ -79,8 +81,13 @@ const useDestinationDetail = (
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const brochureRef = useRef<HTMLDivElement | null>(null);
+
+  const handleToggleModal = () => {
+    setIsOpen(!isOpen);
+  };
 
   const handleToggleLightbox = (image: string) => {
     const imageIndex = data?.images.findIndex((img) => img === image) as number;
@@ -307,6 +314,8 @@ const useDestinationDetail = (
     setIsExpanded((prev) => !prev);
   };
 
+  console.log({ data });
+
   const hasVideo = data?.video_url ? true : false;
   const images = hasVideo
     ? data?.images ?? []
@@ -335,6 +344,7 @@ const useDestinationDetail = (
       images,
       lightbox,
       lightboxIndex,
+      isOpen,
     },
     refs: {
       brochureRef,
@@ -345,6 +355,7 @@ const useDestinationDetail = (
       handleChange,
       setFormData,
       handleToggleLightbox,
+      handleToggleModal,
     },
   };
 };

@@ -347,8 +347,12 @@ const useUpdateDestination = (
       let allImages: string[] = [];
 
       if (images && images.length > 0) {
+        let i = 0;
         for (const image of Array.from(images)) {
-          const toastId = toast.loading(`Image ${image.name} is uploading...`); // Use image.name for informative message
+          i++;
+          const toastId = toast.loading(
+            `Image (${i}) ${image.name} is uploading...`
+          ); // Use image.name for informative message
           try {
             const fdImg = new FormData();
             fdImg.append("file", image);
@@ -364,9 +368,12 @@ const useUpdateDestination = (
             const result = await response.json();
             if (result.success) {
               allImages.push(result.data.secure_url);
-              toast.success(`Image ${image.name} uploaded successfully!`, {
-                id: toastId,
-              });
+              toast.success(
+                `Image (${i}) ${image.name} uploaded successfully!`,
+                {
+                  id: toastId,
+                }
+              );
             } else {
               console.warn(
                 `Image upload failed for ${image.name}: ${result.message}`
@@ -376,7 +383,7 @@ const useUpdateDestination = (
           } catch (error: any) {
             console.error(`Image upload failed: ${error.message}`);
           } finally {
-            toast.dismiss(toastId); 
+            toast.dismiss(toastId);
           }
         }
       }

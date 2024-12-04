@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS reviews (
     created_at VARCHAR(50) NOT NULL,
     comments TEXT,
     rating INTEGER,
-    destination_id INTEGER REFERENCES destination(id) ON DELETE SET NULL
+    destination_id INTEGER REFERENCES destination(id) ON DELETE SET NULL,
+    photos TEXT[];
 );
 
 CREATE TABLE IF NOT EXISTS users (

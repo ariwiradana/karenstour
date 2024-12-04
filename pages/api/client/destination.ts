@@ -34,7 +34,7 @@ export default async function handler(
 
     let text = `
     SELECT 
-      d.*, 
+      d.*,
       ROUND(AVG(r.rating), 1) AS average_rating, 
       COUNT(r.id) AS review_count
     FROM destination d

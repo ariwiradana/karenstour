@@ -64,6 +64,7 @@ export interface Review {
   destination_title: string;
   created_at: string;
   comments: string;
+  photos: string[];
 }
 export interface PaymentProof {
   id: string;

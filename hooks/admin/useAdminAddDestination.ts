@@ -196,9 +196,11 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       let allImages: string[] = [];
 
       if (images && images.length > 0) {
+        let i = 0;
         for (const image of Array.from(images)) {
+          i++;
           const uploadToast = toast.loading(
-            `Image ${image.name} is uploading...`
+            `Image (${image.name}) is uploading...`
           );
           try {
             const fd = new FormData();
@@ -215,10 +217,13 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
             const result = await response.json();
             if (result.success) {
               allImages.push(result.data.secure_url);
-              toast.success(`Image ${image.name} uploaded successfully!`, {
-                id: uploadToast,
-                duration: 3000,
-              });
+              toast.success(
+                `Image ${i + 1}. ${image.name} uploaded successfully!`,
+                {
+                  id: uploadToast,
+                  duration: 3000,
+                }
+              );
             } else {
               console.error(
                 `Image upload failed for ${image.name}: ${result.message}`

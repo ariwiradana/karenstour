@@ -25,6 +25,9 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     const { files } = parsedForm;
     const { file } = files as Files;
 
+    const folder = process.env.NODE_ENV || "development";
+    console.log(folder);
+
     if (file?.length) {
       const result = await cloudinary.uploader.upload(file[0].filepath, {
         transformation: {

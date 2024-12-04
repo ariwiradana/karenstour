@@ -9,6 +9,8 @@ import { formatDate } from "@/utils/dateFormatter";
 import { montserrat } from "@/constants/font";
 import { FaStar } from "react-icons/fa6";
 import { parse } from "cookie";
+import ImageShimmer from "@/components/client/elements/image.shimmer";
+import FsLightbox from "fslightbox-react";
 
 interface PageProps {
   id: string;
@@ -16,7 +18,7 @@ interface PageProps {
 }
 
 const DetailReviewPage: FC<PageProps> = (props) => {
-  const { state } = useAdminDetailReview(
+  const { state, actions } = useAdminDetailReview(
     Number(props.id),
     props.authToken as string
   );
@@ -24,6 +26,11 @@ const DetailReviewPage: FC<PageProps> = (props) => {
   if (!state.review) return <></>;
   return (
     <Layout>
+      <FsLightbox
+        toggler={state.lightboxPhoto.isOpen}
+        sources={state.review.photos}
+        slide={state.lightboxPhoto.slide}
+      />
       <div className="w-full">
         <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
           Review Detail
@@ -57,6 +64,23 @@ const DetailReviewPage: FC<PageProps> = (props) => {
             />
           </div>
           <p className="text-dark mt-4 leading-7">{state.review?.comments}</p>
+          <div className="flex gap-2 flex-wrap mt-4">
+            {state.review?.photos.map((photo, index) => (
+              <div
+                key={`review-photo-${index}`}
+                onClick={() => actions.handleToggleLightbox(photo)}
+                className="w-20 aspect-square bg-dark/5 relative rounded-xl overflow-hidden cursor-pointer"
+              >
+                <ImageShimmer
+                  fill
+                  priority
+                  className="object-cover rounded-xl"
+                  src={photo}
+                  alt={`photo-${index}`}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </Layout>

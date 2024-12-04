@@ -5,11 +5,19 @@ import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useDebounce } from "use-debounce";
 
+interface LightboxPhoto {
+  isOpen: boolean;
+  slide: number;
+}
+
 interface UseAdminDetailReview {
   state: {
     review: Review | null;
+    lightboxPhoto: LightboxPhoto;
   };
-  actions: {};
+  actions: {
+    handleToggleLightbox: (photo: string) => void;
+  };
 }
 
 const useAdminDetailReview = (
@@ -17,6 +25,10 @@ const useAdminDetailReview = (
   authToken: string
 ): UseAdminDetailReview => {
   const [review, setReview] = useState<Review | null>(null);
+  const [lightboxPhoto, setLightboxPhoto] = useState<LightboxPhoto>({
+    isOpen: false,
+    slide: 0,
+  });
 
   const fetchReviews = useCallback(async () => {
     try {
@@ -41,11 +53,23 @@ const useAdminDetailReview = (
     fetchReviews();
   }, [fetchReviews]);
 
+  const handleToggleLightbox = (photo: string) => {
+    const slide = review?.photos.findIndex((p) => p === photo);
+    setLightboxPhoto((prevState) => ({
+      ...prevState,
+      isOpen: !prevState.isOpen,
+      slide: (slide as number) + 1,
+    }));
+  };
+
   return {
     state: {
       review,
+      lightboxPhoto,
     },
-    actions: {},
+    actions: {
+      handleToggleLightbox,
+    },
   };
 };
 

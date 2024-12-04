@@ -18,37 +18,27 @@ const CustomInput: FC<Props> = ({
   ...inputProps
 }) => {
   return (
-    <div
-      className={`flex flex-col ${montserrat.className} w-full ${
-        inputProps.type === "date" ? "border border-gray-100" : ""
-      }`}
-    >
-      <p className="text-xs mb-1 font-medium text-darkgray ml-2">
+    <div className={`flex flex-col ${montserrat.className} w-full`}>
+      <p className="text-sm mb-1 font-medium text-darkgray ml-1">
         {label}
         {required ? "*" : ""}
       </p>
-      <div className="min-h-12 flex items-center bg-white rounded-lg">
+      <div className={`min-h-12 flex items-center bg-white rounded-lg`}>
         <input
-          className={`bg-white min-h-12 outline-none px-3 text-base font-semibold w-full rounded-lg focus:outline-none border ${
-            error
-              ? "border-red-500 focus:border-red-500"
-              : inputProps.type !== "date"
-              ? "border-gray-100"
-              : "border-transparent"
-          } ${
-            inputProps.type === "date"
-              ? "focus:border-transparent"
-              : "focus:border-gray-200"
-          } transition-all ease-in-out duration-500 ${
+          className={`min-h-12 outline-none bg-gray-50 px-3 text-base font-semibold w-full rounded-lg focus:outline-none transition-all ease-in-out duration-500 ${
             disabled ? "text-darkgray opacity-95" : "opacity-100"
+          } ${
+            inputProps.type !== "date"
+              ? "border border-gray-100 focus:border-primary"
+              : "border border-gray-100"
           }`}
           {...inputProps}
         />
       </div>
       {error ? (
-        <p className="text-xs mt-1 ml-2 text-red-500">{error}</p>
+        <p className="text-xs mt-1 ml-1 text-red-500">{error}</p>
       ) : info ? (
-        <p className="text-xs mt-1 ml-2 text-darkgray">{info}</p>
+        <p className="text-xs mt-1 ml-1 text-darkgray">{info}</p>
       ) : (
         <></>
       )}
