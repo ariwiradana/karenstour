@@ -152,9 +152,7 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
       schema.parse(formData);
 
       // Prepare variables for uploads
-      const images = formData.images;
       let videoURL: string = "";
-      let allImages: string[] = [];
 
       // Upload video if it exists
       const video = formData.video;
@@ -194,16 +192,18 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
         }
       }
 
+      const images = formData.images;
+      let allImages: string[] = [];
+
       if (images && images.length > 0) {
-        let i = 0;
         for (const image of Array.from(images)) {
-          i++;
           const uploadToast = toast.loading(
-            `Image ${i} of ${images.length} is uploading...`
+            `Image ${image.name} is uploading...`
           );
           try {
             const fd = new FormData();
             fd.append("file", image);
+
             const response = await fetch(`/api/upload-file`, {
               method: "POST",
               headers: {
@@ -211,75 +211,68 @@ const useAdminAddDestination = (authToken: string): UseAdminAddDestination => {
               },
               body: fd,
             });
+
             const result = await response.json();
             if (result.success) {
               allImages.push(result.data.secure_url);
-              toast.success(
-                `Image ${i} of ${images.length} uploaded successfully!`,
-                {
-                  id: uploadToast,
-                  duration: 3000,
-                }
-              );
-            } else {
-              toast.error(result.message, {
+              toast.success(`Image ${image.name} uploaded successfully!`, {
                 id: uploadToast,
                 duration: 3000,
               });
+            } else {
+              console.error(
+                `Image upload failed for ${image.name}: ${result.message}`
+              );
               continue;
             }
           } catch (error: any) {
-            toast.error(`Image upload failed: ${error.message}`, {
-              duration: 3000,
-              id: uploadToast,
-            });
-            return;
+            console.error(`Image upload failed: ${error.message}`);
+          } finally {
+            toast.dismiss(uploadToast);
           }
         }
       }
 
-      if (allImages.length > 0 || videoURL) {
-        const uploadToast = toast.loading("Adding new destination...");
-        try {
-          const payload = {
-            images: allImages,
-            title: formData.title,
-            slug: convertToSlug(formData.title),
-            minimum_pax: formData.pax,
-            description: formData.description,
-            duration: formData.duration,
-            price: Number(formData.price),
-            inclusions: formData.inclusions,
-            inventory: formData.inventory,
-            video_url: videoURL ?? "",
-            categories: formData.categories ?? [],
-          };
+      const uploadToast = toast.loading("Adding new destination...");
+      try {
+        const payload = {
+          images: allImages,
+          title: formData.title,
+          slug: convertToSlug(formData.title),
+          minimum_pax: formData.pax,
+          description: formData.description,
+          duration: formData.duration,
+          price: Number(formData.price),
+          inclusions: formData.inclusions,
+          inventory: formData.inventory,
+          video_url: videoURL ?? "",
+          categories: formData.categories ?? [],
+        };
 
-          const createDestination = await useFetch(
-            "/api/destination",
-            authToken,
-            "POST",
-            payload
-          );
-          const createDestinationResult = await createDestination.json();
-          if (createDestinationResult.success) {
-            toast.success(createDestinationResult.message, {
-              id: uploadToast,
-              duration: 3000,
-            });
-            router.back();
-          } else {
-            toast.error(createDestinationResult.message, {
-              id: uploadToast,
-              duration: 3000,
-            });
-          }
-        } catch (error: any) {
-          toast.error(`Destination creation failed: ${error.message}`, {
-            duration: 3000,
+        const createDestination = await useFetch(
+          "/api/destination",
+          authToken,
+          "POST",
+          payload
+        );
+        const createDestinationResult = await createDestination.json();
+        if (createDestinationResult.success) {
+          toast.success(createDestinationResult.message, {
             id: uploadToast,
+            duration: 3000,
+          });
+          router.back();
+        } else {
+          toast.error(createDestinationResult.message, {
+            id: uploadToast,
+            duration: 3000,
           });
         }
+      } catch (error: any) {
+        toast.error(`Destination creation failed: ${error.message}`, {
+          duration: 3000,
+          id: uploadToast,
+        });
       }
     } catch (error) {
       if (error instanceof z.ZodError) {

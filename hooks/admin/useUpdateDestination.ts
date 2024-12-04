@@ -286,9 +286,7 @@ const useUpdateDestination = (
       schema.parse(formData);
 
       // Prepare variables for uploads
-      const images = formData.images;
       let videoURL: string = "";
-      let allImages: string[] = [];
 
       // Upload video if it exists
       const video = formData.video;
@@ -345,13 +343,12 @@ const useUpdateDestination = (
       }
 
       // Upload images if they exist
+      const images = formData.images;
+      let allImages: string[] = [];
+
       if (images && images.length > 0) {
-        let i = 0;
         for (const image of Array.from(images)) {
-          i++;
-          const uploadToast = toast.loading(
-            `Image ${i} of ${images.length} is uploading...`
-          );
+          const toastId = toast.loading(`Image ${image.name} is uploading...`); // Use image.name for informative message
           try {
             const fdImg = new FormData();
             fdImg.append("file", image);
@@ -367,23 +364,19 @@ const useUpdateDestination = (
             const result = await response.json();
             if (result.success) {
               allImages.push(result.data.secure_url);
-              toast.success(
-                `Image ${i} of ${images.length} uploaded successfully!`,
-                {
-                  id: uploadToast,
-                }
-              );
-            } else {
-              toast.error(result.message, {
-                id: uploadToast,
+              toast.success(`Image ${image.name} uploaded successfully!`, {
+                id: toastId,
               });
+            } else {
+              console.warn(
+                `Image upload failed for ${image.name}: ${result.message}`
+              );
               continue;
             }
           } catch (error: any) {
-            toast.error(`Image upload failed: ${error.message}`, {
-              id: uploadToast,
-            });
-            return;
+            console.error(`Image upload failed: ${error.message}`);
+          } finally {
+            toast.dismiss(toastId); 
           }
         }
       }
