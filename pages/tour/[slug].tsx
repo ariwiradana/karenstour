@@ -297,7 +297,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
             ) : (
               <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine h-full aspect-video">
                 <ImageShimmer
-                  sizes="400px"
+                  sizes="600px"
                   onClick={() =>
                     actions.handleToggleLightbox(
                       state.data?.thumbnail_image ??
@@ -324,7 +324,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                   className="overflow-hidden relative shine aspect-square md:aspect-auto"
                 >
                   <ImageShimmer
-                    sizes="200px"
+                    sizes="400px"
                     onClick={() => actions.handleToggleLightbox(image)}
                     priority
                     alt={`image-${index + 1}-${state.data?.slug}`}
