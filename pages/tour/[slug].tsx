@@ -205,7 +205,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
           ></p>
           <button
             aria-label="btn-expand-desc"
-            className="text-primary underline font-semibold text-base mt-4 md:mt-6 hover:underline"
+            className="text-primary underline font-semibold text-base mt-2 md:mt-4 hover:underline"
             onClick={actions.handleToggleExpanded}
           >
             {state.isExpanded ? "Read Less" : "Read More"}

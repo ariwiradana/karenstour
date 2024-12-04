@@ -59,7 +59,7 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
           className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
           <Input
-            disabled
+            onChange={(e) => actions.handleChange(e.target.value, "title")}
             name="title"
             label="Title"
             value={state.formData.title}
