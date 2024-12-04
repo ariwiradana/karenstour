@@ -38,7 +38,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         <div className="flex flex-col justify-between">
           <div>
             <h1
-              className={`font-medium text-dark text-lg md:text-xl mb-3 line-clamp-2 mt-4 ${unbounded.className}`}
+              className={`font-medium text-dark text-lg md:text-xl mb-3 line-clamp-3 mt-4 ${unbounded.className}`}
             >
               {props.data.title}
             </h1>
