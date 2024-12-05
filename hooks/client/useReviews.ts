@@ -1,8 +1,7 @@
 import { Review } from "@/constants/types";
-import moment from "moment";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import toast from "react-hot-toast";
-import { z, ZodSchema } from "zod";
+import { useState } from "react";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 export interface UseReviewsReturn {
   state: {
@@ -16,7 +15,6 @@ export interface UseReviewsReturn {
 }
 
 const useReviews = (): UseReviewsReturn => {
-  const [reviews, setReviews] = useState<Review[]>([]);
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [slidesPerView, setSlidesPerView] = useState<number>(3);
 
@@ -25,29 +23,11 @@ const useReviews = (): UseReviewsReturn => {
     setSlidesPerView(slidesPerView);
   };
 
-  const fetchReviews = useCallback(async () => {
-    try {
-      const url = `/api/client/reviews?page=1&limit=10`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        toast.error(`Error: ${response.status} ${response.statusText}`);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        setReviews(result.data);
-      }
-    } catch (error: any) {
-      toast.error(`Failed to fetch reviews: ${error.message}`);
-    }
-  }, []);
-
-  useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
+  const { data } = useSWR<{ data: Review[] }>(
+    `/api/client/reviews?page=1&limit=10`,
+    fetcher
+  );
+  const reviews = data?.data || [];
 
   return {
     state: {

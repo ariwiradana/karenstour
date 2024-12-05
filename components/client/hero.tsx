@@ -14,7 +14,7 @@ const Hero: FC = () => {
 
   const { state } = usePopularDestination();
 
-  if (state.data.length === 0)
+  if (state.destinations.length === 0)
     return (
       <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] shine"></div>
     );
@@ -32,15 +32,19 @@ const Hero: FC = () => {
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
         allowTouchMove={false}
       >
-        {state.data.map((data, index) => (
-          <SwiperSlide key={`hero-${data.id}`}>
+        {state.destinations.map((destination, index) => (
+          <SwiperSlide key={`hero-${destination.id}`}>
             <div className="relative w-full h-full">
               <ImageShimmer
                 sizes="(max-width: 640px) 320px, (max-width: 768px) 480px, (max-width: 1024px) 720px, 1024px"
                 priority
                 fill
-                src={data.images.length > 2 ? data.images[1] : data.images[0]}
-                alt={`hero-${data.id}`}
+                src={
+                  destination.images.length > 2
+                    ? destination.images[1]
+                    : destination.images[0]
+                }
+                alt={`hero-${destination.id}`}
                 className={`w-full h-full object-cover ${
                   activeIndex === index ? "scale" : ""
                 }`}
@@ -61,7 +65,7 @@ const Hero: FC = () => {
                   <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
                     <div className="ml-1 w-[40px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
                     <span className="text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light">
-                      {data.title}
+                      {destination.title}
                     </span>
                   </div>
                   <div className="md:mt-12 mt-6">

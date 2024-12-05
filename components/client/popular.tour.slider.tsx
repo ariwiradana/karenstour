@@ -37,7 +37,9 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
         <div className="gap-x-2 hidden md:flex mb-10 mt-5">
           {Array.from(
             {
-              length: Math.ceil(state.data.length + 1 - state.slidesPerView),
+              length: Math.ceil(
+                state.destinations.length + 1 - state.slidesPerView
+              ),
             },
             (_, index) => index
           ).map((item) => (
@@ -52,7 +54,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
           ))}
         </div>
 
-        {state.loading ? (
+        {state.isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8">
             <CardShimmer />
             <CardShimmer />
@@ -103,7 +105,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
               }}
               modules={[Autoplay, Grid]}
             >
-              {state.data.map((obj) => {
+              {state.destinations.map((obj) => {
                 return (
                   <SwiperSlide key={obj.id}>
                     <DestinationCard data={obj} />

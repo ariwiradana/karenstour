@@ -2,6 +2,8 @@ import { Category, Destination } from "@/constants/types";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import useAdminCategory from "../admin/useAdminCategory";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 type SortBy = "average_rating" | "d.duration" | "d.price";
 type SortOrder = "asc" | "desc";

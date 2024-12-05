@@ -29,7 +29,7 @@ const Modal = ({ children, isOpen = false, onClose }: ModalProps) => {
         >
           <BiX />
         </button>
-        <div className="overflow-y-auto max-h-[80svh] md:min-w-[70vw] lg:min-w-max md:max-w-[80vw] lg:max-w-[60vw] hide-scrollbar md:p-12 p-8">
+        <div className="overflow-y-auto max-h-[80svh] md:max-w-[80vw] lg:max-w-[60vw] hide-scrollbar md:p-12 p-8">
           {children}
         </div>
       </div>
