@@ -60,7 +60,9 @@ const usePopularDestination = (
     fetcher
   );
 
-  const destinations = data?.data || [];
+  const destinations = exceptionId
+    ? data?.data.filter((d) => d.id !== exceptionId) || []
+    : data?.data || [];
 
   return {
     state: {
