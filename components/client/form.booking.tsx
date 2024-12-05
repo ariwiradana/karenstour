@@ -1,7 +1,6 @@
 import { UseDestinationDetail } from "@/hooks/client/useDestinationDetail";
 import { FC } from "react";
 import CustomInput from "./elements/input";
-import { RiShoppingBag4Fill } from "react-icons/ri";
 import CustomTextarea from "./elements/textarea";
 import { montserrat } from "@/constants/font";
 import moment from "moment";
@@ -108,18 +107,19 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         />
       </div>
 
-      <div className="flex justify-end gap-x-2">
+      <div className="flex justify-end gap-2">
         <ButtonSecondary
+          className="w-full md:w-auto"
           type="button"
           id="btn-cancel-booking"
           title="Cancel"
           onClick={props.actions.handleToggleModal}
         />
         <ButtonPrimary
+          className="w-full md:w-auto"
           id="btn-form-booking"
           disabled={props.state.loadingSubmit}
           type="submit"
-          icon={<RiShoppingBag4Fill className="text-2xl" />}
           title="Booking"
         />
       </div>

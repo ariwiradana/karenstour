@@ -5,7 +5,7 @@ import CustomTextarea from "./elements/textarea";
 import { Pagination, Rating } from "@mui/material";
 import ButtonPrimary from "./elements/button.primary";
 import { Destination } from "@/constants/types";
-import { BiSolidEdit, BiSolidSend, BiSolidStar, BiStar } from "react-icons/bi";
+import { BiSolidStar, BiStar } from "react-icons/bi";
 import { Swiper, SwiperSlide } from "swiper/react";
 import ButtonSecondary from "./elements/button.secondary";
 import Modal from "./elements/modal";
@@ -73,8 +73,9 @@ const ReviewForm: FC<Props> = (props) => {
             onChange={(e) => actions.handleChange(e.target.value, "comments")}
             error={state.errors.comments}
           />
-          <div className="flex gap-x-2 justify-end mt-4">
+          <div className="flex gap-2 justify-end mt-4">
             <ButtonSecondary
+              className="w-full md:w-auto"
               disabled={state.loading}
               type="button"
               id="btn-cancel-review"
@@ -82,7 +83,7 @@ const ReviewForm: FC<Props> = (props) => {
               onClick={actions.handleToggleForm}
             />
             <ButtonPrimary
-              icon={<BiSolidSend />}
+              className="w-full md:w-auto"
               id="btn-submit-review"
               disabled={state.loading}
               type="submit"
@@ -111,7 +112,6 @@ const ReviewForm: FC<Props> = (props) => {
           <ButtonPrimary
             id="btn-open-form"
             onClick={actions.handleToggleForm}
-            icon={<BiSolidEdit />}
             title="Write Review"
           />
         </div>
@@ -123,10 +123,10 @@ const ReviewForm: FC<Props> = (props) => {
                 spaceBetween={8}
                 breakpoints={{
                   0: {
-                    slidesPerView: 3,
+                    slidesPerView: 4,
                   },
                   640: {
-                    slidesPerView: 3,
+                    slidesPerView: 4,
                   },
                   768: {
                     slidesPerView: 6,

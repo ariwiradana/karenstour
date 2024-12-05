@@ -44,7 +44,7 @@ const ReviewItem = (review: ReviewItemProps) => {
       />
       <div className="md:border-r md:min-w-28">
         <div
-          className={`w-20 h-20 bg-dark/5 rounded-full flex justify-center text-dark items-center text-base ${unbounded.className}`}
+          className={`md:w-20 md:h-20 w-16 h-16 bg-dark/5 rounded-full flex justify-center text-dark items-center text-base ${unbounded.className}`}
         >
           {getInitials(review.review.user_name)}
         </div>

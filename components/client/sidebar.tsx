@@ -27,13 +27,14 @@ const Sidebar: FC<SidebarProps> = (props) => {
         <SidebarItem onClose={props.close} title="Home" path="/" />
         <SidebarItem onClose={props.close} hasChild title="Tour" path="/tour">
           {state.data.map((item) => (
-            <Link
-              key={`nav-child-${item.slug}`}
-              href={`/tour/${item.slug}`}
-              className={`text-darkgray hover:underline text-xs ${montserrat.className}`}
-            >
-              - {item.title}
-            </Link>
+            <li key={`nav-child-${item.slug}`}>
+              <Link
+                href={`/tour/${item.slug}`}
+                className={`text-darkgray hover:underline text-xs ${montserrat.className}`}
+              >
+                {item.title}
+              </Link>
+            </li>
           ))}
         </SidebarItem>
       </ul>

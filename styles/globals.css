@@ -88,3 +88,11 @@ button:disabled {
 .description h4 {
   @apply text-xl mb-4;
 }
+
+.hide-scrollbar {
+  -webkit-overflow-scrolling: touch; /* For smooth scrolling */
+
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}

@@ -143,7 +143,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 <Inclusion state={state} actions={actions} />
                 <Inventory state={state} actions={actions} />
               </div>
-              <div className="col-span-2 flex flex-col gap-6 md:gap-10 sticky top-20 md:h-[60vh] z-10">
+              <div className="col-span-2 flex flex-col gap-6 md:gap-10 sticky top-20 lg:h-[60vh] z-10">
                 <div className="flex flex-col gap-y-2">
                   <Accordion
                     title="Book by Whatsapp"

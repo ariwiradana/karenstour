@@ -1,16 +1,20 @@
 import { montserrat } from "@/constants/font";
 import React, { useRef, useState } from "react";
+import { BiUpload } from "react-icons/bi";
 
-interface InputFileCustomProps extends React.InputHTMLAttributes<HTMLInputElement> {
+interface InputFileCustomProps
+  extends React.InputHTMLAttributes<HTMLInputElement> {
   onFileSelected: (files: FileList | null) => void;
   label: string;
   photos: FileList | null | undefined;
+  required?: boolean;
 }
 
 const InputFileCustom: React.FC<InputFileCustomProps> = ({
   onFileSelected,
   label,
   photos,
+  required = false,
   ...props
 }) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
@@ -45,36 +49,58 @@ const InputFileCustom: React.FC<InputFileCustomProps> = ({
   };
 
   return (
-    <div
-      className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors duration-300 ${
-        isDragging ? "border-primary bg-primary/5" : "border-gray-300 bg-white"
-      }`}
-      onDragOver={handleDragOver}
-      onDragLeave={handleDragLeave}
-      onDrop={handleDrop}
-    >
-      <input
-        {...props}
-        type="file"
-        multiple
-        ref={fileInputRef}
-        onChange={handleFileChange}
-        className="hidden"
-      />
+    <div>
+      <p
+        className={`text-sm mb-1 font-medium text-darkgray ml-1 ${montserrat.className}`}
+      >
+        {label}
+        {required ? "*" : ""}
+      </p>
+      <div
+        className={`border-2 border-dashed rounded-lg p-8 text-center transition-colors duration-300 ${
+          isDragging
+            ? "border-primary bg-primary/5"
+            : "border-gray-300 bg-white"
+        }`}
+        onDragOver={handleDragOver}
+        onDragLeave={handleDragLeave}
+        onDrop={handleDrop}
+      >
+        <input
+          {...props}
+          type="file"
+          multiple
+          ref={fileInputRef}
+          onChange={handleFileChange}
+          className="hidden"
+        />
 
-      <div className="flex flex-col items-center">
-        <button
-          type="button"
-          onClick={handleClick}
-          className="px-4 py-2 bg-primary text-sm text-white rounded-xl transition-colors duration-300 mb-2"
-        >
-          {label}
-        </button>
-        <p className={`text-dark/60 text-sm ${montserrat.className}`}>
-          {photos && photos.length > 0
-            ? `${photos.length} files selected`
-            : "or drag and drop files here"}
-        </p>
+        <div className="flex flex-col items-center justify-center gap-3">
+          <BiUpload className="text-2xl text-dark" />
+          <p
+            className={`text-dark/60 text-sm text-center ${montserrat.className}`}
+          >
+            Drag and drop files here or
+            <span>
+              {" "}
+              <button
+                type="button"
+                onClick={handleClick}
+                className="text-dark underline font-medium"
+              >
+                Choose File
+              </button>
+            </span>
+          </p>
+          {photos && photos?.length > 0 && (
+            <p
+              className={`text-dark text-sm text-center ${montserrat.className}`}
+            >
+              {photos.length} files selected
+            </p>
+          )}
+          <p></p>
+        </div>
       </div>
     </div>
   );
