@@ -26,11 +26,13 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     const { file } = files as Files;
 
     const folder = process.env.NODE_ENV || "development";
-    console.log(folder);
 
     if (file?.length) {
       const result = await cloudinary.uploader.upload(file[0].filepath, {
+        folder,
         transformation: {
+          width: 1920,
+          crop: "scale",
           fetch_format: "auto",
           quality: "auto",
         },

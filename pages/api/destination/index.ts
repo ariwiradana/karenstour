@@ -226,7 +226,10 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         allURLS.push(videoURL);
       }
 
-      const allPublicIDs = allURLS.map((url) => getCloudinaryID(url));
+      const env = process.env.NODE_ENV || "development";
+      const allPublicIDs = allURLS.map(
+        (url) => `${env}/${getCloudinaryID(url)}`
+      );
       if (allPublicIDs.length > 0)
         await cloudinary.api.delete_resources(allPublicIDs);
 

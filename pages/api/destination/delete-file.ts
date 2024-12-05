@@ -18,7 +18,8 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
   try {
     const publicId = getCloudinaryID(url as string);
-    const result = await cloudinary.uploader.destroy(publicId);
+    const env = process.env.NODE_ENV || "development";
+    const result = await cloudinary.uploader.destroy(`${env}/${publicId}`);
 
     const queryGet = {
       text: "SELECT * FROM destination WHERE id = $1",

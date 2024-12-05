@@ -76,7 +76,7 @@ const AdminDestinationPage = (props: PageProps) => {
                       <div>
                         <p className="text-darkgray text-sm">Thumbnail</p>
                         <h1 className="font-medium">
-                          {destination.video_url ? "✅" : "❌"}
+                          {destination.thumbnail_image ? "✅" : "❌"}
                         </h1>
                       </div>
                       <div className="mt-1">

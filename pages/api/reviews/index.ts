@@ -121,7 +121,10 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       if (rows[0]) {
         const currentReview: Review = rows[0];
         if (currentReview.photos && currentReview.photos.length > 0) {
-          const publicIds = currentReview.photos.map((p) => getCloudinaryID(p));
+          const env = process.env.NODE_ENV || "development";
+          const publicIds = currentReview.photos.map(
+            (p) => `${env}/${getCloudinaryID(p)}`
+          );
           await cloudinary.api.delete_resources(publicIds);
         }
         await sql.query(`DELETE FROM reviews WHERE id = $1`, [id]);
