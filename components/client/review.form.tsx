@@ -14,6 +14,7 @@ import FsLightbox from "fslightbox-react";
 import ReviewItem from "./elements/review.item";
 import useDestinationReviews from "@/hooks/client/useDestinationReviews";
 import InputFileCustom from "./elements/input.file.custom";
+import { Autoplay } from "swiper/modules";
 
 interface Props {
   destination: Destination;
@@ -116,73 +117,77 @@ const ReviewForm: FC<Props> = (props) => {
           />
         </div>
 
-        {state.reviews?.length > 0 && (
-          <div className="pt-8">
-            {state.allReviewPhotos.length > 0 && (
-              <Swiper
-                spaceBetween={8}
-                breakpoints={{
-                  0: {
-                    slidesPerView: 4,
-                  },
-                  640: {
-                    slidesPerView: 4,
-                  },
-                  768: {
-                    slidesPerView: 6,
-                  },
-                  1024: {
-                    slidesPerView: 12,
-                  },
-                }}
-              >
-                {state.allReviewPhotos.map((p, i) => {
-                  return (
-                    <SwiperSlide key={p}>
-                      <div
-                        onClick={() => actions.handleToggleLightbox(p)}
-                        className="w-full aspect-square bg-dark/5 relative rounded-xl overflow-hidden cursor-pointer"
-                      >
-                        <ImageShimmer
-                          fill
-                          priority
-                          className="object-cover rounded-xl"
-                          src={p}
-                          alt={`all-photo-${i}`}
-                        />
-                      </div>
-                    </SwiperSlide>
-                  );
-                })}
-              </Swiper>
-            )}
+        <div className="pt-8">
+          {state.allReviewPhotos.length > 0 && (
+            <Swiper
+              autoplay={{
+                disableOnInteraction: false,
+                delay: 4000,
+                pauseOnMouseEnter: true,
+              }}
+              modules={[Autoplay]}
+              spaceBetween={8}
+              breakpoints={{
+                0: {
+                  slidesPerView: 4,
+                },
+                640: {
+                  slidesPerView: 4,
+                },
+                768: {
+                  slidesPerView: 6,
+                },
+                1024: {
+                  slidesPerView: 12,
+                },
+              }}
+            >
+              {state.allReviewPhotos.map((p, i) => {
+                return (
+                  <SwiperSlide key={p}>
+                    <div
+                      onClick={() => actions.handleToggleLightbox(p)}
+                      className="w-full aspect-square bg-dark/5 relative rounded-xl overflow-hidden cursor-pointer"
+                    >
+                      <ImageShimmer
+                        fill
+                        priority
+                        className="object-cover rounded-xl"
+                        src={p}
+                        alt={`all-photo-${i}`}
+                      />
+                    </div>
+                  </SwiperSlide>
+                );
+              })}
+            </Swiper>
+          )}
 
+          {state.reviews?.length > 0 && (
             <div className="divide-y mt-8 border-t">
               {state.reviews.map((r) => (
                 <ReviewItem key={`review-${r.id}`} review={r} />
               ))}
             </div>
+          )}
 
-            {Math.ceil(state.totalRows / state.limit) > 1 && (
-              <div className="mt-6 flex justify-center">
-                <Pagination
-                  sx={{
-                    "& .MuiPaginationItem-root.Mui-selected": {
-                      backgroundColor: "#317039",
-                    },
-                  }}
-                  shape="rounded"
-                  count={Math.ceil(state.totalRows / state.limit)}
-                  page={state.page}
-                  onChange={(event, page) =>
-                    actions.handleChangePagination(page)
-                  }
-                  color="primary"
-                />
-              </div>
-            )}
-          </div>
-        )}
+          {Math.ceil(state.totalRows / state.limit) > 1 && (
+            <div className="mt-6 flex justify-center">
+              <Pagination
+                sx={{
+                  "& .MuiPaginationItem-root.Mui-selected": {
+                    backgroundColor: "#317039",
+                  },
+                }}
+                shape="rounded"
+                count={Math.ceil(state.totalRows / state.limit)}
+                page={state.page}
+                onChange={(event, page) => actions.handleChangePagination(page)}
+                color="primary"
+              />
+            </div>
+          )}
+        </div>
       </div>
     </>
   );
