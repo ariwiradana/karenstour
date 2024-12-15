@@ -1,6 +1,5 @@
 import { NextApiResponse } from "next";
 import { NextApiRequest } from "next";
-// pages/api/auth/register.ts
 import bcrypt from "bcryptjs";
 import { errorResponse, successResponse } from "@/utils/response";
 import sql from "@/lib/db";
