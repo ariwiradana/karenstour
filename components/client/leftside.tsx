@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from "react";
+import React, { FC, ReactNode, useEffect } from "react";
 
 interface LeftSideProps {
   open: boolean;
@@ -7,6 +7,14 @@ interface LeftSideProps {
 }
 
 const LeftSide: FC<LeftSideProps> = (props) => {
+  useEffect(() => {
+    if (props.open) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [props.open]);
+
   return (
     <div
       onClick={props.close}
