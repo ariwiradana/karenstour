@@ -291,6 +291,13 @@ const useDestinationDetail = (
       const result = await response.json();
       if (result.success) {
         const data = result?.data[0];
+        if ("review_images" in data) {
+          const flatReviewImages = data.review_images.flatMap(
+            (img: string) => img
+          );
+
+          data["images"] = [...data["images"], ...flatReviewImages];
+        }
         setData(data);
         setFormData((prevFormData) => ({
           ...prevFormData,
@@ -312,8 +319,6 @@ const useDestinationDetail = (
   const handleToggleExpanded = () => {
     setIsExpanded((prev) => !prev);
   };
-
-  console.log({ data });
 
   const hasVideo = data?.video_url ? true : false;
   const images = hasVideo

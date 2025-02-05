@@ -43,7 +43,8 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       SELECT 
         d.*, 
         ROUND(AVG(r.rating), 1) AS average_rating, 
-        COUNT(r.id) AS review_count
+        COUNT(r.id) AS review_count,
+        array_cat(d.images, array_agg(r.photos)) AS all_images
       FROM destination d
       LEFT JOIN reviews r ON d.id = r.destination_id
       WHERE d.title ILIKE $1

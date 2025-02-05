@@ -49,7 +49,9 @@ const initialFormData: Form = {
   photos: null,
 };
 
-const useDestinationReviews = (destinationId?: number): UseDestinationReviewsReturn => {
+const useDestinationReviews = (
+  destinationId?: number
+): UseDestinationReviewsReturn => {
   const [reviews, setReviews] = useState<Review[]>([]);
   const [allReviewPhotos, setAllReviewPhotos] = useState<string[]>([]);
   const [formData, setFormData] = useState<Form>(initialFormData);

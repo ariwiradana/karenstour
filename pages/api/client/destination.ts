@@ -33,14 +33,14 @@ export default async function handler(
     const values: (string | number | string[])[] = [searchTerm];
 
     let text = `
-    SELECT 
-      d.*,
-      ROUND(AVG(r.rating), 1) AS average_rating, 
-      COUNT(r.id) AS review_count
-    FROM destination d
-    LEFT JOIN reviews r ON d.id = r.destination_id
-    WHERE d.title ILIKE $1
-  `;
+      SELECT 
+        d.*, 
+        ROUND(AVG(r.rating), 1) AS average_rating, 
+        COUNT(r.id) AS review_count
+      FROM destination d
+      LEFT JOIN reviews r ON d.id = r.destination_id
+      WHERE d.title ILIKE $1
+    `;
 
     // Count query
     let countText = `
@@ -110,6 +110,16 @@ export default async function handler(
         sql.query(text, values),
         sql.query(countText, values), // Apply values to both queries
       ]);
+
+      if (slug) {
+        const currentDestinationId = rows[0].id;
+        const { rows: reviewImages } = await sql.query(
+          `SELECT photos FROM reviews WHERE destination_id = $1`,
+          [currentDestinationId]
+        );
+        const images = reviewImages.flatMap((img) => img.photos);
+        rows[0].images = [...rows[0].images, ...images];
+      }
 
       return successResponse(response, "GET", "destination", rows, total_count);
     } catch (error) {

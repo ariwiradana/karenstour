@@ -300,7 +300,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                 </div>
               </div>
             ) : (
-              <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine h-full aspect-video">
+              <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 h-full aspect-video">
                 <ImageShimmer
                   sizes="600px"
                   onClick={() =>
@@ -326,7 +326,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
               return (
                 <div
                   key={index}
-                  className="overflow-hidden relative shine aspect-square md:aspect-auto"
+                  className="overflow-hidden relative aspect-square md:aspect-auto"
                 >
                   <ImageShimmer
                     sizes="400px"
