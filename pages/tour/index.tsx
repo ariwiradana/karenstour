@@ -22,7 +22,14 @@ const ServiceList: FC<Props> = () => {
   return (
     <Layout still>
       <SEO
-        url={typeof window !== "undefined" ? window.location.origin : ""}
+        keywords={
+          state.data.length > 0 ? state.data[0].categories.join(", ") : ""
+        }
+        url={
+          typeof window !== "undefined"
+            ? `${window.location.origin}/tour`
+            : ""
+        }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
         description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."

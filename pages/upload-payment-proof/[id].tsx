@@ -22,7 +22,8 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
   return (
     <Layout still>
       <SEO
-        url={typeof window !== "undefined" ? window.location.origin : ""}
+        keywords=""
+        url={typeof window !== "undefined" ? `${window.location.origin}/${props.id}` : ""}
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
         description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."

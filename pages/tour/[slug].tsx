@@ -49,8 +49,12 @@ const ServiceDetail: FC<PageProps> = (props) => {
   return (
     <>
       <SEO
-        keywords=""
-        url={typeof window !== "undefined" ? window.location.origin : ""}
+        keywords={state.data ? state.data?.categories.join(", ") : ""}
+        url={
+          typeof window !== "undefined"
+            ? `${window.location.origin}/tour/${state.data?.slug}`
+            : ""
+        }
         image="/images/logo.png"
         title={`${
           state.data ? state.data?.title : "Bali Tour Experience"
