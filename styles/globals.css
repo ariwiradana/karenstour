@@ -96,3 +96,7 @@ button:disabled {
     display: none;
   }
 }
+
+.no-scroll {
+  @apply overflow-hidden;
+}

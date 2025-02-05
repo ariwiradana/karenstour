@@ -7,7 +7,6 @@ import ButtonPrimary from "./elements/button.primary";
 import { Destination } from "@/constants/types";
 import { BiSolidStar, BiStar } from "react-icons/bi";
 import { Swiper, SwiperSlide } from "swiper/react";
-import ButtonSecondary from "./elements/button.secondary";
 import Modal from "./elements/modal";
 import ImageShimmer from "./elements/image.shimmer";
 import FsLightbox from "fslightbox-react";
@@ -30,12 +29,16 @@ const ReviewForm: FC<Props> = (props) => {
         sources={state.allReviewPhotos}
         slide={state.lightboxPhoto.slide}
       />
-      <Modal isOpen={state.isOpenForm} onClose={actions.handleToggleForm}>
-        <form
-          onSubmit={actions.handleSubmit}
-          className={`flex flex-col gap-6 ${unbounded.className}`}
-        >
-          <h1 className="font-semibold text-dark text-xl">Write a Review</h1>
+      <Modal
+        buttonApproveTitle="Write"
+        title="Write a Review"
+        isOpen={state.isOpenForm}
+        onClose={actions.handleToggleForm}
+        onApprove={actions.handleSubmit}
+        onCancel={actions.handleToggleForm}
+        isLoading={state.loading}
+      >
+        <form className={`flex flex-col gap-6 ${unbounded.className}`}>
           <InputFileCustom
             photos={state.formData.photos}
             name="photos"
@@ -74,23 +77,6 @@ const ReviewForm: FC<Props> = (props) => {
             onChange={(e) => actions.handleChange(e.target.value, "comments")}
             error={state.errors.comments}
           />
-          <div className="flex gap-2 justify-end mt-4">
-            <ButtonSecondary
-              className="w-full md:w-auto"
-              disabled={state.loading}
-              type="button"
-              id="btn-cancel-review"
-              title="Cancel"
-              onClick={actions.handleToggleForm}
-            />
-            <ButtonPrimary
-              className="w-full md:w-auto"
-              id="btn-submit-review"
-              disabled={state.loading}
-              type="submit"
-              title="Submit"
-            />
-          </div>
         </form>
       </Modal>
       <div

@@ -1,36 +1,87 @@
-import React, { memo, ReactNode } from "react";
+import { montserrat } from "@/constants/font";
+import React, { memo, ReactNode, useEffect } from "react";
 import { BiX } from "react-icons/bi";
+import ButtonSecondary from "./button.secondary";
+import ButtonPrimary from "./button.primary";
 
 interface ModalProps {
   isOpen: boolean;
   children: ReactNode;
+  isLoading?: boolean;
+  title: string;
+  buttonApproveTitle: string;
+  buttonCancelTitle?: string;
   onClose: () => void;
+  onApprove: () => void;
+  onCancel: () => void;
 }
 
-const Modal = ({ children, isOpen = false, onClose }: ModalProps) => {
+const Modal = ({
+  children,
+  isOpen = false,
+  onClose,
+  onApprove,
+  onCancel,
+  buttonApproveTitle,
+  buttonCancelTitle = "Cancel",
+  title,
+  isLoading = false,
+}: ModalProps) => {
+  useEffect(() => {
+    if (isOpen) {
+      document.body.classList.add("no-scroll");
+    } else {
+      document.body.classList.remove("no-scroll");
+    }
+  }, [isOpen]);
   return (
     <div
       onClick={onClose}
-      className={`fixed inset-0 bg-black/80 flex justify-center items-end md:items-center z-[999] transition-all ease-in-out duration-500 ${
+      className={`fixed inset-0 bg-black/80 flex justify-center items-end md:items-center z-[999] transition-all ease-in-out duration-200 ${
         isOpen ? "visible opacity-100" : "invisible opacity-0"
       }`}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`rounded-t-xl md:rounded-xl bg-white relative transition-all ease-in-out duration-500 delay-200 transform w-full md:w-auto md:min-w-[40vw] ${
+        className={`rounded-t-xl md:rounded-xl bg-white relative transition-all ease-in-out duration-200 delay-200 transform w-full md:w-auto md:min-w-[40vw] ${
           isOpen
             ? "opacity-100 translate-y-0 h-auto"
             : "opacity-0 translate-y-4 -h-8 md:h-auto"
         }`}
       >
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 md:top-6 md:right-6 text-dark/60 hover:text-dark text-2xl transition-colors ease-in-out duration-300"
-        >
-          <BiX />
-        </button>
-        <div className="overflow-y-auto max-h-[80svh] md:max-w-[80vw] lg:max-w-[60vw] hide-scrollbar md:p-12 p-8">
+        <div className="flex justify-between border-b px-6 py-4">
+          <h2
+            className={`font-semibold text-dark text-xl whitespace-nowrap ${montserrat.className}`}
+          >
+            {title}
+          </h2>
+          <button
+            onClick={onClose}
+            className="text-dark/60 -mr-1 hover:text-dark text-2xl transition-colors ease-in-out duration-200 "
+          >
+            <BiX />
+          </button>
+        </div>
+        <div className="overflow-y-auto max-h-[70svh] md:max-w-[70vw] lg:max-w-[60vw] hide-scrollbar p-6">
           {children}
+        </div>
+
+        <div className="flex justify-end gap-2 border-t px-6 py-4">
+          <ButtonPrimary
+            onClick={onApprove}
+            className="w-full md:w-auto"
+            id={`approve-${title}`}
+            isLoading={isLoading}
+            title={buttonApproveTitle}
+          />
+          <ButtonSecondary
+            className="w-full md:w-auto"
+            type="button"
+            id={`cancel-${title}`}
+            title={buttonCancelTitle}
+            onClick={onCancel}
+            disabled={isLoading}
+          />
         </div>
       </div>
     </div>

@@ -66,7 +66,15 @@ const ServiceDetail: FC<PageProps> = (props) => {
         }
       />
 
-      <Modal isOpen={state.isOpen} onClose={actions.handleToggleModal}>
+      <Modal
+        buttonApproveTitle="Booking"
+        onApprove={actions.handleSubmit}
+        isOpen={state.isOpen}
+        onClose={actions.handleToggleModal}
+        onCancel={actions.handleToggleModal}
+        title="Booking Form"
+        isLoading={state.loadingSubmit}
+      >
         <FormBooking state={state} actions={actions} />
       </Modal>
 

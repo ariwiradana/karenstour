@@ -47,7 +47,7 @@ export interface UseDestinationDetail {
   actions: {
     handleToggleExpanded: () => void;
     handleToggleLightbox: (image: string) => void;
-    handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
+    handleSubmit: () => void;
     handleChange: (value: number | string, name: string) => void;
     setFormData: React.Dispatch<React.SetStateAction<FormData>>;
     handleToggleModal: () => void;
@@ -153,9 +153,7 @@ const useDestinationDetail = (
     }));
   };
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-
+  const handleSubmit = async () => {
     const subtotal = (data?.price ?? 0) * Number(formData.pax);
     const taxrate = 0.05;
     const { grandTotal, tax } = calculateTotalPrice(subtotal, taxrate);
@@ -228,6 +226,7 @@ const useDestinationDetail = (
           initData["pax"] = data?.minimum_pax ?? 2;
           setFormData(initData);
           setErrors({});
+          handleToggleModal();
         } else {
           toast.error(bookingResponse.message, { id: toastId });
         }

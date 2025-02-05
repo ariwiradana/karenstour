@@ -33,7 +33,7 @@ export interface UseDestinationReviewsReturn {
   };
   actions: {
     handleChange: (value: string | number, name: string) => void;
-    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    handleSubmit: () => Promise<void>;
     handleActiveIndex: (index: number, slidesPerView: number) => void;
     handleToggleForm: () => void;
     handleToggleLightbox: (photo: string) => void;
@@ -186,8 +186,7 @@ const useDestinationReviews = (destinationId?: number): UseDestinationReviewsRet
     return photoURLs;
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     setErrors({});
     setLoading(true);
 

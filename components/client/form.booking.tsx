@@ -4,17 +4,15 @@ import CustomInput from "./elements/input";
 import CustomTextarea from "./elements/textarea";
 import { montserrat } from "@/constants/font";
 import moment from "moment";
-import ButtonPrimary from "./elements/button.primary";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import CustomInputNumber from "./elements/input.number";
-import ButtonSecondary from "./elements/button.secondary";
 
 const FormBooking: FC<UseDestinationDetail> = (props) => {
   const bookingDate = props.state.formData.bookingDate;
   const formattedDate = moment(bookingDate).format("YYYY-MM-DD");
 
   return (
-    <form onSubmit={props.actions.handleSubmit} className="flex flex-col gap-6">
+    <form className="flex flex-col gap-6">
       <div className="grid lg:grid-cols-2 gap-6 border-b pb-6 border-dashed">
         <div>
           <p
@@ -107,7 +105,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         />
       </div>
 
-      <div className="flex justify-end gap-2">
+      {/* <div className="flex justify-end gap-2">
         <ButtonSecondary
           className="w-full md:w-auto"
           type="button"
@@ -122,7 +120,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
           type="submit"
           title="Booking"
         />
-      </div>
+      </div> */}
     </form>
   );
 };
