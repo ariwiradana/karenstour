@@ -1,5 +1,5 @@
 import { montserrat } from "@/constants/font";
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { BiMinus, BiPlus } from "react-icons/bi";
 
 interface Props extends React.InputHTMLAttributes<HTMLInputElement> {
@@ -93,4 +93,4 @@ const CustomInputNumber: FC<Props> = ({
   );
 };
 
-export default CustomInputNumber;
+export default memo(CustomInputNumber);

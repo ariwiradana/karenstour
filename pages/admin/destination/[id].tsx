@@ -1,6 +1,6 @@
 import Layout from "@/components/admin/layout";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, memo } from "react";
 import Input from "@/components/admin/elements/input";
 import ButtonPrimary from "@/components/admin/elements/button.primary";
 import { HiChevronLeft } from "react-icons/hi2";
@@ -258,4 +258,4 @@ export const getServerSideProps: GetServerSideProps = async ({
   };
 };
 
-export default UpdateDestinationPage;
+export default memo(UpdateDestinationPage);

@@ -16,12 +16,12 @@ export default async function register(
     req.body;
 
   try {
-    const { rowCount } = await sql.query(
+    const { rows } = await sql.query(
       `SELECT * FROM users WHERE username = $1`,
       [username]
     );
 
-    if (rowCount && rowCount > 0) {
+    if (rows.length > 0) {
       return errorResponse(res, {
         message:
           "This username is already in use. Please choose a different username.",

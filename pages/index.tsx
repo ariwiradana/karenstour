@@ -13,6 +13,7 @@ const Home: FC<Props> = () => {
   return (
     <>
       <SEO
+        keywords=""
         url={typeof window !== "undefined" ? window.location.origin : ""}
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"

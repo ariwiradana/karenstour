@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { memo, ReactNode } from "react";
 import { BiX } from "react-icons/bi";
 
 interface ModalProps {
@@ -37,4 +37,4 @@ const Modal = ({ children, isOpen = false, onClose }: ModalProps) => {
   );
 };
 
-export default Modal;
+export default memo(Modal);

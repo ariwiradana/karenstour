@@ -1,3 +1,5 @@
+import { Contact } from "./types";
+
 interface Destination {
   imageURL: string;
   path: string;
@@ -60,12 +62,12 @@ export const bookingSteps: string[] = [
   "complete",
 ];
 
-export const contact: Record<string, string> = {
+export const contact: Contact = {
   address: "Br. Ayah, Kelusa, Kec. Payangan, Gianyar, Bali, 80572",
   email: "mailto:karenstourtravel@gmail.com",
   phone: "+6281246768627",
   whatsapp: "https://api.whatsapp.com/send?phone=+6281246768627",
   instagram: "https://www.instagram.com/karenstourtravel",
-  copyright: "© 2024 Karen's Tour Bali. All Rights Reserved.",
+  copyright: "© 2025 Karen's Tour Bali. All Rights Reserved.",
   company: "Karen's Tour",
 };

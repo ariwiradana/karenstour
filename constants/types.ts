@@ -85,3 +85,13 @@ export interface Auth {
   authToken: string;
   authUser: string;
 }
+
+export interface Contact {
+  address: string;
+  email: string;
+  phone: string;
+  whatsapp: string;
+  instagram: string;
+  copyright: string;
+  company: string;
+}

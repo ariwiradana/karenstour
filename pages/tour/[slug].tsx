@@ -10,7 +10,7 @@ import { montserrat, unbounded } from "@/constants/font";
 import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
 import PopularTourSlider from "@/components/client/popular.tour.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
@@ -49,6 +49,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
   return (
     <>
       <SEO
+        keywords=""
         url={typeof window !== "undefined" ? window.location.origin : ""}
         image="/images/logo.png"
         title={`${
@@ -371,4 +372,4 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   };
 };
 
-export default ServiceDetail;
+export default memo(ServiceDetail);
