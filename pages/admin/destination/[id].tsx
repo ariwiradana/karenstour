@@ -210,8 +210,10 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
             />
           </div>
           <Input
+            inputMode="numeric"
             className="col-span-3"
             name="price"
+            type="tel"
             label="Price"
             onChange={(e) => actions.handleChange(e.target.value, "price")}
             value={state.formData.price}
