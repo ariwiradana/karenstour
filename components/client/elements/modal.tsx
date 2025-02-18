@@ -66,7 +66,7 @@ const Modal = ({
           {children}
         </div>
 
-        <div className="flex justify-end gap-2 border-t px-6 py-4">
+        <div className="flex justify-end gap-4 border-t p-6">
           <ButtonPrimary
             onClick={onApprove}
             className="w-full md:w-auto"

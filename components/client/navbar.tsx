@@ -44,7 +44,7 @@ const Navbar: FC<NavbarProps> = () => {
         <Sidebar close={actions.handleShowMenu} />
       </LeftSide>
       <ol
-        className={`w-full flex justify-between items-center max-w-screen-xl transition-all ease-in-out duration-300 delay-75 mx-auto ${
+        className={`w-full px-4 flex justify-between items-center max-w-screen-xl transition-all ease-in-out duration-300 delay-75 mx-auto ${
           state.isTop ? "py-6" : "py-4"
         } md:py-0`}
       >
