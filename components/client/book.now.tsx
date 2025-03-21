@@ -11,7 +11,7 @@ const BookNow: React.FC = () => {
       className="relative py-16 lg:py-28 bg-fixed bg-center bg-cover bg-no-repeat"
       style={{ backgroundImage: `url('/images/hero.webp')` }}
     >
-      <div className="absolute inset-0 bg-gradient-to-b from-[#00000044] to-[#81a263d2] bg-opacity-30"></div>
+      <div className="absolute inset-0 bg-gradient-to-b bg-primary/50 backdrop-blur-sm"></div>
       <div
         className={`relative z-10 flex items-center justify-center h-full ${unbounded.className}`}
       >

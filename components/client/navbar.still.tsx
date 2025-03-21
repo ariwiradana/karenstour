@@ -40,7 +40,7 @@ const NavbarStill: FC<NavbarProps> = () => {
         <Sidebar close={actions.handleShowMenu} />
       </LeftSide>
       <ol
-        className={`w-full px-4 flex justify-between items-center max-w-screen-xl transition-all ease-in-out duration-500 delay-200 mx-auto py-4 lg:py-0`}
+        className={`w-full md:px-4 flex justify-between items-center max-w-screen-xl transition-all ease-in-out duration-500 delay-200 mx-auto py-4 lg:py-0`}
       >
         <li className="list-none md:hidden flex items-center">
           <button

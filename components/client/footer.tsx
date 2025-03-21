@@ -76,14 +76,14 @@ const Footer: FC = () => {
             </h1>
           </Link>
         </div>
-        <div className="mt-6">
+        {/* <div className="mt-6">
           <p className="text-darkgray font-light text-xs">
             {t("footer.address")}
           </p>
           <h2 className="text-dark font-medium text-base lg:text-xl">
             {contact.address}
           </h2>
-        </div>
+        </div> */}
         <div className="mt-6">
           <p className="text-darkgray font-light text-xs">
             {t("footer.social")}

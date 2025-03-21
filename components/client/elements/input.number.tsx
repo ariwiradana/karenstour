@@ -46,7 +46,7 @@ const CustomInputNumber: FC<Props> = ({
 
   return (
     <div className={`flex flex-col ${montserrat.className}`}>
-      <p className="text-sm mb-1 font-medium text-darkgray ml-1">
+      <p className="text-sm mb-1 text-darkgray ml-1">
         {label}
         {required ? "*" : ""}
       </p>

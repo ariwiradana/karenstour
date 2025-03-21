@@ -12,10 +12,7 @@ interface Props extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {
 const CustomTextarea: FC<Props> = (props) => {
   return (
     <div className={`flex flex-col ${montserrat.className}`}>
-      <label
-        className="text-sm mb-1 font-medium text-darkgray ml-1"
-        htmlFor={props.id}
-      >
+      <label className="text-sm mb-1 text-darkgray ml-1" htmlFor={props.id}>
         {props.label}
         {props.required ? "*" : ""}
       </label>

@@ -21,7 +21,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
             Total Price
           </p>
           <h1
-            className={`font-bold text-dark text-3xl whitespace-nowrap ${montserrat.className}`}
+            className={`font-bold text-dark text-2xl md:text-3xl whitespace-nowrap ${montserrat.className}`}
           >
             {currencyIDR(
               props.state.formData.pax * (props.state.data?.price ?? 0)
@@ -30,7 +30,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         </div>
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
         <div className="flex gap-x-2">
           <CustomInput
             onChange={(e) => props.actions.handleChange(e.target.value, "name")}
@@ -104,23 +104,6 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
           error={props.state.errors.message}
         />
       </div>
-
-      {/* <div className="flex justify-end gap-2">
-        <ButtonSecondary
-          className="w-full md:w-auto"
-          type="button"
-          id="btn-cancel-booking"
-          title="Cancel"
-          onClick={props.actions.handleToggleModal}
-        />
-        <ButtonPrimary
-          className="w-full md:w-auto"
-          id="btn-form-booking"
-          disabled={props.state.loadingSubmit}
-          type="submit"
-          title="Booking"
-        />
-      </div> */}
     </form>
   );
 };

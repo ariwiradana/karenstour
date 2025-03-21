@@ -1,4 +1,4 @@
-import { unbounded } from "@/constants/font";
+import { montserrat } from "@/constants/font";
 import React, { FC, ReactNode } from "react";
 import { BiLoaderAlt } from "react-icons/bi";
 
@@ -24,9 +24,9 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
       aria-label={props.id ?? props.title.replace(" ", "-").toLowerCase()}
       disabled={props.disabled}
       onClick={props.onClick}
-      className={`${unbounded.className} ${
+      className={`${montserrat.className} ${
         props.className
-      } flex items-center gap-x-3 h-auto w-auto justify-center text-nowrap outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-sm transition-colors ease-in-out duration-500 text-white ${
+      } flex items-center gap-x-3 h-auto w-auto font-medium justify-center text-nowrap outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-sm transition-colors ease-in-out duration-500 text-white ${
         props.disabled || isLoading
           ? "bg-gray-400 pointer-events-none cursor-not-allowed"
           : "bg-primary pointer-events-auto"

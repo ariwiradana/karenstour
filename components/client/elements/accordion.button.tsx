@@ -1,4 +1,4 @@
-import { unbounded } from "@/constants/font";
+import { montserrat } from "@/constants/font";
 import React, { ReactNode, useState } from "react";
 
 interface AccordionProps {
@@ -21,13 +21,13 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
   return (
     <div
       className={`bg-lightgray rounded-xl overflow-hidden border border-dashed ${
-        unbounded.className
+        montserrat.className
       } ${isOpen ? "border-primary/10" : "border-transparent"}`}
     >
       <button
         aria-label={`btn-${title.replace(" ", "-").toLowerCase()}`}
         onClick={handleClickButton}
-        className={`w-full text-center text-white font-normal text-sm py-4 px-6 flex justify-center items-center focus:outline-none bg-primary border border-dashed ${
+        className={`w-full text-center text-white font-medium text-sm py-4 px-6 flex justify-center items-center focus:outline-none bg-primary border border-dashed ${
           isOpen ? "border-primary" : "border-transparent"
         }`}
       >

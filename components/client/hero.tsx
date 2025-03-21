@@ -42,7 +42,7 @@ const Hero: FC = () => {
             of Your Trip
           </h1>
           <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
-            <div className="ml-1 w-[20px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
+            <div className="ml-1 w-[30px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
             <span
               className={`text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light line-clamp-2 transition-all duration-200 ${
                 fade ? "opacity-10 translate-y-1" : "opacity-100 translate-y-0"

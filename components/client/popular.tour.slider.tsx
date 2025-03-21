@@ -115,6 +115,25 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             </Swiper>
           </div>
         )}
+        <div className="gap-x-2 flex md:hidden mt-5">
+          {Array.from(
+            {
+              length: Math.ceil(
+                state.destinations.length + 1 - state.slidesPerView
+              ),
+            },
+            (_, index) => index
+          ).map((item) => (
+            <div
+              key={`${item}-indicator`}
+              className={`h-1 md:h-2 rounded-full ${
+                item === state.activeIndex
+                  ? "bg-primary w-4"
+                  : "w-1 md:w-2 bg-gray-200"
+              }`}
+            ></div>
+          ))}
+        </div>
       </div>
     </Container>
   );

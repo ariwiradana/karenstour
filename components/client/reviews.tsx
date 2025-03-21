@@ -68,75 +68,76 @@ const ReviewCard: FC<ReviewCardProps> = (props) => {
 const Reviews: FC = () => {
   const { state, actions } = useReviews();
 
-  return (
-    <Container className="md:py-14 py-8">
-      <Title
-        action={false}
-        center
-        title={t("home.review.title")}
-        description={t("home.review.desc")}
-      />
+  if (state.reviews.length > 0)
+    return (
+      <Container className="md:py-14 py-8">
+        <Title
+          action={false}
+          center
+          title={t("home.review.title")}
+          description={t("home.review.desc")}
+        />
 
-      <div className="mt-4 relative">
-        <div className="flex justify-center gap-x-2 mb-8">
-          {Array.from(
-            {
-              length: Math.ceil(
-                (state.reviews ?? []).length + 1 - state.slidesPerView
-              ),
-            },
-            (_, index) => index
-          ).map((item) => (
-            <div
-              key={`${item}-indicator`}
-              className={`h-1 md:h-2 rounded-full ${
-                item === state.activeIndex
-                  ? "bg-primary w-4"
-                  : "w-1 md:w-2 bg-gray-200"
-              }`}
-            ></div>
-          ))}
+        <div className="mt-4 relative">
+          <div className="flex justify-center gap-x-2 mb-8">
+            {Array.from(
+              {
+                length: Math.ceil(
+                  (state.reviews ?? []).length + 1 - state.slidesPerView
+                ),
+              },
+              (_, index) => index
+            ).map((item) => (
+              <div
+                key={`${item}-indicator`}
+                className={`h-1 md:h-2 rounded-full ${
+                  item === state.activeIndex
+                    ? "bg-primary w-4"
+                    : "w-1 md:w-2 bg-gray-200"
+                }`}
+              ></div>
+            ))}
+          </div>
+          <Swiper
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: true,
+              pauseOnMouseEnter: true,
+            }}
+            breakpoints={{
+              0: {
+                slidesPerView: 1,
+                spaceBetween: 12,
+              },
+              640: {
+                slidesPerView: 1,
+                spaceBetween: 12,
+              },
+              768: {
+                slidesPerView: 2,
+                spaceBetween: 16,
+              },
+              1024: {
+                slidesPerView: 3,
+                spaceBetween: 24,
+              },
+            }}
+            onActiveIndexChange={(swiper) => {
+              const activeIndex = swiper.activeIndex;
+              const slidesPerView = swiper.params.slidesPerView;
+              actions.handleActiveIndex(activeIndex, slidesPerView as number);
+            }}
+            modules={[Autoplay]}
+          >
+            {state.reviews?.map((review) => (
+              <SwiperSlide key={review.id}>
+                <ReviewCard review={review} state={state} actions={actions} />
+              </SwiperSlide>
+            ))}
+          </Swiper>
         </div>
-        <Swiper
-          autoplay={{
-            delay: 2000,
-            disableOnInteraction: true,
-            pauseOnMouseEnter: true,
-          }}
-          breakpoints={{
-            0: {
-              slidesPerView: 1,
-              spaceBetween: 12,
-            },
-            640: {
-              slidesPerView: 1,
-              spaceBetween: 12,
-            },
-            768: {
-              slidesPerView: 2,
-              spaceBetween: 16,
-            },
-            1024: {
-              slidesPerView: 3,
-              spaceBetween: 24,
-            },
-          }}
-          onActiveIndexChange={(swiper) => {
-            const activeIndex = swiper.activeIndex;
-            const slidesPerView = swiper.params.slidesPerView;
-            actions.handleActiveIndex(activeIndex, slidesPerView as number);
-          }}
-          modules={[Autoplay]}
-        >
-          {state.reviews?.map((review) => (
-            <SwiperSlide key={review.id}>
-              <ReviewCard review={review} state={state} actions={actions} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
-    </Container>
-  );
+      </Container>
+    );
 };
 
 export default Reviews;
