@@ -38,9 +38,9 @@ const usePopularDestination = (
   const updateSlidesPerView = () => {
     const width = window.innerWidth;
     if (width >= 1024) {
-      setSlidesPerView(3);
+      setSlidesPerView(4);
     } else if (width >= 768) {
-      setSlidesPerView(2);
+      setSlidesPerView(3);
     } else {
       setSlidesPerView(1);
     }
@@ -56,7 +56,7 @@ const usePopularDestination = (
   }, []);
 
   const { data, isLoading, error } = useSWR<{ data: Destination[] }>(
-    "/api/client/destination?page=1&limit=7&sort=average_rating&order=asc",
+    "/api/client/destination?page=1&limit=6&sort=average_rating&order=asc",
     fetcher
   );
 

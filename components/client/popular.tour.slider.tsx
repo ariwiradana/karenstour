@@ -34,7 +34,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
           </Link>
         </div>
 
-        <div className="gap-x-2 hidden md:flex mb-10 mt-5">
+        <div className="gap-x-2 md:mt-5 flex mb-8 md:mb-10">
           {Array.from(
             {
               length: Math.ceil(
@@ -45,17 +45,17 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
           ).map((item) => (
             <div
               key={`${item}-indicator`}
-              className={`h-1 md:h-2 rounded-full ${
+              className={`h-2 md:h-2 rounded-full ${
                 item === state.activeIndex
-                  ? "bg-primary w-4"
-                  : "w-1 md:w-2 bg-gray-200"
+                  ? "bg-primary w-5"
+                  : "w-2 md:w-3 bg-gray-200"
               }`}
             ></div>
           ))}
         </div>
 
         {state.isLoading ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5 lg:gap-8">
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
@@ -115,25 +115,6 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             </Swiper>
           </div>
         )}
-        <div className="gap-x-2 flex md:hidden mt-5">
-          {Array.from(
-            {
-              length: Math.ceil(
-                state.destinations.length + 1 - state.slidesPerView
-              ),
-            },
-            (_, index) => index
-          ).map((item) => (
-            <div
-              key={`${item}-indicator`}
-              className={`h-1 md:h-2 rounded-full ${
-                item === state.activeIndex
-                  ? "bg-primary w-4"
-                  : "w-1 md:w-2 bg-gray-200"
-              }`}
-            ></div>
-          ))}
-        </div>
       </div>
     </Container>
   );

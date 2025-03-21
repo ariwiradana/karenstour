@@ -38,7 +38,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
         <div className="flex flex-col justify-between">
           <div>
             <h1
-              className={`font-medium text-dark text-lg md:text-xl mb-3 line-clamp-3 mt-4 ${unbounded.className}`}
+              className={`font-medium text-dark text-lg 2xl:text-xl mb-3 line-clamp-2 mt-4 ${unbounded.className}`}
             >
               {props.data.title}
             </h1>
@@ -46,13 +46,13 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
               className={`flex flex-wrap gap-x-4 gap-y-2 mb-3 ${montserrat.className}`}
             >
               {props.data.minimum_pax > 0 && (
-                <h4 className="flex items-start gap-x-2 text-base font-medium text-dark">
+                <h4 className="flex items-start gap-x-1 text-base font-medium text-dark">
                   <BiSolidUser className="text-primary text-2xl min-w-7" />
                   Min. {props.data.minimum_pax} Guest
                   {props.data.minimum_pax > 1 && "s"}
                 </h4>
               )}
-              <h4 className="flex items-center gap-x-2 text-base font-medium text-dark">
+              <h4 className="flex items-center gap-x-1 text-base font-medium text-dark">
                 <BiSolidTime className="text-primary text-2xl min-w-7" />
                 {props.data.duration}
               </h4>
@@ -64,7 +64,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
             Start from
           </p>
           <h2
-            className={`text-xl md:text-2xl text-dark font-semibold ${unbounded.className}`}
+            className={`text-lg md:text-xl text-dark font-semibold ${unbounded.className}`}
           >
             {currencyIDR(props.data.price)}
           </h2>
