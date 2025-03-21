@@ -26,9 +26,7 @@ const ServiceList: FC<Props> = () => {
           state.data.length > 0 ? state.data[0].categories.join(", ") : ""
         }
         url={
-          typeof window !== "undefined"
-            ? `${window.location.origin}/tour`
-            : ""
+          typeof window !== "undefined" ? `${window.location.origin}/tour` : ""
         }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
@@ -71,6 +69,25 @@ const ServiceList: FC<Props> = () => {
                 </>
               ) : (
                 <>
+                  {/* <div className="relative bg-white hover:border-gray-200 rounded-lg overflow-hidden">
+                    <input
+                      value={state.search}
+                      onChange={(e) =>
+                        actions.handleChangeSearch(e.target.value)
+                      }
+                      placeholder="Example : Rafting"
+                      type="text"
+                      className="outline-none text-xs pl-3 pr-8 h-full md:text-sm lg:text-sm font-medium max-w-44 placeholder:font-normal placeholder:text-sm"
+                    />
+                    {state.search === "" ? (
+                      <BiSearchAlt className="absolute right-2 text-darkgray text-base top-1/2 transform -translate-y-1/2" />
+                    ) : (
+                      <BiX
+                        onClick={() => actions.handleChangeSearch("")}
+                        className="absolute cursor-pointer right-2 text-darkgray text-base top-1/2 transform -translate-y-1/2"
+                      />
+                    )}
+                  </div> */}
                   <CustomSelect
                     id="filter-select"
                     value={`${state.sortBy}-${state.sortOrder}`}
@@ -92,14 +109,6 @@ const ServiceList: FC<Props> = () => {
                         key: "Price: High to Low",
                         value: "d.price-desc",
                       },
-                      // {
-                      //   key: "Shortest Duration",
-                      //   value: "d.duration-asc",
-                      // },
-                      // {
-                      //   key: "Longest Duration",
-                      //   value: "d.duration-desc",
-                      // },
                     ]}
                   />
                   {state.categories.map((category: Category) => (

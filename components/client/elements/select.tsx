@@ -22,10 +22,14 @@ interface CustomSelectProps {
 const CustomSelect: FC<CustomSelectProps> = (props) => {
   return (
     <div>
-      <p className={`text-xs mb-1 font-medium text-darkgray ml-2 ${montserrat.className}`}>
-        {props.label}
-        {props.required ? "*" : ""}
-      </p>
+      {props.label && (
+        <p
+          className={`text-xs mb-1 font-medium text-darkgray ml-2 ${montserrat.className}`}
+        >
+          {props.label}
+          {props.required ? "*" : ""}
+        </p>
+      )}
       <div
         className={`bg-white cursor-pointer hover:border-gray-200 rounded-lg flex items-center relative ${montserrat.className}`}
       >

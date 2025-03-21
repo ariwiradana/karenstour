@@ -4,6 +4,7 @@ import React, { useCallback, useEffect, useRef, useState } from "react";
 import useAdminCategory from "../admin/useAdminCategory";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import { useDebounce } from "use-debounce";
 
 type SortBy = "average_rating" | "d.duration" | "d.price";
 type SortOrder = "asc" | "desc";
@@ -26,6 +27,7 @@ interface UseDestination {
     sortOrder: SortOrder;
     categories: Category[];
     categoryFilters: string[] | [];
+    search: string;
   };
   actions: {
     setFirstSlide: (value: boolean) => void;
@@ -37,6 +39,7 @@ interface UseDestination {
     handleChangeFilter: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handleScrollToRef: () => void;
     handleChangeFilterCategory: (categoryName: string) => void;
+    handleChangeSearch: (q: string) => void;
   };
 }
 
@@ -53,6 +56,12 @@ const useDestination = (): UseDestination => {
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
   const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
+  const [search, setSearch] = useState<string>("");
+  const [searchDebounced] = useDebounce(search, 1000);
+
+  const handleChangeSearch = (q: string) => {
+    setSearch(q);
+  };
 
   const fetchCategories = useCallback(async () => {
     setLoading(true);
@@ -115,7 +124,9 @@ const useDestination = (): UseDestination => {
         sortBy
       )}&order=${encodeURIComponent(
         sortOrder
-      )}&category_names=${encodeURIComponent(categoryFilters.join(","))}`;
+      )}&category_names=${encodeURIComponent(
+        categoryFilters.join(",")
+      )}&search=${searchDebounced}`;
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error("Network response was not ok");
@@ -130,7 +141,7 @@ const useDestination = (): UseDestination => {
     } finally {
       setLoading(false);
     }
-  }, [page, limit, sortBy, sortOrder, categoryFilters]);
+  }, [page, limit, sortBy, sortOrder, categoryFilters, searchDebounced]);
 
   useEffect(() => {
     fetchDestinations();
@@ -167,6 +178,7 @@ const useDestination = (): UseDestination => {
       sortBy,
       sortOrder,
       categoryFilters,
+      search,
     },
     actions: {
       setFirstSlide,
@@ -175,6 +187,7 @@ const useDestination = (): UseDestination => {
       handleChangeFilter,
       handleScrollToRef,
       handleChangeFilterCategory,
+      handleChangeSearch,
     },
   };
 };

@@ -116,7 +116,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     {state.data.minimum_pax > 0 && (
                       <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
                         <BiSolidUser className="text-primary text-2xl" />
-                        {state.data.minimum_pax} Guest
+                        Min. {state.data.minimum_pax} Guest
                         {state.data.minimum_pax > 1 && "s"}
                       </h4>
                     )}
@@ -132,7 +132,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
                     <span
                       className={`text-xs text-darkgray ${montserrat.className}`}
                     >
-                      / person
+                      / guest
                     </span>
                   </h1>
                   <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
