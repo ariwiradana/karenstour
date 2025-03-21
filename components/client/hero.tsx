@@ -1,6 +1,5 @@
 import { unbounded } from "@/constants/font";
-import React, { FC, useState } from "react";
-import Container from "./container";
+import React, { FC, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
 import usePopularDestination from "@/hooks/client/usePopularDestination";
@@ -14,6 +13,17 @@ const Hero: FC = () => {
 
   const { state } = usePopularDestination();
 
+  const [fade, setFade] = useState(false);
+
+  useEffect(() => {
+    setFade(true);
+    const timeout = setTimeout(() => {
+      setFade(false);
+    }, 200);
+
+    return () => clearTimeout(timeout);
+  }, [activeIndex]);
+
   if (state.destinations.length === 0)
     return (
       <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] shine"></div>
@@ -21,6 +31,37 @@ const Hero: FC = () => {
 
   return (
     <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] relative">
+      <div
+        className={`${unbounded.className} absolute inset-0 flex flex-col justify-center items-left h-full z-20`}
+      >
+        <div className="w-auto md:w-full mt-6 md:mt-12 px-6 md:px-8 lg:px-4 lg:max-w-screen-xl lg:mx-auto">
+          <p className="text-xl text-white mb-3 font-normal">Welcome to Bali</p>
+          <h1 className="text-white text-3xl md:text-4xl lg:text-6xl uppercase font-bold mb-4">
+            We Take Care
+            <br />
+            of Your Trip
+          </h1>
+          <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
+            <div className="ml-1 w-[20px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
+            <span
+              className={`text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light line-clamp-2 transition-all duration-200 ${
+                fade ? "opacity-10 translate-y-1" : "opacity-100 translate-y-0"
+              }`}
+            >
+              {!fade && state.destinations[activeIndex].title}
+            </span>
+          </div>
+          <div className="md:mt-12 mt-5">
+            <Link href="/tour">
+              <ButtonPrimary
+                id="button-explore-destination"
+                icon={<MdArrowOutward />}
+                title="Explore Tours"
+              />
+            </Link>
+          </div>
+        </div>
+      </div>
       <Swiper
         modules={[Autoplay, EffectFade]}
         autoplay={{ delay: 3000 }}
@@ -50,35 +91,6 @@ const Hero: FC = () => {
                 }`}
               />
               <div className="absolute inset-0 bg-gradient-to-b from-[#00000048] to-[#000000b3] bg-opacity-30 z-10 h-full"></div>
-              <div
-                className={`${unbounded.className} absolute inset-0 flex flex-col justify-center items-center h-full z-20`}
-              >
-                <Container className="w-auto md:w-full mt-6 md:mt-12">
-                  <p className="text-xl text-white mb-3 font-normal">
-                    Welcome to Bali
-                  </p>
-                  <h1 className="text-white text-3xl md:text-4xl lg:text-6xl uppercase font-bold mb-4">
-                    We Take Care
-                    <br />
-                    of Your Trip
-                  </h1>
-                  <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
-                    <div className="ml-1 w-[40px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
-                    <span className="text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light">
-                      {destination.title}
-                    </span>
-                  </div>
-                  <div className="md:mt-12 mt-6">
-                    <Link href="/tour">
-                      <ButtonPrimary
-                        id="button-explore-destination"
-                        icon={<MdArrowOutward />}
-                        title="Explore Tours"
-                      />
-                    </Link>
-                  </div>
-                </Container>
-              </div>
             </div>
           </SwiperSlide>
         ))}
