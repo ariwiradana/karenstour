@@ -89,6 +89,8 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           )}.`,
         });
       }
+    } else {
+      text += ` ORDER BY d.id DESC`;
     }
 
     if (page && limit) {

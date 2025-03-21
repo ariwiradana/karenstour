@@ -19,7 +19,7 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
           <ImageShimmer
             sizes="(max-width: 640px) 240px, (max-width: 768px) 360px, (max-width: 1024px) 480px, 480px"
             priority
-            src={props.data.thumbnail_image ?? props.data.images[0]}
+            src={props.data.thumbnail_image || props.data.images[0]}
             className="object-cover group-hover/item:scale-110 transition-transform ease-in-out duration-700"
             fill
             alt={props.data.slug}
