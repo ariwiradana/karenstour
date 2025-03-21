@@ -165,7 +165,7 @@ const ServiceList: FC<Props> = () => {
               <CardShimmer />
               <CardShimmer />
               <CardShimmer />
-              <CardShimmer className="md:hidden lg:block" />
+              <CardShimmer className="md:hidden lg:flex" />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
