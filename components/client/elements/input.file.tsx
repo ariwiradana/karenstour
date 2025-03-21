@@ -24,7 +24,7 @@ const InputFile: FC<Props> = (props) => {
         accept="image/*"
         placeholder={props.placeholder}
         readOnly
-        className="bg-white min-h-12 px-3 text-base font-semibold w-full rounded-xl focus:outline-none border cursor-default"
+        className="bg-white min-h-12 px-3 text-base font-medium w-full rounded-lg focus:outline-none border cursor-default"
         value={props.value.toString()}
         id="fileInput"
         type="text"

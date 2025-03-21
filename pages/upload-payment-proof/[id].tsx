@@ -7,6 +7,7 @@ import { montserrat } from "@/constants/font";
 import useProofPayment from "@/hooks/client/useProofPayment";
 import { GetServerSideProps } from "next";
 import React, { FC } from "react";
+import { LoaderIcon } from "react-hot-toast";
 
 interface PageProps {
   id: string;
@@ -23,31 +24,31 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
     <Layout still>
       <SEO
         keywords=""
-        url={typeof window !== "undefined" ? `${window.location.origin}/${props.id}` : ""}
+        url={
+          typeof window !== "undefined"
+            ? `${window.location.origin}/${props.id}`
+            : ""
+        }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
         description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
       />
-      <Container
-        className={`min-h-[60vh] md:min-h-[50vh] flex items-center ${montserrat.className}`}
-      >
+      <Container className={`${montserrat.className}`}>
         {state.loading ? (
-          <div className="flex flex-col gap-y-4 w-full min-h-[60vh]">
-            <div className="shine h-5 w-[80%] rounded"></div>
-            <div className="shine h-20 w-full rounded"></div>
-            <div className="shine h-12 w-[60%] rounded"></div>
+          <div className="flex justify-center w-full min-h-[50vh] items-center">
+            <LoaderIcon />
           </div>
         ) : (
-          <>
+          <div className="min-h-[60vh] md:min-h-[50vh] flex items-center">
             {state.data?.id ?? "" === props.id ? (
               <div className="max-w-md mx-auto my-10 p-6 bg-white rounded-xl border">
-                <h1 className="text-2xl font-bold mb-1 text-gray-700">
+                <h1 className="text-xl md:text-2xl font-bold mb-1 text-gray-700">
                   {!paid && !uploaded
                     ? "Upload Proof of Payment"
                     : "Payment Proof"}
                 </h1>
                 {!paid && !uploaded ? (
-                  <h2 className="text-darkgray font-medium text-base mb-6">
+                  <h2 className="text-darkgray font-medium text-sm md:text-base mb-6">
                     Invoice #{props.id}
                   </h2>
                 ) : (
@@ -103,7 +104,7 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
                 </p>
               </div>
             )}
-          </>
+          </div>
         )}
       </Container>
     </Layout>

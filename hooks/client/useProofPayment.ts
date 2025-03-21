@@ -55,15 +55,14 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    setLoading(true);
 
     if (file) {
+      const toastUpload = toast.loading("Uploading...");
       try {
-        const toastUpload = toast.loading("Uploading...");
         const fd = new FormData();
         fd.append("file", file);
 
-        const response = await fetch(`/api/client/upload-file`, {
+        const response = await fetch(`/api/upload-file`, {
           method: "POST",
           body: fd,
         });
@@ -100,9 +99,7 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
         }
       } catch (error: any) {
         console.error("Fetch error:", error);
-        toast.error(error.message);
-      } finally {
-        setLoading(false);
+        toast.error(error.message, { id: toastUpload });
       }
     }
   };
