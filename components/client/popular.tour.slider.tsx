@@ -59,7 +59,7 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
-            <CardShimmer className="md:hidden lg:block" />
+            <CardShimmer className="md:hidden lg:flex" />
           </div>
         ) : (
           <div className="relative">
