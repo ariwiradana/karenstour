@@ -49,9 +49,9 @@ const Modal = ({
             : "opacity-0 translate-y-4 -h-8 md:h-auto"
         }`}
       >
-        <div className="flex justify-between border-b px-6 py-4">
+        <div className="flex justify-between border-b border-zinc-100 px-6 py-4">
           <h2
-            className={`font-semibold text-dark text-xl whitespace-nowrap ${montserrat.className}`}
+            className={`font-semibold text-dark text-lg md:text-xl whitespace-nowrap ${montserrat.className}`}
           >
             {title}
           </h2>
@@ -66,7 +66,7 @@ const Modal = ({
           {children}
         </div>
 
-        <div className="flex justify-end gap-4 border-t p-6">
+        <div className="flex justify-end gap-4 border-t border-zinc-100 p-6">
           <ButtonPrimary
             onClick={onApprove}
             className="w-full md:w-auto"

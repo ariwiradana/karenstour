@@ -26,7 +26,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = ({
       onClick={props.onClick}
       className={`${montserrat.className} ${
         props.className
-      } flex items-center gap-x-3 h-auto w-auto font-medium justify-center text-nowrap outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-sm transition-colors ease-in-out duration-500 text-white ${
+      } flex items-center gap-x-3 h-auto w-auto font-medium justify-center text-nowrap outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-base transition-colors ease-in-out duration-500 text-white ${
         props.disabled || isLoading
           ? "bg-gray-400 pointer-events-none cursor-not-allowed"
           : "bg-primary pointer-events-auto"

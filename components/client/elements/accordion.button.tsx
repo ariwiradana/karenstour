@@ -27,7 +27,7 @@ const Accordion: React.FC<AccordionProps> = ({ title, content, onClick }) => {
       <button
         aria-label={`btn-${title.replace(" ", "-").toLowerCase()}`}
         onClick={handleClickButton}
-        className={`w-full text-center text-white font-medium text-sm py-4 px-6 flex justify-center items-center focus:outline-none bg-primary border border-dashed ${
+        className={`w-full text-center text-white font-medium text-sm md:text-base py-4 px-6 flex justify-center items-center focus:outline-none bg-primary border border-dashed ${
           isOpen ? "border-primary" : "border-transparent"
         }`}
       >

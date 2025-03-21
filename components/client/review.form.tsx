@@ -38,7 +38,7 @@ const ReviewForm: FC<Props> = (props) => {
         onCancel={actions.handleToggleForm}
         isLoading={state.loading}
       >
-        <form className={`flex flex-col gap-6 ${unbounded.className}`}>
+        <form className={`flex flex-col gap-4 md:gap-6 ${unbounded.className}`}>
           <InputFileCustom
             photos={state.formData.photos}
             name="photos"

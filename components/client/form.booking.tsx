@@ -12,8 +12,8 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
   const formattedDate = moment(bookingDate).format("YYYY-MM-DD");
 
   return (
-    <form className="flex flex-col gap-6">
-      <div className="grid lg:grid-cols-2 gap-6 border-b pb-6 border-dashed">
+    <form className="flex flex-col gap-4 md:gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-6 border-b pb-4 md:pb-6 border-dashed">
         <div>
           <p
             className={`text-sm font-medium text-darkgray ${montserrat.className}`}
@@ -51,7 +51,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         />
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
         <CustomInput
           onChange={(e) =>
             props.actions.handleChange(e.target.value, "bookingDate")
@@ -80,7 +80,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
         />
       </div>
 
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
         <CustomTextarea
           rows={3}
           onChange={(e) =>

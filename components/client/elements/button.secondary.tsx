@@ -21,7 +21,7 @@ const ButtonSecondary: FC<ButtonSecondaryProps> = (props) => {
       onClick={props.onClick}
       className={`${montserrat.className} ${
         props.className
-      } flex items-center gap-x-3 h-auto w-auto text-nowrap font-medium justify-center outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-sm transition-colors ease-in-out duration-500 text-primary border border-transparent ${
+      } flex items-center gap-x-3 h-auto w-auto text-nowrap font-medium justify-center outline-none py-3 lg:py-4 px-4 lg:px-5 text-sm md:text-base transition-colors ease-in-out duration-500 text-primary border border-transparent ${
         props.disabled
           ? "bg-primary/20 pointer-events-none cursor-not-allowed"
           : "bg-primary/10 pointer-events-auto"
