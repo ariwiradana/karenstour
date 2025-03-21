@@ -3,9 +3,9 @@ import Hero from "@/components/client/hero";
 import Highlights from "@/components/client/highlights";
 import Reviews from "@/components/client/reviews";
 import Layout from "@/components/client/layout";
-import PopularTourSlider from "@/components/client/popular.tour.slider";
 import BookNow from "@/components/client/book.now";
 import SEO from "@/components/client/seo";
+import PopularTour from "@/components/client/popular.tour";
 
 interface Props {}
 
@@ -21,7 +21,7 @@ const Home: FC<Props> = () => {
       />
       <Layout>
         <Hero />
-        <PopularTourSlider
+        <PopularTour
           actionTitle="View All Tours"
           link="/tour"
           title="Our Top Picks for You"

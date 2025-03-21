@@ -56,7 +56,7 @@ const usePopularDestination = (
   }, []);
 
   const { data, isLoading, error } = useSWR<{ data: Destination[] }>(
-    "/api/client/destination?page=1&limit=6&sort=average_rating&order=asc",
+    "/api/client/destination?page=1&limit=8&sort=average_rating&order=asc",
     fetcher
   );
 
