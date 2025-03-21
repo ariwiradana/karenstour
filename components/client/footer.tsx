@@ -31,7 +31,7 @@ const Footer: FC = () => {
   return (
     <div className="bg-lightgray py-16 lg:py-20">
       <Container className={unbounded.className}>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-20">
+        <div className="grid grid-cols-1 md:grid-cols-2">
           <FooterLeft />
           <FooterRight />
         </div>

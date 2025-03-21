@@ -6,8 +6,7 @@ import Title from "./elements/title";
 import usePopularDestination from "@/hooks/client/usePopularDestination";
 import CardShimmer from "./elements/card.shimmer";
 import Link from "next/link";
-import ButtonPrimary from "./elements/button.primary";
-import { MdArrowOutward } from "react-icons/md";
+import { unbounded } from "@/constants/font";
 
 interface PopularTourProps {
   title: string;
@@ -50,12 +49,11 @@ const PopularTour: FC<PopularTourProps> = (props) => {
           </div>
         )}
 
-        <Link href={"/tour"} className="mt-8 md:mt-14 flex justify-center">
-          <ButtonPrimary
-            id="more-tour"
-            title="Explore More Tours"
-            icon={<MdArrowOutward />}
-          />
+        <Link
+          href={"/tour"}
+          className={`mt-8 md:mt-14 flex justify-center text-primary underline underline-offset-4 font-medium ${unbounded.className}`}
+        >
+          Show More
         </Link>
       </div>
     </Container>

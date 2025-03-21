@@ -80,7 +80,7 @@ const ReviewForm: FC<Props> = (props) => {
         </form>
       </Modal>
       <div
-        className={`${montserrat.className} pt-6 md:pt-10 rounded-xl flex flex-col divide-y`}
+        className={`${montserrat.className} pt-6 md:pt-10 rounded-xl flex flex-col`}
       >
         <div className="flex flex-wrap gap-4 justify-between items-center pb-8">
           {state.reviews.length > 0 && (
@@ -103,54 +103,56 @@ const ReviewForm: FC<Props> = (props) => {
           />
         </div>
 
-        <div className="pt-8">
+        <div>
           {state.allReviewPhotos.length > 0 && (
-            <Swiper
-              autoplay={{
-                disableOnInteraction: false,
-                delay: 4000,
-                pauseOnMouseEnter: true,
-              }}
-              modules={[Autoplay]}
-              spaceBetween={8}
-              breakpoints={{
-                0: {
-                  slidesPerView: 4,
-                },
-                640: {
-                  slidesPerView: 4,
-                },
-                768: {
-                  slidesPerView: 6,
-                },
-                1024: {
-                  slidesPerView: 12,
-                },
-              }}
-            >
-              {state.allReviewPhotos.map((p, i) => {
-                return (
-                  <SwiperSlide key={p}>
-                    <div
-                      onClick={() => actions.handleToggleLightbox(p)}
-                      className="w-full aspect-square bg-dark/5 relative rounded-xl overflow-hidden cursor-pointer"
-                    >
-                      <ImageShimmer
-                        fill
-                        priority
-                        className="object-cover rounded-xl"
-                        src={p}
-                        alt={`all-photo-${i}`}
-                      />
-                    </div>
-                  </SwiperSlide>
-                );
-              })}
-            </Swiper>
+            <div className="border-t py-6">
+              <Swiper
+                autoplay={{
+                  disableOnInteraction: false,
+                  delay: 4000,
+                  pauseOnMouseEnter: true,
+                }}
+                modules={[Autoplay]}
+                spaceBetween={8}
+                breakpoints={{
+                  0: {
+                    slidesPerView: 4,
+                  },
+                  640: {
+                    slidesPerView: 4,
+                  },
+                  768: {
+                    slidesPerView: 6,
+                  },
+                  1024: {
+                    slidesPerView: 12,
+                  },
+                }}
+              >
+                {state.allReviewPhotos.map((p, i) => {
+                  return (
+                    <SwiperSlide key={p}>
+                      <div
+                        onClick={() => actions.handleToggleLightbox(p)}
+                        className="w-full aspect-square bg-dark/5 relative rounded-xl overflow-hidden cursor-pointer"
+                      >
+                        <ImageShimmer
+                          fill
+                          priority
+                          className="object-cover rounded-xl"
+                          src={p}
+                          alt={`all-photo-${i}`}
+                        />
+                      </div>
+                    </SwiperSlide>
+                  );
+                })}
+              </Swiper>
+            </div>
           )}
 
           {state.reviews?.length > 0 && (
-            <div className="divide-y mt-8 border-t">
+            <div className="divide-y border-t">
               {state.reviews.map((r) => (
                 <ReviewItem key={`review-${r.id}`} review={r} />
               ))}

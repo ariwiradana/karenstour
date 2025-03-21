@@ -44,14 +44,14 @@ const Hero: FC = () => {
           <div className="max-w-3xl flex gap-x-3 md:gap-x-4">
             <div className="ml-1 w-[30px] md:w-[120px] h-[1px] bg-white mt-3 lg:mt-4"></div>
             <span
-              className={`text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light line-clamp-2 transition-all duration-200 ${
+              className={`text-white text-sm md:text-base lg:text-lg leading-6 lg:leading-8 font-light line-clamp-2 transition-all min-h-6 md:min-h-8  duration-200 ${
                 fade ? "opacity-10 translate-y-1" : "opacity-100 translate-y-0"
               }`}
             >
               {!fade && state.destinations[activeIndex].title}
             </span>
           </div>
-          <div className="md:mt-12 mt-5">
+          <div className="md:mt-8 mt-5">
             <Link href="/tour">
               <ButtonPrimary
                 id="button-explore-destination"
