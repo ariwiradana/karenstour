@@ -38,7 +38,7 @@ interface UseAdminBookingReturn {
     handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleBookActions: (data: Booking, status: string) => void;
     getButtonClass: (status: string) => string;
-    handleTogglePaymentImage: (image: string) => string;
+    handleTogglePaymentImage: (image: string) => void;
   };
 }
 
