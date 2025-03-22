@@ -24,7 +24,7 @@ export interface Env {
 }
 
 export interface Booking {
-  id: number;
+  id: string;
   name: string;
   email: string;
   booking_date: string;

@@ -10,6 +10,7 @@ import moment from "moment";
 import { convertHoursToReadableFormat } from "@/utils/convertToReadableHours";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { useFetch } from "@/lib/useFetch";
+import { capitalizeWords } from "@/utils/capitalizeWords";
 
 type StatusStyle = {
   background: string;
@@ -76,13 +77,14 @@ const useAdminBooking = (
   };
 
   const statusStyles: Record<string, StatusStyle> = {
-    pending: { background: "#fff9c6", text: "#B57C00" }, // Amber (background), Darker Amber (text)
-    confirmed: { background: "#ebfccb", text: "#669038" }, // Green (background), Darker Green (text)
-    paid: { background: "#ebfafc", text: "#03619c" }, // Blue (background), Darker Blue (text)
-    ongoing: { background: "#ffedd6", text: "#cb5c37" }, // Amber (background), Darker Amber (text)
-    complete: { background: "#f7e9fd", text: "#a220ae" }, // Indigo (background), Darker Indigo (text)
-    canceled: { background: "#fde6eb", text: "#b11656" }, // Red (background), Darker Red (text)
+    pending: { background: "#FFF9C4", text: "#FFB300" }, // Light Yellow (background), Dark Yellow (text)
+    confirmed: { background: "#C8E6C9", text: "#388E3C" }, // Light Green (background), Dark Green (text)
+    paid: { background: "#BBDEFB", text: "#1976D2" }, // Light Blue (background), Dark Blue (text)
+    ongoing: { background: "#FFE0B2", text: "#FB8C00" }, // Light Orange (background), Dark Orange (text)
+    complete: { background: "#E1BEE7", text: "#8E24AA" }, // Light Purple (background), Dark Purple (text)
+    canceled: { background: "#FFEBEE", text: "#D32F2F" }, // Light Red (background), Dark Red (text)
   };
+
   const fetchBookings = useCallback(async () => {
     setLoading(true);
     const toastFetch = toast.loading("Load data...");
@@ -150,11 +152,9 @@ const useAdminBooking = (
       account_name: contact.company,
       account_number: 123928712627,
       company: contact.company,
-      link: `${
-        window.location.hostname === "localhost" ? "http" : "https"
-      }://${window.location.host}/invoice/${encodeURIComponent(
-        bookingData.id
-      )}`,
+      link: `${window.location.hostname === "localhost" ? "http" : "https"}://${
+        window.location.host
+      }/invoice/${encodeURIComponent(bookingData.id)}`,
     };
 
     if (publicKey && serviceId) {
@@ -194,34 +194,27 @@ const useAdminBooking = (
   };
 
   const handleBookActions = async (bookingData: Booking, status: string) => {
-    const nextStatus = getNextStatus(bookingData.status);
-
     customSwal
       .fire({
-        title: `Are you sure you want to ${
-          status !== "canceled"
-            ? `change the status to ${nextStatus}`
-            : "cancel this booking"
-        }?`,
+        title: `Are you sure change status to ${capitalizeWords(status)}?`,
         icon: "question",
         showCancelButton: true,
-        confirmButtonText: buttonStatusTitle[status],
+        confirmButtonText: "Change Status",
       })
       .then((result) => {
         if (result.isConfirmed) {
           const bookActionToast = toast.loading("Loading...");
 
-          if (nextStatus === "confirmed") {
+          if (status === "confirmed") {
             handleGenerateInvoice(bookingData);
           }
-
-          if (nextStatus === "paid") {
+          if (status === "paid") {
             handleInfoPaid(bookingData);
           }
 
           useFetch(`/api/booking?id=${bookingData.id}`, authToken, "PATCH", {
             updates: {
-              status: status !== "canceled" ? nextStatus : "canceled",
+              status,
               updated_at: moment().format("YYYY-MM-DD HH:mm:ss"),
             },
           })
@@ -235,7 +228,7 @@ const useAdminBooking = (
             })
             .then(() => {
               fetchBookings();
-              toast.success(`Succesfully updating status to ${nextStatus}`, {
+              toast.success(`Succesfully updating status to ${status}`, {
                 id: bookActionToast,
               });
             })

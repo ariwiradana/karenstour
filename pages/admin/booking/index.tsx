@@ -1,6 +1,7 @@
 import ButtonPrimary from "@/components/admin/elements/button.primary";
 import ButtonPrimaryIcon from "@/components/admin/elements/button.primary.icon";
 import Input from "@/components/admin/elements/input";
+import InputSelect from "@/components/admin/elements/select";
 import Layout from "@/components/admin/layout";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
 import useAdminBooking from "@/hooks/admin/useAdminBooking";
@@ -21,7 +22,11 @@ interface PageProps {
 }
 
 const BookingPage: FC<PageProps> = (props) => {
-  const { state, actions } = useAdminBooking(props.publicKey, props.serviceId, props.authToken as string);
+  const { state, actions } = useAdminBooking(
+    props.publicKey,
+    props.serviceId,
+    props.authToken as string
+  );
 
   return (
     <Layout>
@@ -78,7 +83,7 @@ const BookingPage: FC<PageProps> = (props) => {
                     Payment Proof
                   </th>
                   <th className="px-4 py-2 text-xs text-admin-dark font-normal uppercase">
-                    Actions
+                    Action
                   </th>
                 </tr>
               </thead>
@@ -107,16 +112,32 @@ const BookingPage: FC<PageProps> = (props) => {
                       <span>{booking.pax} Pax</span>
                     </td>
                     <td className="px-4 py-2 text-center">
-                      <div
-                        style={{
-                          borderColor: state.statusStyles[booking.status].text,
-                          color: state.statusStyles[booking.status].text,
-                          backgroundColor:
-                            state.statusStyles[booking.status].background,
-                        }}
-                        className={`inline-flex items-center capitalize px-3 py-1 rounded-lg text-sm font-semibold`}
-                      >
-                        {booking.status}
+                      <div className="flex items-center gap-x-3">
+                        <div
+                          style={{
+                            backgroundColor:
+                              state.statusStyles[booking.status].text,
+                          }}
+                          className={`w-3 h-3 rounded-full`}
+                        ></div>
+                        <InputSelect
+                          onChange={(e) =>
+                            actions.handleBookActions(booking, e.target.value)
+                          }
+                          disabled={["complete", "canceled"].includes(
+                            booking.status
+                          )}
+                          value={booking.status}
+                          inputSize="small"
+                          options={[
+                            { value: "pending", label: "Pending" },
+                            { value: "confirmed", label: "Confirmed" },
+                            { value: "paid", label: "Paid" },
+                            { value: "ongoing", label: "Ongoing" },
+                            { value: "complete", label: "Complete" },
+                            { value: "canceled", label: "Canceled" },
+                          ]}
+                        />
                       </div>
                     </td>
                     <td className="px-4 py-2 text-left text-admin-dark text-sm max-w-80">
@@ -154,52 +175,18 @@ const BookingPage: FC<PageProps> = (props) => {
                       )}
                     </td>
                     <td className="px-4 py-2">
-                      <div className="flex flex-col gap-y-2">
-                        {!["complete", "canceled"].includes(booking.status) && (
-                          <button
-                            onClick={() =>
-                              actions.handleBookActions(booking, booking.status)
-                            }
-                            className={`text-white font-semibold text-sm py-1 px-3 rounded ${
-                              booking.status === "pending"
-                                ? "bg-green-500"
-                                : booking.status === "confirmed"
-                                ? "bg-blue-500"
-                                : booking.status === "paid"
-                                ? "bg-amber-500"
-                                : booking.status === "ongoing"
-                                ? "bg-indigo-500"
-                                : "bg-red-500"
-                            }`}
-                          >
-                            {state.buttonStatusTitle[booking.status]}
-                          </button>
-                        )}
-                        {!["ongoing", "complete", "canceled"].includes(
-                          booking.status
-                        ) && (
-                          <button
-                            onClick={() =>
-                              actions.handleBookActions(booking, "canceled")
-                            }
-                            className="text-white font-semibold text-sm py-1 px-3 rounded bg-admin-danger"
-                          >
-                            Cancel
-                          </button>
-                        )}
-                        {!["pending", "confirmed", "canceled"].includes(
-                          booking.status
-                        ) && (
-                          <button
-                            onClick={() =>
-                              actions.handleBookActions(booking, "canceled")
-                            }
-                            className="text-white font-semibold text-sm py-1 px-3 rounded bg-admin-primary"
-                          >
-                            Print Invoice
-                          </button>
-                        )}
-                      </div>
+                      {booking.status === "complete" ? (
+                        <button
+                          onClick={() =>
+                            actions.handleBookActions(booking, "canceled")
+                          }
+                          className="text-white font-semibold text-sm py-1 px-3 rounded bg-admin-primary"
+                        >
+                          Print Invoice
+                        </button>
+                      ) : (
+                        "-"
+                      )}
                     </td>
                   </tr>
                 ))}

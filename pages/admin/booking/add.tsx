@@ -95,10 +95,12 @@ const AddDestinationPage: FC<PageProps> = (props) => {
             <Input
               id="pax"
               full
-              type="number"
+              type="tel"
               name="pax"
               label="Pax"
-              onChange={(e) => actions.handleChange(e.target.value, "pax")}
+              onChange={(e) =>
+                actions.handleChange(Number(e.target.value), "pax")
+              }
               value={state.formData.pax}
               error={state.errors.pax}
             />

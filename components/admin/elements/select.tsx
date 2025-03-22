@@ -4,7 +4,7 @@ import { montserrat } from "@/constants/font";
 
 interface InputSelectProps
   extends React.InputHTMLAttributes<HTMLSelectElement> {
-  label: string;
+  label?: string;
   error?: string;
   full?: boolean;
   options: Options[];
@@ -29,12 +29,14 @@ const InputSelect: FC<InputSelectProps> = (props) => {
         montserrat.className
       } text-sm`}
     >
-      <label
-        htmlFor={props.id}
-        className="block text-gray-700 mb-1 font-montserrat"
-      >
-        {props.label}
-      </label>
+      {props.label && (
+        <label
+          htmlFor={props.id}
+          className="block text-gray-700 mb-1 font-montserrat"
+        >
+          {props.label}
+        </label>
+      )}
       <select
         {...props}
         className={`w-full border rounded-lg focus:ring-1 focus:outline-none ${

@@ -18,9 +18,17 @@ interface PageProps {
 const UploadPaymentProof: FC<PageProps> = (props) => {
   const { state, actions } = useProofPayment(props.id);
 
-  const paidStatus = ["paid", "ongoing", "complete"];
-  const paid = paidStatus.includes(state.booking?.status ?? "") ?? false;
-  const reviewed = state.booking?.payment_proof ? true : false;
+  const paid =
+    ["paid", "ongoing"].includes(state.booking?.status ?? "") ?? false;
+  const reviewed =
+    state.booking?.payment_proof && state.booking.status === "confirmed"
+      ? true
+      : false;
+
+  console.log(
+    state.booking?.status,
+    ["completed", "canceled"].includes(state.booking?.status as string)
+  );
 
   return (
     <Layout still>
@@ -37,12 +45,15 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
       />
       <div className={`${montserrat.className}`}>
         {state.loading ? (
-          <div className="flex justify-center w-full min-h-[50vh] items-center">
+          <div className="flex justify-center w-full items-center">
             <LoaderIcon />
           </div>
         ) : (
-          <div className="min-h-[60vh] md:min-h-[50vh] flex items-center">
-            {state.booking?.id ?? "" === props.id ? (
+          <div className="min-h-[40vh] md:min-h-[50vh] flex items-center">
+            {state.booking?.id === props.id &&
+            !["pending", "completed", "canceled"].includes(
+              state.booking.status
+            ) ? (
               <div className="lg:my-10 p-6 bg-white lg:rounded-xl lg:border border-zinc-200 mx-auto lg:max-w-screen-md">
                 <h1
                   className={`text-lg md:text-xl font-semibold mb-1 text-dark ${unbounded.className}`}
@@ -56,12 +67,12 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
                 {reviewed || paid ? (
                   <div className="my-4 p-4 bg-admin-success/15 border border-admin-success/40 rounded-lg">
                     <h1 className="text-lg font-semibold text-primary mb-1">
-                      {paid && reviewed
+                      {paid
                         ? "Payment Already Paid"
                         : "Payment Review in Progress"}
                     </h1>
                     <p className="text-dark">
-                      {paid && reviewed
+                      {paid
                         ? "Your payment has already been paid. Thank you for booking your tour with us!"
                         : "Your proof of payment has been uploaded and is currently under review."}
                     </p>
@@ -193,7 +204,7 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
                 </div>
               </div>
             ) : (
-              <div className="max-w-md mx-auto my-10 p-6 bg-white rounded-xl border">
+              <div className="lg:my-10 p-6 bg-white lg:rounded-xl lg:border border-zinc-200 mx-auto lg:max-w-screen-md">
                 <h1 className="text-2xl font-bold mb-1 text-red-700">
                   Booking Not Found
                 </h1>

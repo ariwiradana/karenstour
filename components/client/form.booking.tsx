@@ -53,6 +53,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
 
       <div className="grid lg:grid-cols-2 gap-4 md:gap-6">
         <CustomInput
+          min={moment().format("YYYY-MM-DD")}
           onChange={(e) =>
             props.actions.handleChange(e.target.value, "bookingDate")
           }
