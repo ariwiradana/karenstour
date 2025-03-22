@@ -31,7 +31,17 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
             OR b.email ILIKE $1
             OR b.status ILIKE $1
             OR b.pickup_location ILIKE $1
-            ORDER BY b.updated_at DESC
+            ORDER BY 
+              CASE b.status
+                WHEN 'pending' THEN 1
+                WHEN 'confirmed' THEN 2
+                WHEN 'paid' THEN 3
+                WHEN 'ongoing' THEN 4
+                WHEN 'complete' THEN 5
+                WHEN 'canceled' THEN 6
+                ELSE 7
+              END,
+              b.updated_at DESC
             LIMIT $2
             OFFSET $3;
         `,
