@@ -9,11 +9,11 @@ import { currencyIDR } from "@/utils/currencyFormatter";
 import { formatDate } from "@/utils/dateFormatter";
 import { Pagination } from "@mui/material";
 import { parse } from "cookie";
+import FsLightbox from "fslightbox-react";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import { FC } from "react";
-import { BiPlus } from "react-icons/bi";
-import Swal from "sweetalert2";
+import { BiPlus, BiPrinter } from "react-icons/bi";
 
 interface PageProps {
   serviceId: string;
@@ -30,6 +30,10 @@ const BookingPage: FC<PageProps> = (props) => {
 
   return (
     <Layout>
+      <FsLightbox
+        toggler={state.paymentImage.isOpen}
+        sources={[state.paymentImage.image]}
+      />
       <div>
         <h1 className="text-2xl md:text-3xl mb-6 font-medium text-admin-dark">
           Booking Management
@@ -152,14 +156,11 @@ const BookingPage: FC<PageProps> = (props) => {
                     <td className="px-4 py-2 text-center text-admin-dark text-sm max-w-80">
                       {booking.payment_proof ? (
                         <button
-                          onClick={() => {
-                            Swal.fire({
-                              imageUrl: booking.payment_proof,
-                              imageHeight: 300,
-                              imageAlt: booking.id.toString(),
-                              showConfirmButton: false,
-                            });
-                          }}
+                          onClick={() =>
+                            actions.handleTogglePaymentImage(
+                              booking.payment_proof
+                            )
+                          }
                           className="relative w-full aspect-[4/3] p-4 rounded overflow-hidden"
                         >
                           <ImageShimmer
@@ -176,14 +177,14 @@ const BookingPage: FC<PageProps> = (props) => {
                     </td>
                     <td className="px-4 py-2">
                       {booking.status === "complete" ? (
-                        <button
+                        <ButtonPrimary
                           onClick={() =>
                             actions.handleBookActions(booking, "canceled")
                           }
-                          className="text-white font-semibold text-sm py-1 px-3 rounded bg-admin-primary"
-                        >
-                          Print Invoice
-                        </button>
+                          size="small"
+                          title="Print Invoice"
+                          icon={<BiPrinter />}
+                        />
                       ) : (
                         "-"
                       )}

@@ -12,7 +12,7 @@ const ButtonPrimary: FC<ButtonPrimaryProps> = (props) => {
   const buttonStyles = (size: "small" | "medium" | "large") => {
     switch (size) {
       case "small":
-        return "px-2 py-2 text-sm";
+        return "px-3 py-2 text-sm";
       case "medium":
         return "px-4 py-3 text-sm";
       case "large":

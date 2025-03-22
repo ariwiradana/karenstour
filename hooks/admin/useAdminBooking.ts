@@ -28,12 +28,17 @@ interface UseAdminBookingReturn {
     search: string;
     statusStyles: Record<string, StatusStyle>;
     buttonStatusTitle: Record<string, string>;
+    paymentImage: {
+      isOpen: boolean;
+      image: string;
+    };
   };
   actions: {
     setPage: (page: number) => void;
     handleSearch: (event: React.ChangeEvent<HTMLInputElement>) => void;
     handleBookActions: (data: Booking, status: string) => void;
     getButtonClass: (status: string) => string;
+    handleTogglePaymentImage: (image: string) => string;
   };
 }
 
@@ -50,6 +55,11 @@ const useAdminBooking = (
   const [totalRows, setTotalRows] = useState<number>(0);
   const [search, setSearch] = useState<string>("");
   const [query] = useDebounce(search, 500);
+
+  const [paymentImage, setPaymentImage] = useState({
+    isOpen: false,
+    image: "",
+  });
 
   const getButtonClass = (status: string) => {
     switch (status) {
@@ -240,6 +250,14 @@ const useAdminBooking = (
       });
   };
 
+  const handleTogglePaymentImage = (image: string) => {
+    if (image) {
+      setPaymentImage((state) => {
+        return { ...state, isOpen: !state.isOpen, image };
+      });
+    }
+  };
+
   return {
     state: {
       bookings,
@@ -251,12 +269,14 @@ const useAdminBooking = (
       totalRows,
       statusStyles,
       buttonStatusTitle,
+      paymentImage,
     },
     actions: {
       setPage,
       handleSearch,
       handleBookActions,
       getButtonClass,
+      handleTogglePaymentImage,
     },
   };
 };
