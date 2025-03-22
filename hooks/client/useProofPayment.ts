@@ -5,8 +5,9 @@ import toast from "react-hot-toast";
 interface ProofPaymentReturn {
   state: {
     file: File | null;
-    data: Booking | null;
+    booking: Booking | null;
     loading: boolean;
+    isLoadingSubmit: boolean;
   };
   actions: {
     handleFileChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
@@ -16,14 +17,11 @@ interface ProofPaymentReturn {
 
 const useProofPayment = (id: string): ProofPaymentReturn => {
   const [file, setFile] = useState<File | null>(null);
-  const [data, setData] = useState<Booking | null>(null);
   const [booking, setBooking] = useState<Booking | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
 
   const checkBooking = useCallback(async () => {
-    const existResponse = await fetch(`/api/client/booking/check?id=${id}`);
-    const result = await existResponse.json();
-
     const uploadedResponse = await fetch(
       `/api/client/booking?id=${encodeURIComponent(id)}`
     );
@@ -31,10 +29,6 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
     const res = response.data;
     if (res) {
       setBooking(res);
-    }
-
-    if (result?.data) {
-      setData(result.data);
     }
     try {
     } catch (error: any) {
@@ -55,6 +49,7 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setIsLoadingSubmit(true);
 
     if (file) {
       const toastUpload = toast.loading("Uploading...");
@@ -100,6 +95,8 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
       } catch (error: any) {
         console.error("Fetch error:", error);
         toast.error(error.message, { id: toastUpload });
+      } finally {
+        setIsLoadingSubmit(false);
       }
     }
   };
@@ -107,8 +104,9 @@ const useProofPayment = (id: string): ProofPaymentReturn => {
   return {
     state: {
       loading,
+      isLoadingSubmit,
       file,
-      data,
+      booking,
     },
     actions: {
       handleFileChange,

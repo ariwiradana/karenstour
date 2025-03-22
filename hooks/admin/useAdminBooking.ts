@@ -150,9 +150,9 @@ const useAdminBooking = (
       account_name: contact.company,
       account_number: 123928712627,
       company: contact.company,
-      upload_transfer_link: `${
+      link: `${
         window.location.hostname === "localhost" ? "http" : "https"
-      }://${window.location.host}/upload-payment-proof/${encodeURIComponent(
+      }://${window.location.host}/invoice/${encodeURIComponent(
         bookingData.id
       )}`,
     };
