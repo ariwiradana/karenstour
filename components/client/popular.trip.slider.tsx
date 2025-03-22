@@ -9,14 +9,14 @@ import CardShimmer from "./elements/card.shimmer";
 import Link from "next/link";
 import ButtonText from "./elements/button.text";
 
-interface PopularTourSliderProps {
+interface PopularTripSliderProps {
   title: string;
   description: string;
   link?: string;
   actionTitle?: string;
   exceptionId?: number | null;
 }
-const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
+const PopularTripSlider: FC<PopularTripSliderProps> = (props) => {
   const { state, actions } = usePopularDestination(props.exceptionId);
 
   return (
@@ -29,8 +29,8 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
             title={props.title}
             description={props.description}
           />
-          <Link href={"/tour"}>
-            <ButtonText title="All Tours" />
+          <Link href={"/trip"}>
+            <ButtonText title="Show More" />
           </Link>
         </div>
 
@@ -120,4 +120,4 @@ const PopularTourSlider: FC<PopularTourSliderProps> = (props) => {
   );
 };
 
-export default PopularTourSlider;
+export default PopularTripSlider;

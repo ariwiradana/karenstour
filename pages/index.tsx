@@ -5,7 +5,7 @@ import Reviews from "@/components/client/reviews";
 import Layout from "@/components/client/layout";
 import BookNow from "@/components/client/book.now";
 import SEO from "@/components/client/seo";
-import PopularTour from "@/components/client/popular.tour";
+import PopularTrip from "@/components/client/popular.trip";
 
 interface Props {}
 
@@ -16,16 +16,16 @@ const Home: FC<Props> = () => {
         keywords=""
         url={typeof window !== "undefined" ? window.location.origin : ""}
         image="/images/logo.png"
-        title="Bali Tour Experience | Karens Tour"
-        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+        title="Bali Trip Experience | Karens Tour"
+        description="Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali."
       />
       <Layout>
         <Hero />
-        <PopularTour
-          actionTitle="View All Tours"
-          link="/tour"
+        <PopularTrip
+          actionTitle="All Trip"
+          link="/trip"
           title="Our Top Picks for You"
-          description="Choose your next great experience from our featured tours"
+          description="Choose your next great experience from our featured trip"
         />
         <Highlights />
         <Reviews />

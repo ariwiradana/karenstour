@@ -46,7 +46,7 @@ const SEO: FC<SEOProps> = ({ title, description, keywords, image, url }) => {
         {JSON.stringify({
           "@context": "https://schema.org",
           "@type": "WebSite",
-          name: "Karens Tour Official",
+          name: "Karens Tour Bali",
           url,
           sameAs: [
             contact.email,

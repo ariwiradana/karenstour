@@ -43,7 +43,7 @@ const Modal = ({
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className={`rounded-t-xl md:rounded-xl bg-white relative transition-all ease-in-out duration-200 delay-200 transform w-full md:w-auto md:min-w-[40vw] ${
+        className={`rounded-t-xl md:rounded-xl bg-white relative transition-all ease-in-out duration-200 delay-200 transform w-full md:w-auto md:min-w-[40vw] max-w-screen-md ${
           isOpen
             ? "opacity-100 translate-y-0 h-auto"
             : "opacity-0 translate-y-4 -h-8 md:h-auto"

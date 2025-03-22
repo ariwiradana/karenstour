@@ -184,7 +184,6 @@ const useDestinationReviews = (
         }
       }
     }
-    console.log({ photoURLs });
     return photoURLs;
   };
 

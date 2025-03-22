@@ -6,14 +6,14 @@
       "title": "Your Bali Dream Awaits!",
       "desc": "Experience the magic of Bali! Our exclusive tours will take you to the best destinations for an unforgettable getaway."
     },
-    "services": {
+    "trip": {
       "tour": {
         "title": "Tours",
         "desc": "Discover a variety of exciting tour packages, curated to offer you unforgettable experiences at the most beautiful destinations."
       },
       "transport": {
         "title": "Transportation",
-        "desc": "Enjoy reliable and comfortable transportation services tailored to ensure a seamless journey throughout your travel adventure."
+        "desc": "Enjoy reliable and comfortable transportation trip tailored to ensure a seamless journey throughout your travel adventure."
       },
       "airport": {
         "title": "Airport Shuttle",
@@ -21,7 +21,7 @@
       }
     },
     "popularservice": {
-      "title": "Our Popular Services",
+      "title": "Our Popular trip",
       "desc": "Discover Bali with our top tours, transportation, and airport transfers."
     },
     "highlights": {

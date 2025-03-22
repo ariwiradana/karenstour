@@ -52,11 +52,11 @@ const Hero: FC = () => {
             </span>
           </div>
           <div className="md:mt-8 mt-5">
-            <Link href="/tour">
+            <Link href="/trip">
               <ButtonPrimary
                 id="button-explore-destination"
                 icon={<MdArrowOutward />}
-                title="Explore Tours"
+                title="Explore Now"
               />
             </Link>
           </div>

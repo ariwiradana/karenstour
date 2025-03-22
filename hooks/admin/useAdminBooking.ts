@@ -71,8 +71,8 @@ const useAdminBooking = (
   const buttonStatusTitle: Record<string, string> = {
     pending: "Confirm Booking",
     confirmed: "Mark as Paid",
-    paid: "Begin Tour",
-    ongoing: "Complete Tour",
+    paid: "Begin Trip",
+    ongoing: "Complete Trip",
     canceled: "Cancel Booking",
   };
 

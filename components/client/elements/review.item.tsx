@@ -85,7 +85,7 @@ const ReviewItem = (review: ReviewItemProps) => {
         ) : (
           <></>
         )}
-        <p className="text-dark/60 text-xs mt-4 italic">
+        <p className="text-dark/60 text-xs 2xl:text-sm mt-4 italic">
           Reviewed at {formatDate(review.review.created_at)}
         </p>
       </div>

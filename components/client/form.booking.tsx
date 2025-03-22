@@ -77,7 +77,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
           error={props.state.errors.pax}
           info={`A minimum of ${props.state.data?.minimum_pax} guest${
             Number(props.state.data?.minimum_pax) > 1 && "s"
-          } is required for this tour. Please note that only children aged 4 years and above will be counted as participants`}
+          } is required for this trip. Please note that only children aged 6 years and above will be counted as participants`}
         />
       </div>
 

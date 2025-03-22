@@ -13,7 +13,7 @@ interface DestinationCardProps {
 
 const DestinationCard: FC<DestinationCardProps> = (props) => {
   return (
-    <Link href={`/tour/${props.data.slug}`}>
+    <Link href={`/trip/${props.data.slug}`}>
       <div className={`group/item ${props.className ?? ""}`}>
         <div className="relative w-full h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
           <ImageShimmer

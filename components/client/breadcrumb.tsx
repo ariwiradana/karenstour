@@ -3,6 +3,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { MdHomeFilled } from "react-icons/md";
 import Container from "./container";
+import Image from "next/image";
 
 interface Navigation {
   title: string;
@@ -20,8 +21,16 @@ const Breadcrumb: FC<BreadcrumbProps> = (props) => {
   return (
     <div
       className="relative py-8 lg:py-8 bg-fixed bg-center bg-cover bg-no-repeat"
-      style={{ backgroundImage: `url('/images/hero.webp')` }}
+      // style={{ backgroundImage: `url('/images/hero.webp')` }}
     >
+      <Image
+        fill
+        quality={80}
+        sizes="800px"
+        src="/images/hero.webp"
+        className="object-cover"
+        alt="Breadcrumb Image"
+      />
       <div className="absolute inset-0 bg-gradient-to-b from-[#00000044] to-[#81a263d2] bg-opacity-30"></div>
       <Container>
         <div

@@ -25,11 +25,11 @@ const Sidebar: FC<SidebarProps> = (props) => {
       </div>
       <ul className="flex flex-col gap-4 mt-4">
         <SidebarItem onClose={props.close} title="Home" path="/" />
-        <SidebarItem onClose={props.close} hasChild title="Tour" path="/tour">
+        <SidebarItem onClose={props.close} hasChild title="Trip" path="/trip">
           {state.data.map((item) => (
             <li key={`nav-child-${item.slug}`}>
               <Link
-                href={`/tour/${item.slug}`}
+                href={`/trip/${item.slug}`}
                 className={`text-darkgray hover:underline text-xs ${montserrat.className}`}
               >
                 {item.title}

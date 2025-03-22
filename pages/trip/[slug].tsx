@@ -12,13 +12,13 @@ import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC, memo } from "react";
 import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
-import PopularTourSlider from "@/components/client/popular.tour.slider";
+import PopularTripSlider from "@/components/client/popular.trip.slider";
 import VideoPlayer from "@/components/admin/elements/video.player";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
 import Lightbox from "@/components/client/elements/lightbox";
-import TourBrochure from "@/components/client/brochure";
+import TripBrochure from "@/components/client/brochure";
 import SEO from "@/components/client/seo";
 import NotFound from "@/components/client/not.found";
 import { LoaderIcon } from "react-hot-toast";
@@ -32,7 +32,7 @@ interface PageProps {
   slug: string;
 }
 
-const ServiceDetail: FC<PageProps> = (props) => {
+const TripDetail: FC<PageProps> = (props) => {
   const { state, actions, refs } = useDestinationDetail(
     props.publicKey,
     props.serviceId,
@@ -52,17 +52,17 @@ const ServiceDetail: FC<PageProps> = (props) => {
         keywords={state.data ? state.data?.categories.join(", ") : ""}
         url={
           typeof window !== "undefined"
-            ? `${window.location.origin}/tour/${state.data?.slug}`
+            ? `${window.location.origin}/trip/${state.data?.slug}`
             : ""
         }
         image="/images/logo.png"
         title={`${
-          state.data ? state.data?.title : "Bali Tour Experience"
+          state.data ? state.data?.title : "Bali Trip Experience"
         } | Karens Tour`}
         description={
           state.data
             ? removeHtmlTags(state.data?.description)
-            : `Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali.`
+            : `Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali.`
         }
       />
 
@@ -81,7 +81,7 @@ const ServiceDetail: FC<PageProps> = (props) => {
       {state.data ? (
         <Layout still>
           <div ref={refs?.brochureRef} style={{ display: "none" }}>
-            <TourBrochure destination={state.data ?? undefined} />
+            <TripBrochure destination={state.data ?? undefined} />
           </div>
           <Lightbox
             slideIndex={state.lightboxIndex}
@@ -91,13 +91,13 @@ const ServiceDetail: FC<PageProps> = (props) => {
           />
           {state.data?.slug && (
             <Breadcrumb
-              title="Tours"
+              title="Trip"
               navigations={[
                 { title: "Home", path: "/" },
-                { title: "Tours", path: "/tour" },
+                { title: "Trip", path: "/trip" },
                 {
                   title: state.data?.title ?? "",
-                  path: `/tour/${state.data?.slug ?? ""}`,
+                  path: `/trip/${state.data?.slug ?? ""}`,
                 },
               ]}
             />
@@ -177,10 +177,10 @@ const ServiceDetail: FC<PageProps> = (props) => {
             )}
           </Container>
           {state.data && (
-            <PopularTourSlider
+            <PopularTripSlider
               exceptionId={state.data?.id}
-              title="Other Popular Tours"
-              description="Discover Bali with our featured tours"
+              title="Other Popular Trip"
+              description="Discover Bali with our featured trip"
             />
           )}
         </Layout>
@@ -384,4 +384,4 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   };
 };
 
-export default memo(ServiceDetail);
+export default memo(TripDetail);

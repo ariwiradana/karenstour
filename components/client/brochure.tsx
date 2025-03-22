@@ -1,11 +1,10 @@
-// components/TourBrochure.tsx
 import { FC } from "react";
 import Image from "next/image";
 import { Destination } from "@/constants/types";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { montserrat } from "@/constants/font";
 
-export const tour = {
+export const trip = {
   name: "Best of Waterfalls, Rice Terrace, Swing",
   description:
     "A full-day experience visiting Tukad Cepung Waterfall, Tibumana Waterfall, Tegenungan Waterfall, and the famous Bali Swing. Enjoy stunning views and a delicious scenic lunch.",
@@ -26,7 +25,7 @@ interface Props {
   destination?: Destination;
 }
 
-const TourBrochure: FC<Props> = (props) => {
+const TripBrochure: FC<Props> = (props) => {
   if (!props.destination) return <></>;
   return (
     <div className={`${montserrat.className}`}>
@@ -84,4 +83,4 @@ const TourBrochure: FC<Props> = (props) => {
   );
 };
 
-export default TourBrochure;
+export default TripBrochure;

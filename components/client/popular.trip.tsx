@@ -8,14 +8,14 @@ import CardShimmer from "./elements/card.shimmer";
 import Link from "next/link";
 import { unbounded } from "@/constants/font";
 
-interface PopularTourProps {
+interface PopularTripProps {
   title: string;
   description: string;
   link?: string;
   actionTitle?: string;
   exceptionId?: number | null;
 }
-const PopularTour: FC<PopularTourProps> = (props) => {
+const PopularTrip: FC<PopularTripProps> = (props) => {
   const { state } = usePopularDestination(props.exceptionId);
 
   return (
@@ -50,7 +50,7 @@ const PopularTour: FC<PopularTourProps> = (props) => {
         )}
 
         <Link
-          href={"/tour"}
+          href="/trip"
           className={`mt-8 md:mt-14 flex justify-center text-primary underline underline-offset-4 font-medium ${unbounded.className}`}
         >
           Show More
@@ -60,4 +60,4 @@ const PopularTour: FC<PopularTourProps> = (props) => {
   );
 };
 
-export default PopularTour;
+export default PopularTrip;

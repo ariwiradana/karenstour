@@ -4,6 +4,7 @@ import React from "react";
 import ButtonPrimary from "./elements/button.primary";
 import { RiWhatsappLine } from "react-icons/ri";
 import Link from "next/link";
+import { contact } from "@/constants/data";
 
 const BookNow: React.FC = () => {
   return (
@@ -27,10 +28,7 @@ const BookNow: React.FC = () => {
             </p>
           </div>
           <div className="flex flex-col md:flex-row justify-center items-center gap-4 px-6 md:px-8 lg:px-0">
-            <Link
-              href="https://api.whatsapp.com/send?phone=081246768627"
-              target="_blank"
-            >
+            <Link href={contact.whatsapp} target="_blank">
               <ButtonPrimary
                 id="button-book-now"
                 className="w-auto"

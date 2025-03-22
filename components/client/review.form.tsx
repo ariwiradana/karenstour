@@ -57,7 +57,7 @@ const ReviewForm: FC<Props> = (props) => {
             <p
               className={`text-sm mb-1 font-medium text-darkgray ml-1 ${montserrat.className}`}
             >
-              What would you rate this tour?
+              What would you rate this trip?
             </p>
             <Rating
               icon={<BiSolidStar className="text-amber-400 text-3xl" />}
@@ -73,7 +73,7 @@ const ReviewForm: FC<Props> = (props) => {
           <CustomTextarea
             value={state.formData.comments}
             name="comments"
-            label="Tell us your feedback about the tour?"
+            label="Tell us your feedback about the trip?"
             onChange={(e) => actions.handleChange(e.target.value, "comments")}
             error={state.errors.comments}
           />

@@ -16,7 +16,7 @@ import SEO from "@/components/client/seo";
 
 interface Props {}
 
-const ServiceList: FC<Props> = () => {
+const TripList: FC<Props> = () => {
   const { ref, state, actions } = useDestination();
 
   return (
@@ -26,24 +26,24 @@ const ServiceList: FC<Props> = () => {
           state.data.length > 0 ? state.data[0].categories.join(", ") : ""
         }
         url={
-          typeof window !== "undefined" ? `${window.location.origin}/tour` : ""
+          typeof window !== "undefined" ? `${window.location.origin}/trip` : ""
         }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
-        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+        description="Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali."
       />
       <Breadcrumb
-        title="Tour"
+        title="Trip"
         navigations={[
           { title: "Home", path: "/" },
-          { title: "Tours", path: "/tour" },
+          { title: "All Trip", path: "/trip" },
         ]}
       />
       <Container className={`py-12 lg:py-24 ${unbounded.className}`}>
         <div className="lg:mb-10" ref={ref.topRef}>
           <Title
-            title={"Discover Bali with Our Tour Packages"}
-            description={`Experience Bali with ease through our ${state.service} services.`}
+            title={"Discover Bali with Our Trip Packages"}
+            description={`Experience Bali with ease through our ${state.service} trip.`}
             action={false}
           />
         </div>
@@ -191,4 +191,4 @@ const ServiceList: FC<Props> = () => {
   );
 };
 
-export default ServiceList;
+export default TripList;

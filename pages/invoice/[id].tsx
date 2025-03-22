@@ -41,7 +41,7 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
         }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
-        description="Discover Bali's hidden gems with Karen's Tour. We offer personalized tours, from breathtaking beaches to cultural landmarks. Let us guide you through an unforgettable adventure in Bali."
+        description="Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali."
       />
       <div className={`${montserrat.className}`}>
         {state.loading ? (
@@ -73,7 +73,7 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
                     </h1>
                     <p className="text-dark">
                       {paid
-                        ? "Your payment has already been paid. Thank you for booking your tour with us!"
+                        ? "Your payment has already been paid. Thank you for booking your trip with us!"
                         : "Your proof of payment has been uploaded and is currently under review."}
                     </p>
                   </div>
