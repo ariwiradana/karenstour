@@ -139,23 +139,29 @@ const UploadPaymentProof: FC<PageProps> = (props) => {
                       {currencyIDR(state.booking?.total || 0)}
                     </li>
                   </ul>
-                  <h3 className="text-green-600 font-medium text-base mt-6">
-                    Payment Instructions (Bank Transfer)
-                  </h3>
+                  {!paid && (
+                    <>
+                      <h3 className="text-green-600 font-medium text-base mt-6">
+                        Payment Instructions (Bank Transfer)
+                      </h3>
 
-                  <ul className="list-none p-0 text-sm md:text-base">
-                    <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
-                      <span className="font-semibold">Bank Name :</span> BCA
-                    </li>
-                    <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
-                      <span className="font-semibold">Account Name :</span>{" "}
-                      Karen&apos;s Tour
-                    </li>
-                    <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
-                      <span className="font-semibold">Account Number :</span>{" "}
-                      123928712627
-                    </li>
-                  </ul>
+                      <ul className="list-none p-0 text-sm md:text-base">
+                        <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
+                          <span className="font-semibold">Bank Name :</span> BCA
+                        </li>
+                        <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
+                          <span className="font-semibold">Account Name :</span>{" "}
+                          Karen&apos;s Tour
+                        </li>
+                        <li className="my-2 md:my-3 p-3 border border-zinc-200 rounded-lg bg-zinc-50">
+                          <span className="font-semibold">
+                            Account Number :
+                          </span>{" "}
+                          123928712627
+                        </li>
+                      </ul>
+                    </>
+                  )}
 
                   {!paid && !reviewed ? (
                     <>
