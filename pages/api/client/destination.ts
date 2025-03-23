@@ -15,7 +15,7 @@ export default async function handler(
       order?: string;
       search?: string;
       id?: number;
-      category_names?: string;
+      category_id?: string;
     }
 
     const {
@@ -26,7 +26,7 @@ export default async function handler(
       order,
       search = "",
       id,
-      category_names,
+      category_id,
     }: QueryParams = request.query;
 
     const searchTerm = `%${search}%`;
@@ -34,11 +34,16 @@ export default async function handler(
 
     let text = `
       SELECT 
-        d.*, 
+        d.*,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        c.title AS category_title,
+        c.description AS category_description,
         ROUND(AVG(r.rating), 1) AS average_rating, 
         COUNT(r.id) AS review_count
       FROM destination d
       LEFT JOIN reviews r ON d.id = r.destination_id
+      LEFT JOIN category c ON d.category_id = c.id
       WHERE d.title ILIKE $1
     `;
 
@@ -65,17 +70,14 @@ export default async function handler(
       values.push(slug);
     }
 
-    if (category_names) {
-      const categoryNames = category_names.split(","); // ['Airport Transfer', 'Culture']
+    if (category_id) {
       const valueIndex = values.length + 1;
-      text += ` AND d.categories && $${valueIndex}`;
-      countText += ` AND d.categories && $${valueIndex}`; // Also apply to count query
-      values.push(categoryNames); // Pass the array of category names as a value
+      text += ` AND d.category_id = $${valueIndex}`;
+      countText += ` AND d.category_id = $${valueIndex}`;
+      values.push(category_id);
     }
 
-    text += " GROUP BY d.id";
-
-    console.log(text, values);
+    text += " GROUP BY d.id, c.name, c.slug, c.title, c.description";
 
     const validSortColumns = ["d.duration", "d.price", "average_rating"];
     const validSortOrders = ["ASC", "DESC"];

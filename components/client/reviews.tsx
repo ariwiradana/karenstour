@@ -70,7 +70,7 @@ const Reviews: FC = () => {
 
   if (state.reviews.length > 0)
     return (
-      <Container className="md:py-14 py-8">
+      <Container className="md:py-20 py-12">
         <Title
           action={false}
           center

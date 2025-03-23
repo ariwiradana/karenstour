@@ -11,8 +11,13 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC, memo } from "react";
-import { BiCheck, BiSolidMap, BiSolidTime, BiSolidUser } from "react-icons/bi";
-import PopularTripSlider from "@/components/client/popular.trip.slider";
+import {
+  BiCheck,
+  BiSolidCompass,
+  BiSolidMap,
+  BiSolidTime,
+  BiSolidUser,
+} from "react-icons/bi";
 import VideoPlayer from "@/components/admin/elements/video.player";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
@@ -49,7 +54,7 @@ const TripDetail: FC<PageProps> = (props) => {
   return (
     <>
       <SEO
-        keywords={state.data ? state.data?.categories.join(", ") : ""}
+        keywords={state.data?.category_name as string}
         url={
           typeof window !== "undefined"
             ? `${window.location.origin}/trip/${state.data?.slug}`
@@ -112,19 +117,6 @@ const TripDetail: FC<PageProps> = (props) => {
             <div className="mt-8 md:mt-8 lg:mt-10 grid grid-cols-1 lg:grid-cols-5 gap-y-6 md:gap-y-10 lg:gap-10 relative">
               <div className="flex flex-col gap-y-6 md:gap-y-10 lg:gap-10 col-span-1 md:col-span-3">
                 <div className={montserrat.className}>
-                  <div className={`flex gap-4 mb-3 ${montserrat.className}`}>
-                    {state.data.minimum_pax > 0 && (
-                      <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
-                        <BiSolidUser className="text-primary text-2xl" />
-                        Min. {state.data.minimum_pax} Guest
-                        {state.data.minimum_pax > 1 && "s"}
-                      </h4>
-                    )}
-                    <h4 className="flex items-center gap-x-2 text-base md:text-lg font-medium text-dark">
-                      <BiSolidTime className="text-primary text-2xl" />
-                      {state.data.duration}
-                    </h4>
-                  </div>
                   <h1
                     className={`text-3xl lg:text-4xl text-dark font-medium ${unbounded.className}`}
                   >
@@ -140,16 +132,19 @@ const TripDetail: FC<PageProps> = (props) => {
                     all other relevant costs.
                   </p>
                   <div className="flex flex-wrap gap-2 md:gap-3 mt-3 md:mt-4">
-                    {state.data?.categories?.map((c) => (
-                      <div
-                        key={c}
-                        className={`text-sm ${montserrat.className}`}
-                      >
-                        <p className="bg-primary/10 py-1 px-2 text-primary rounded-lg font-medium">
-                          {c}
-                        </p>
-                      </div>
-                    ))}
+                    <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
+                      <BiSolidCompass />
+                      {state.data?.category_name}
+                    </p>
+                    <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
+                      <BiSolidTime />
+                      {state.data?.duration}
+                    </p>
+                    <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
+                      <BiSolidUser />
+                      Min. {state.data.minimum_pax} Guest
+                      {state.data.minimum_pax > 1 && "s"}
+                    </p>
                   </div>
                 </div>
                 <Description />
@@ -176,13 +171,12 @@ const TripDetail: FC<PageProps> = (props) => {
               </div>
             )}
           </Container>
-          {state.data && (
+          {/* {state.data && (
             <PopularTripSlider
-              exceptionId={state.data?.id}
               title="Other Popular Trip"
               description="Discover Bali with our featured trip"
             />
-          )}
+          )} */}
         </Layout>
       ) : (
         <NotFound />

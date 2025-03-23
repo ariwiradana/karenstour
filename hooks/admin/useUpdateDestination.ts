@@ -11,7 +11,7 @@ interface Form {
   images: FileList | null;
   thumbnail_image?: string;
   title: string;
-  categories: string[];
+  category_id: number | null;
   pax: number;
   description: string;
   duration: string;
@@ -52,7 +52,7 @@ const initialFormData: Form = {
   images: null,
   thumbnail_image: "",
   title: "",
-  categories: [],
+  category_id: null,
   pax: 1,
   description: "",
   duration: "",
@@ -104,7 +104,10 @@ const useUpdateDestination = (
           price: data.price,
           uploaded_images: data.images,
           uploaded_video: data.video_url,
-          categories: data.categories || [],
+          category_id:
+            !formData.category_id && categoryOptions.length > 0
+              ? categoryOptions[0].value
+              : data.category_id,
           thumbnail_image: data.thumbnail_image,
         }));
       } else {
@@ -125,7 +128,7 @@ const useUpdateDestination = (
         const options: Options[] = categoryResult.data.map(
           (category: Category) => ({
             label: category.name,
-            value: category.name,
+            value: category.id,
           })
         );
         setCategoryOptions(options);
@@ -171,21 +174,7 @@ const useUpdateDestination = (
     value: string | number | string[] | File | FileList | null,
     name: string
   ) => {
-    if (name === "categories") {
-      let newCategories = [...formData.categories];
-      if (newCategories.includes(value as string)) {
-        newCategories = newCategories.filter((c) => c !== value);
-      } else {
-        newCategories.push(value as string);
-      }
-      setFormData((prevState) => ({
-        ...prevState,
-        categories: newCategories,
-      }));
-      console.log({ newCategories, value });
-    } else {
-      setFormData((prevState) => ({ ...prevState, [name]: value }));
-    }
+    setFormData((prevState) => ({ ...prevState, [name]: value }));
   };
 
   const handleRemoveImage = async (imageURL: string) => {
@@ -401,7 +390,7 @@ const useUpdateDestination = (
           inclusions: formData.inclusions,
           inventory: formData.inventory,
           video_url: videoURL ?? formData.uploaded_video,
-          categories: formData.categories,
+          category_id: formData.category_id,
           thumbnail_image: formData.thumbnail_image,
         };
 

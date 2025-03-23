@@ -8,12 +8,13 @@ import { GetServerSideProps } from "next";
 import useAdminAddCategory from "@/hooks/admin/useAdminAddCategory";
 import { parse } from "cookie";
 import { BiCategory } from "react-icons/bi";
+import InputTextarea from "@/components/admin/elements/textarea";
 
 interface PageProps {
   authToken?: string;
 }
 
-const AdminAddCategoryPage: FC<PageProps> = ({authToken}) => {
+const AdminAddCategoryPage: FC<PageProps> = ({ authToken }) => {
   const { state, actions } = useAdminAddCategory(authToken as string);
 
   return (
@@ -36,12 +37,30 @@ const AdminAddCategoryPage: FC<PageProps> = ({authToken}) => {
           onSubmit={actions.handleSubmit}
           className="xl:max-w-3xl lg:max-w-2xl max-w-xl flex flex-col gap-4 mt-12"
         >
-          <Input
-            name="name"
-            label="Category"
-            onChange={(e) => actions.handleChange(e.target.value, "name")}
-            value={state.formData.name}
-            error={state.errors.name}
+          <div className="grid grid-cols-2 gap-x-4 md:gap-x-6">
+            <Input
+              name="name"
+              label="Category"
+              onChange={(e) => actions.handleChange(e.target.value, "name")}
+              value={state.formData.name}
+              error={state.errors.name}
+            />
+            <Input
+              name="title"
+              label="Title Section"
+              onChange={(e) => actions.handleChange(e.target.value, "title")}
+              value={state.formData.title}
+              error={state.errors.title}
+            />
+          </div>
+          <InputTextarea
+            name="description"
+            label="Description Section"
+            onChange={(e) =>
+              actions.handleChange(e.target.value, "description")
+            }
+            value={state.formData.description}
+            error={state.errors.description}
           />
 
           <div className="flex justify-end">

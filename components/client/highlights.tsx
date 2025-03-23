@@ -28,7 +28,7 @@ const HighlightItem: FC<HighlightItemProps> = (props) => {
 
 const Highlights = () => {
   return (
-    <div className="w-full bg-primary py-12 lg:p-16">
+    <div className="w-full bg-primary py-8 lg:p-14">
       <Container>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
           <HighlightItem

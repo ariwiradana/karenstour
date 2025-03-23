@@ -28,7 +28,7 @@ const Title: FC<TitleProps> = (props) => {
         </h1>
         {props.description && (
           <p
-            className={`text-darkgray text-lg ${
+            className={`text-darkgray md:text-lg ${
               !props.center ? "lg:max-w-[70dvw]" : ""
             } ${montserrat.className}`}
           >

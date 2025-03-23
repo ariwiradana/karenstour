@@ -90,8 +90,7 @@ const AdminDestinationPage = (props: PageProps) => {
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">
                       <span className="font-medium">
-                        {destination.categories &&
-                          destination.categories.join(", ")}
+                        {destination.category_name}
                       </span>
                     </td>
                     <td className="border px-4 py-2 text-left text-dark capitalize text-sm md:text-base max-w-80">

@@ -5,11 +5,18 @@ import Reviews from "@/components/client/reviews";
 import Layout from "@/components/client/layout";
 import BookNow from "@/components/client/book.now";
 import SEO from "@/components/client/seo";
+import useDestination from "@/hooks/client/useDestination";
+import { useDestinationStore } from "@/store/useDestinationStore";
+import { useCategoryStore } from "@/store/useCategoryStore";
 import PopularTrip from "@/components/client/popular.trip";
 
 interface Props {}
 
 const Home: FC<Props> = () => {
+  useDestination();
+  const { destinations } = useDestinationStore();
+  const { categories } = useCategoryStore();
+
   return (
     <>
       <SEO
@@ -21,12 +28,20 @@ const Home: FC<Props> = () => {
       />
       <Layout>
         <Hero />
-        <PopularTrip
-          actionTitle="All Trip"
-          link="/trip"
-          title="Our Top Picks for You"
-          description="Choose your next great experience from our featured trip"
-        />
+        <div className="flex flex-col">
+          {categories.map((category) => (
+            <PopularTrip
+              categoryId={category.id}
+              key={category.slug}
+              destinations={destinations.filter(
+                (destination) => destination.category_slug === category.slug
+              )}
+              link="/trip"
+              title={category.title}
+              description={category.description}
+            />
+          ))}
+        </div>
         <Highlights />
         <Reviews />
         <BookNow />

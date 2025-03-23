@@ -15,6 +15,8 @@ import { useFetch } from "@/lib/useFetch";
 
 interface FormData {
   name: string;
+  title: string;
+  description: string;
 }
 
 interface UseAdminAddCategoryState {
@@ -34,6 +36,8 @@ interface UseAdminAddCategory {
 
 const initialFormData: FormData = {
   name: "",
+  title: "",
+  description: "",
 };
 
 const useAdminAddCategory = (authToken: string): UseAdminAddCategory => {
@@ -59,6 +63,8 @@ const useAdminAddCategory = (authToken: string): UseAdminAddCategory => {
 
     const payload = {
       name: capitalizeWords(formData.name),
+      title: formData.title,
+      description: formData.description,
     };
 
     try {

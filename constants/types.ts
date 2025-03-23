@@ -13,7 +13,11 @@ export interface Destination {
   price: number;
   average_rating: number;
   review_count?: number | string;
-  categories: string[];
+  category_id: number;
+  category_name: string;
+  category_slug: string;
+  category_title: string;
+  category_description: string;
   location?: string;
 }
 
@@ -54,6 +58,9 @@ export interface Booking {
 export interface Category {
   id: number;
   name: string;
+  title: string;
+  slug: string;
+  description: string;
 }
 
 export interface Review {

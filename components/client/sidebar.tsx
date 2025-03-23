@@ -1,5 +1,5 @@
 import { montserrat, unbounded } from "@/constants/font";
-import useDestination from "@/hooks/client/useDestination";
+import { useDestinationStore } from "@/store/useDestinationStore";
 import Image from "next/image";
 import Link from "next/link";
 import React, { FC, useState } from "react";
@@ -10,7 +10,7 @@ interface SidebarProps {
 }
 
 const Sidebar: FC<SidebarProps> = (props) => {
-  const { state } = useDestination();
+  const { destinations } = useDestinationStore();
 
   return (
     <div className={`p-6 ${unbounded.className} relative h-dvh`}>
@@ -26,7 +26,7 @@ const Sidebar: FC<SidebarProps> = (props) => {
       <ul className="flex flex-col gap-4 mt-4">
         <SidebarItem onClose={props.close} title="Home" path="/" />
         <SidebarItem onClose={props.close} hasChild title="Trip" path="/trip">
-          {state.data.map((item) => (
+          {destinations?.map((item) => (
             <li key={`nav-child-${item.slug}`}>
               <Link
                 href={`/trip/${item.slug}`}

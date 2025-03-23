@@ -1,5 +1,6 @@
 import sql from "@/lib/db";
 import { withAuth } from "@/lib/withAuth";
+import { convertToSlug } from "@/utils/convertToSlug";
 import { errorResponse, successResponse } from "@/utils/response";
 import { NextApiResponse, NextApiRequest } from "next";
 
@@ -20,12 +21,12 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
     let text = `
       SELECT * FROM category
-      WHERE name ILIKE $1
+      WHERE name ILIKE $1 OR slug ILIKE $1
     `;
 
     let countText = `
       SELECT COUNT(*) FROM category
-      WHERE name ILIKE $1
+      WHERE name ILIKE $1 OR slug ILIKE $1
     `;
 
     if (id) {
@@ -75,15 +76,17 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
     }
   } else if (request.method === "POST") {
     try {
-      const { name } = request.body;
+      const { name, title, description } = request.body;
 
       if (!name) {
         return errorResponse(response, "Name is required");
       }
 
+      const slug = convertToSlug(name);
+
       const query = {
-        text: `INSERT INTO category (name) VALUES ($1)`,
-        values: [name],
+        text: `INSERT INTO category (name, slug,  title, description) VALUES ($1, $2, $3, $4)`,
+        values: [name, slug, title, description],
       };
 
       const { rowCount } = await sql.query(query);

@@ -2,17 +2,16 @@ import { unbounded } from "@/constants/font";
 import React, { FC, useEffect, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, EffectFade } from "swiper/modules";
-import usePopularDestination from "@/hooks/client/usePopularDestination";
 import ButtonPrimary from "./elements/button.primary";
 import Link from "next/link";
 import ImageShimmer from "./elements/image.shimmer";
 import { MdArrowOutward } from "react-icons/md";
+import { useDestinationStore } from "@/store/useDestinationStore";
 
 const Hero: FC = () => {
   const [activeIndex, setActiveIndex] = useState(0);
 
-  const { state } = usePopularDestination();
-
+  const { destinations } = useDestinationStore();
   const [fade, setFade] = useState(false);
 
   useEffect(() => {
@@ -24,7 +23,7 @@ const Hero: FC = () => {
     return () => clearTimeout(timeout);
   }, [activeIndex]);
 
-  if (state.destinations.length === 0)
+  if (destinations.length === 0)
     return (
       <div className="w-full h-[400px] md:h-[500px] lg:h-[600px] 2xl:h-[800px] shine"></div>
     );
@@ -48,7 +47,7 @@ const Hero: FC = () => {
                 fade ? "opacity-10 translate-y-1" : "opacity-100 translate-y-0"
               }`}
             >
-              {!fade && state.destinations[activeIndex].title}
+              {!fade && destinations[activeIndex].title}
             </span>
           </div>
           <div className="md:mt-8 mt-5">
@@ -73,7 +72,7 @@ const Hero: FC = () => {
         onSlideChange={(swiper) => setActiveIndex(swiper.activeIndex)}
         allowTouchMove={false}
       >
-        {state.destinations.map((destination, index) => (
+        {destinations.map((destination, index) => (
           <SwiperSlide key={`hero-${destination.id}`}>
             <div className="relative w-full h-full">
               <ImageShimmer

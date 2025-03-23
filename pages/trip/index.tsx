@@ -13,18 +13,25 @@ import { BiCheck } from "react-icons/bi";
 import { BsFilter } from "react-icons/bs";
 import CustomSelect from "@/components/client/elements/select";
 import SEO from "@/components/client/seo";
+import { useDestinationStore } from "@/store/useDestinationStore";
+import { GetServerSideProps } from "next";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import { useDestinationDetailStore } from "@/store/useDestinationDetailStore";
 
-interface Props {}
+interface Props {
+  category: string;
+}
 
-const TripList: FC<Props> = () => {
-  const { ref, state, actions } = useDestination();
+const TripList: FC<Props> = ({ category }) => {
+  const { ref, state, actions } = useDestination(category);
+  const { destinations } = useDestinationStore();
+  const { categories } = useCategoryStore();
+  const { categoryFilterId } = useDestinationDetailStore();
 
   return (
     <Layout still>
       <SEO
-        keywords={
-          state.data.length > 0 ? state.data[0].categories.join(", ") : ""
-        }
+        keywords={destinations.length > 0 ? destinations[0].category_name : ""}
         url={
           typeof window !== "undefined" ? `${window.location.origin}/trip` : ""
         }
@@ -36,7 +43,7 @@ const TripList: FC<Props> = () => {
         title="Trip"
         navigations={[
           { title: "Home", path: "/" },
-          { title: "All Trip", path: "/trip" },
+          { title: "Trip", path: "/trip" },
         ]}
       />
       <Container className={`py-12 lg:py-24 ${unbounded.className}`}>
@@ -58,7 +65,7 @@ const TripList: FC<Props> = () => {
               <div className="md:flex items-center hidden">
                 <BsFilter className="text-2xl text-dark" />
               </div>
-              {state.categories.length === 0 ? (
+              {categories.length === 0 ? (
                 <>
                   {[0, 1, 2, 3].map((item) => (
                     <div
@@ -111,36 +118,33 @@ const TripList: FC<Props> = () => {
                       },
                     ]}
                   />
-                  {state.categories.map((category: Category) => (
-                    <div
+                  {categories.map((category: Category) => (
+                    <button
+                      aria-label="btn-filter-category"
+                      onClick={() =>
+                        actions.handleChangeFilterCategory(
+                          category.id,
+                          category.slug
+                        )
+                      }
                       key={category.name}
                       className={`flex items-center justify-start gap-x-1 p-2 rounded-lg ${
-                        (state.categoryFilters as string[]).includes(
-                          category.name
-                        )
+                        categoryFilterId === category.id
                           ? "bg-primary text-white border-primary"
                           : "bg-white text-dark border-gray-100"
                       }`}
                     >
                       <BiCheck
                         className={`text-xs md:text-sm ${
-                          (state.categoryFilters as string[]).includes(
-                            category.name
-                          )
+                          categoryFilterId === category.id
                             ? "text-white"
                             : "text-darkgray"
                         }`}
                       />
-                      <button
-                        aria-label="btn-filter-category"
-                        onClick={() =>
-                          actions.handleChangeFilterCategory(category.name)
-                        }
-                        className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left"
-                      >
+                      <p className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left">
                         {category.name}
-                      </button>
-                    </div>
+                      </p>
+                    </button>
                   ))}
                 </>
               )}
@@ -160,7 +164,7 @@ const TripList: FC<Props> = () => {
         </p>
 
         <div className="mt-4 md:mt-6">
-          {state.loading ? (
+          {state.isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
               <CardShimmer />
               <CardShimmer />
@@ -169,7 +173,7 @@ const TripList: FC<Props> = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
-              {state.data.map((obj) => (
+              {destinations.map((obj) => (
                 <DestinationCard key={obj.id} data={obj} />
               ))}
             </div>
@@ -189,6 +193,16 @@ const TripList: FC<Props> = () => {
       </Container>
     </Layout>
   );
+};
+
+export const getServerSideProps: GetServerSideProps = async ({ params }) => {
+  const category = (params?.category as string) || "";
+
+  return {
+    props: {
+      category,
+    },
+  };
 };
 
 export default TripList;

@@ -41,11 +41,16 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
 
     let text = `
       SELECT 
-        d.*, 
+        d.*,
+        c.name AS category_name,
+        c.slug AS category_slug,
+        c.title AS category_title,
+        c.description AS category_description,
         ROUND(AVG(r.rating), 1) AS average_rating, 
         COUNT(r.id) AS review_count
       FROM destination d
       LEFT JOIN reviews r ON d.id = r.destination_id
+      LEFT JOIN category c ON d.category_id = c.id
       WHERE d.title ILIKE $1
     `;
 
@@ -70,7 +75,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
       values.push(slug);
     }
 
-    text += " GROUP BY d.id";
+    text += " GROUP BY d.id, c.name, c.slug, c.title, c.description";
 
     // Sorting logic
     const validSortColumns = ["d.duration", "d.price", "average_rating"];
@@ -125,12 +130,12 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         inclusions,
         inventory,
         video_url,
-        categories,
+        category_id,
       }: Destination = request.body;
 
       const query = {
         text: `
-          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, categories, inventory)
+          INSERT INTO destination (images, title, slug, minimum_pax, description, duration, price, inclusions, video_url, category_id, inventory)
           VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)
           RETURNING *;
         `,
@@ -144,7 +149,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           price,
           inclusions,
           video_url,
-          categories,
+          category_id,
           inventory,
         ],
       };
@@ -165,7 +170,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
         price,
         inclusions,
         video_url,
-        categories,
+        category_id,
         thumbnail_image,
         inventory,
       }: Destination = request.body;
@@ -177,7 +182,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
                 UPDATE destination
                 SET images = $1, title = $2, slug = $3, minimum_pax = $4,
                     description = $5, duration = $6, price = $7,
-                    inclusions = $8, video_url = $9, categories = $10, thumbnail_image = $11, inventory = $12
+                    inclusions = $8, video_url = $9, category_id = $10, thumbnail_image = $11, inventory = $12
                 WHERE id = $13
                 RETURNING *;
             `,
@@ -191,7 +196,7 @@ const handler = async (request: NextApiRequest, response: NextApiResponse) => {
           price,
           inclusions,
           video_url,
-          categories,
+          category_id,
           thumbnail_image,
           inventory,
           id,

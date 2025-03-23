@@ -1,11 +1,12 @@
 CREATE TABLE IF NOT EXISTS category (
     id SERIAL PRIMARY KEY,
-    name VARCHAR(100) NOT NULL UNIQUE
+    name VARCHAR(100) NOT NULL UNIQUE,
+    title VARCHAR(255),
+    description VARCHAR(255)
 );                      
 
 CREATE TABLE IF NOT EXISTS destination (
     id SERIAL PRIMARY KEY,
-    categories TEXT[],
     images TEXT[],
     thumbnail_image VARCHAR(255),
     title VARCHAR(255) NOT NULL,
@@ -16,7 +17,8 @@ CREATE TABLE IF NOT EXISTS destination (
     price INTEGER NOT NULL,
     inclusions TEXT[],
     inventory TEXT[],
-    video_url VARCHAR(255)
+    video_url VARCHAR(255),
+    category_id INTEGER REFERENCES category(id) ON DELETE SET NULL,
 );
 
 CREATE TABLE IF NOT EXISTS booking (

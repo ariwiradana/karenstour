@@ -14,8 +14,7 @@ import ImageShimmer from "@/components/client/elements/image.shimmer";
 import FsLightbox from "fslightbox-react";
 import { BiMap } from "react-icons/bi";
 import { parse } from "cookie";
-import InputCheckbox from "@/components/admin/elements/input.checkbox";
-import { montserrat } from "@/constants/font";
+import InputSelect from "@/components/admin/elements/select";
 
 interface PageProps {
   id: string;
@@ -146,32 +145,17 @@ const UpdateDestinationPage: FC<PageProps> = (props) => {
               </div>
             )}
           </div>
-          <div>
-            <p
-              className={`block text-gray-700 mb-1 text-sm ${montserrat.className}`}
-            >
-              Category
-            </p>
-            <div className="flex flex-wrap gap-2">
-              {state.categoryOptions.map((category) => {
-                const categoryChecked = state.formData.categories.includes(
-                  category.value
-                );
-                return (
-                  <InputCheckbox
-                    checked={categoryChecked}
-                    id={`category-${category.value}`}
-                    key={`category-${category.value}`}
-                    onChange={(e) =>
-                      actions.handleChange(e.target.value, "categories")
-                    }
-                    label={category.label}
-                    value={category.value}
-                  />
-                );
-              })}
-            </div>
-          </div>
+          {state.categoryOptions?.length > 0 && (
+            <InputSelect
+              value={state.formData.category_id as number}
+              label="Category"
+              options={state.categoryOptions}
+              onChange={(e) =>
+                actions.handleChange(e.target.value, "category_id")
+              }
+            />
+          )}
+
           <InputTextEditor
             label="Description"
             onChange={(value) => actions.handleChange(value, "description")}

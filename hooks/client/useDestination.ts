@@ -1,10 +1,12 @@
 import { Category, Destination } from "@/constants/types";
 import { useRouter } from "next/router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import useAdminCategory from "../admin/useAdminCategory";
+import { useDebounce } from "use-debounce";
+import { useDestinationStore } from "@/store/useDestinationStore";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
-import { useDebounce } from "use-debounce";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import { useDestinationDetailStore } from "@/store/useDestinationDetailStore";
 
 type SortBy = "average_rating" | "d.duration" | "d.price";
 type SortOrder = "asc" | "desc";
@@ -18,15 +20,12 @@ interface UseDestination {
     lastSlide: boolean;
     page: number;
     limit: number;
-    data: Destination[] | [];
     error: string | null;
-    loading: boolean;
+    isLoading: boolean;
     service: string | string[] | undefined;
     totalRows: number;
     sortBy: SortBy;
     sortOrder: SortOrder;
-    categories: Category[];
-    categoryFilters: string[] | [];
     search: string;
   };
   actions: {
@@ -38,24 +37,22 @@ interface UseDestination {
     ) => void;
     handleChangeFilter: (event: React.ChangeEvent<HTMLSelectElement>) => void;
     handleScrollToRef: () => void;
-    handleChangeFilterCategory: (categoryName: string) => void;
+    handleChangeFilterCategory: (id: number, slug: string) => void;
     handleChangeSearch: (q: string) => void;
   };
 }
 
-const useDestination = (): UseDestination => {
+const useDestination = (category?: string): UseDestination => {
+  const { setDestinations } = useDestinationStore();
+  const { setCategories } = useCategoryStore();
+  const { categoryFilterId, setCategoryFilterId } = useDestinationDetailStore();
+
   const [firstSlide, setFirstSlide] = useState<boolean>(true);
   const [lastSlide, setLastSlide] = useState<boolean>(false);
-  const [totalRows, setTotalRows] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
-  const [limit, setLimit] = useState<number>(12);
-  const [data, setData] = useState<Destination[] | []>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
+  const [limit] = useState<number>(12);
   const [sortBy, setSortBy] = useState<SortBy>("average_rating");
   const [sortOrder, setSortOrder] = useState<SortOrder>("asc");
-  const [categoryFilters, setCategoryFilters] = useState<string[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [search, setSearch] = useState<string>("");
   const [searchDebounced] = useDebounce(search, 1000);
 
@@ -63,27 +60,46 @@ const useDestination = (): UseDestination => {
     setSearch(q);
   };
 
-  const fetchCategories = useCallback(async () => {
-    setLoading(true);
-    let url = `/api/client/category`;
-    try {
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
+  const { data: categoriesResponse } = useSWR<{ data: Category[] }>(
+    `/api/client/category`,
+    fetcher
+  );
+  const categories: Category[] = categoriesResponse?.data || [];
+  useEffect(() => {
+    if (categories.length > 0) {
+      setCategories(categories);
+      if (category) {
+        const categoryFilterInit = categories.find(
+          (cat) => cat.slug === category
+        );
+        if (categoryFilterInit) setCategoryFilterId(categoryFilterInit?.id);
       }
-      const result = await response.json();
-
-      if (result.success) {
-        setCategories(result?.data);
-      }
-    } catch (error: any) {
-      setError(error.message);
     }
-  }, []);
+  }, [categories, category, setCategories]);
+
+  const {
+    data: destinationResponse,
+    error,
+    isLoading,
+  } = useSWR<{
+    data: Destination[];
+    totalRows: number;
+  }>(
+    `/api/client/destination?page=${page}&limit=${limit}&sort=${encodeURIComponent(
+      sortBy
+    )}&order=${encodeURIComponent(sortOrder)}&category_id=${
+      categoryFilterId || ""
+    }&search=${searchDebounced}`,
+    fetcher
+  );
+  const destinations: Destination[] = destinationResponse?.data || [];
+  const totalRows: number = destinationResponse?.totalRows || 0;
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    if (destinations.length > 0) {
+      setDestinations(destinations);
+    }
+  }, [destinations, setDestinations]);
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -117,46 +133,12 @@ const useDestination = (): UseDestination => {
     }
   }, []);
 
-  const fetchDestinations = useCallback(async () => {
-    setLoading(true);
-    try {
-      const url = `/api/client/destination?page=${page}&limit=${limit}&sort=${encodeURIComponent(
-        sortBy
-      )}&order=${encodeURIComponent(
-        sortOrder
-      )}&category_names=${encodeURIComponent(
-        categoryFilters.join(",")
-      )}&search=${searchDebounced}`;
-      const response = await fetch(url);
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await response.json();
-      if (result.success) {
-        setData(result?.data);
-        setTotalRows(result?.totalRows);
-      }
-    } catch (error: any) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-    }
-  }, [page, limit, sortBy, sortOrder, categoryFilters, searchDebounced]);
-
-  useEffect(() => {
-    fetchDestinations();
-  }, [fetchDestinations]);
-
-  const handleChangeFilterCategory = (categoryName: string) => {
-    let newCategoryFilters = [...categoryFilters];
-    if (categoryFilters.includes(categoryName)) {
-      newCategoryFilters = newCategoryFilters.filter(
-        (item) => item !== categoryName
-      );
+  const handleChangeFilterCategory = (id: number, slug: string) => {
+    if (categoryFilterId === id) {
+      setCategoryFilterId(null);
     } else {
-      newCategoryFilters.push(categoryName);
+      setCategoryFilterId(id);
     }
-    setCategoryFilters(newCategoryFilters);
     setPage(1);
   };
 
@@ -165,19 +147,16 @@ const useDestination = (): UseDestination => {
       topRef,
     },
     state: {
-      categories,
       firstSlide,
       lastSlide,
       service,
       page,
       limit,
-      data,
       totalRows,
       error,
-      loading,
+      isLoading,
       sortBy,
       sortOrder,
-      categoryFilters,
       search,
     },
     actions: {

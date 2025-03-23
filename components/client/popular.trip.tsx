@@ -3,34 +3,44 @@ import { SwiperSlide } from "swiper/react";
 import DestinationCard from "./elements/destination.card";
 import Container from "./container";
 import Title from "./elements/title";
-import usePopularDestination from "@/hooks/client/usePopularDestination";
 import CardShimmer from "./elements/card.shimmer";
 import Link from "next/link";
-import { unbounded } from "@/constants/font";
+import { Destination } from "@/constants/types";
+import ButtonText from "./elements/button.text";
+import { useDestinationDetailStore } from "@/store/useDestinationDetailStore";
 
 interface PopularTripProps {
   title: string;
   description: string;
-  link?: string;
+  link: string;
   actionTitle?: string;
   exceptionId?: number | null;
+  isLoading?: boolean;
+  categoryId: number;
+  destinations: Destination[];
 }
 const PopularTrip: FC<PopularTripProps> = (props) => {
-  const { state } = usePopularDestination(props.exceptionId);
+  const { setCategoryFilterId } = useDestinationDetailStore();
 
   return (
-    <Container className="flex flex-col divide-y lg:divide-y-0">
-      <div className="md:py-14 py-8">
-        <div className="flex flex-col md:flex-row justify-between items-start gap-3 my-6">
+    <Container className="flex flex-col divide-y lg:divide-y-0 odd:bg-white even:bg-zinc-50 py-10 md:py-14">
+      <div>
+        <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6">
           <Title
             action={false}
             path={props.link}
             title={props.title}
             description={props.description}
           />
+          <Link href={props.link}>
+            <ButtonText
+              title="Show More"
+              onClick={() => setCategoryFilterId(props.categoryId)}
+            />
+          </Link>
         </div>
 
-        {state.isLoading ? (
+        {props.isLoading ? (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
             <CardShimmer />
             <CardShimmer />
@@ -39,7 +49,7 @@ const PopularTrip: FC<PopularTripProps> = (props) => {
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8 ">
-            {state.destinations.map((obj) => {
+            {props.destinations.map((obj) => {
               return (
                 <SwiperSlide key={obj.id}>
                   <DestinationCard data={obj} />
@@ -48,13 +58,6 @@ const PopularTrip: FC<PopularTripProps> = (props) => {
             })}
           </div>
         )}
-
-        <Link
-          href="/trip"
-          className={`mt-8 md:mt-14 flex justify-center text-primary underline underline-offset-4 font-medium ${unbounded.className}`}
-        >
-          Show More
-        </Link>
       </div>
     </Container>
   );

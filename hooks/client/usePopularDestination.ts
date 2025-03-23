@@ -1,14 +1,8 @@
-import { Destination } from "@/constants/types";
-import { fetcher } from "@/lib/fetcher";
 import { useEffect, useState } from "react";
-import useSWR from "swr";
 
 interface UsePopularDestinationState {
   firstSlide: boolean;
   lastSlide: boolean;
-  destinations: Destination[] | [];
-  error: string | null;
-  isLoading: boolean;
   activeIndex: number;
   slidesPerView: number;
 }
@@ -22,9 +16,7 @@ interface UsePopularDestination {
   };
 }
 
-const usePopularDestination = (
-  exceptionId?: number | null
-): UsePopularDestination => {
+const usePopularDestination = (): UsePopularDestination => {
   const [firstSlide, setFirstSlide] = useState<boolean>(true);
   const [lastSlide, setLastSlide] = useState<boolean>(false);
   const [activeIndex, setActiveIndex] = useState<number>(0);
@@ -55,24 +47,12 @@ const usePopularDestination = (
     };
   }, []);
 
-  const { data, isLoading, error } = useSWR<{ data: Destination[] }>(
-    "/api/client/destination?page=1&limit=8&sort=average_rating&order=asc",
-    fetcher
-  );
-
-  const destinations = exceptionId
-    ? data?.data.filter((d) => d.id !== exceptionId) || []
-    : data?.data || [];
-
   return {
     state: {
       activeIndex,
       slidesPerView,
       firstSlide,
       lastSlide,
-      destinations,
-      error,
-      isLoading,
     },
     actions: {
       setFirstSlide,
