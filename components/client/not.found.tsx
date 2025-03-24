@@ -9,7 +9,7 @@ const NotFound = () => {
     >
       <div className="text-center">
         <h1 className="text-6xl font-bold text-dark mb-4">404</h1>
-        <p className="text-2xl text-gray-600 mb-8">Trip Not Found</p>
+        <p className="text-2xl text-gray-600 mb-8">Destination Not Found</p>
         <Link href="/" className="text-primary hover:underline">
           Go back to home
         </Link>

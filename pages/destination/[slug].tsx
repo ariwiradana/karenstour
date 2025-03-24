@@ -23,13 +23,14 @@ import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
 import Lightbox from "@/components/client/elements/lightbox";
-import TripBrochure from "@/components/client/brochure";
+import DestinationBrochure from "@/components/client/brochure";
 import SEO from "@/components/client/seo";
 import NotFound from "@/components/client/not.found";
 import { LoaderIcon } from "react-hot-toast";
 import Inventory from "@/components/client/inventory";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
 import Modal from "@/components/client/elements/modal";
+import PopularDestinationSlider from "@/components/client/popular.destination.slider";
 
 interface PageProps {
   serviceId: string;
@@ -37,14 +38,14 @@ interface PageProps {
   slug: string;
 }
 
-const TripDetail: FC<PageProps> = (props) => {
+const DestinationDetail: FC<PageProps> = (props) => {
   const { state, actions, refs } = useDestinationDetail(
     props.publicKey,
     props.serviceId,
     props.slug
   );
 
-  if (state.loading)
+  if (state.isLoadingDestination)
     return (
       <div className="w-dvw h-dvh flex justify-center items-center">
         <LoaderIcon />
@@ -57,7 +58,7 @@ const TripDetail: FC<PageProps> = (props) => {
         keywords={state.data?.category_name as string}
         url={
           typeof window !== "undefined"
-            ? `${window.location.origin}/trip/${state.data?.slug}`
+            ? `${window.location.origin}/destination/${state.data?.slug}`
             : ""
         }
         image="/images/logo.png"
@@ -78,7 +79,7 @@ const TripDetail: FC<PageProps> = (props) => {
         onClose={actions.handleToggleModal}
         onCancel={actions.handleToggleModal}
         title="Booking Form"
-        isLoading={state.loadingSubmit}
+        isLoading={state.isLoadingSubmit}
       >
         <FormBooking state={state} actions={actions} />
       </Modal>
@@ -86,7 +87,7 @@ const TripDetail: FC<PageProps> = (props) => {
       {state.data ? (
         <Layout still>
           <div ref={refs?.brochureRef} style={{ display: "none" }}>
-            <TripBrochure destination={state.data ?? undefined} />
+            <DestinationBrochure destination={state.data ?? undefined} />
           </div>
           <Lightbox
             slideIndex={state.lightboxIndex}
@@ -96,13 +97,13 @@ const TripDetail: FC<PageProps> = (props) => {
           />
           {state.data?.slug && (
             <Breadcrumb
-              title="Trip"
+              title="Destination"
               navigations={[
                 { title: "Home", path: "/" },
-                { title: "Trip", path: "/trip" },
+                { title: "Destination", path: "/destination" },
                 {
                   title: state.data?.title ?? "",
-                  path: `/trip/${state.data?.slug ?? ""}`,
+                  path: `/destination/${state.data?.slug ?? ""}`,
                 },
               ]}
             />
@@ -137,13 +138,13 @@ const TripDetail: FC<PageProps> = (props) => {
                       {state.data?.category_name}
                     </p>
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
-                      <BiSolidTime />
-                      {state.data?.duration}
-                    </p>
-                    <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
                       <BiSolidUser />
                       Min. {state.data.minimum_pax} Guest
                       {state.data.minimum_pax > 1 && "s"}
+                    </p>
+                    <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
+                      <BiSolidTime />
+                      {state.data?.duration}
                     </p>
                   </div>
                 </div>
@@ -171,12 +172,16 @@ const TripDetail: FC<PageProps> = (props) => {
               </div>
             )}
           </Container>
-          {/* {state.data && (
-            <PopularTripSlider
-              title="Other Popular Trip"
-              description="Discover Bali with our featured trip"
+          {state.otherDestinations.length > 0 && (
+            <PopularDestinationSlider
+              isLoading={state.isLoadingOtherDestination}
+              link="/destination"
+              exceptionId={state.data.id}
+              destinations={state.otherDestinations}
+              title="Other Popular Destinations"
+              description="Discover Bali with our featured destinations"
             />
-          )} */}
+          )}
         </Layout>
       ) : (
         <NotFound />
@@ -248,7 +253,7 @@ const TripDetail: FC<PageProps> = (props) => {
       <div
         className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
       >
-        {state.loading ? (
+        {state.isLoadingDestination ? (
           <>
             <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
             <div>
@@ -378,4 +383,4 @@ export const getServerSideProps: GetServerSideProps<PageProps> = async ({
   };
 };
 
-export default memo(TripDetail);
+export default memo(DestinationDetail);

@@ -25,14 +25,19 @@ const Sidebar: FC<SidebarProps> = (props) => {
       </div>
       <ul className="flex flex-col gap-4 mt-4">
         <SidebarItem onClose={props.close} title="Home" path="/" />
-        <SidebarItem onClose={props.close} hasChild title="Trip" path="/trip">
-          {destinations?.map((item) => (
-            <li key={`nav-child-${item.slug}`}>
+        <SidebarItem
+          onClose={props.close}
+          hasChild
+          title="Destination"
+          path="/destination"
+        >
+          {destinations?.map((destination) => (
+            <li key={`nav-child-${destination.slug}`}>
               <Link
-                href={`/trip/${item.slug}`}
+                href={`/destination/${destination.slug}`}
                 className={`text-darkgray hover:underline text-xs ${montserrat.className}`}
               >
-                {item.title}
+                {destination.title}
               </Link>
             </li>
           ))}

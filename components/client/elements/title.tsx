@@ -37,7 +37,7 @@ const Title: FC<TitleProps> = (props) => {
         )}
       </div>
       {props.action && (
-        <Link href={props.path || "/trip"}>
+        <Link href={props.path || "/destination"}>
           <ButtonText
             title={props.actionTitle ? props.actionTitle : t("more")}
           />

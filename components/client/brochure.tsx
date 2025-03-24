@@ -4,7 +4,7 @@ import { Destination } from "@/constants/types";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import { montserrat } from "@/constants/font";
 
-export const trip = {
+export const destination = {
   name: "Best of Waterfalls, Rice Terrace, Swing",
   description:
     "A full-day experience visiting Tukad Cepung Waterfall, Tibumana Waterfall, Tegenungan Waterfall, and the famous Bali Swing. Enjoy stunning views and a delicious scenic lunch.",
@@ -25,7 +25,7 @@ interface Props {
   destination?: Destination;
 }
 
-const TripBrochure: FC<Props> = (props) => {
+const DestinationBrochure: FC<Props> = (props) => {
   if (!props.destination) return <></>;
   return (
     <div className={`${montserrat.className}`}>
@@ -83,4 +83,4 @@ const TripBrochure: FC<Props> = (props) => {
   );
 };
 
-export default TripBrochure;
+export default DestinationBrochure;

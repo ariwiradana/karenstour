@@ -47,7 +47,7 @@ const AdminDestinationPage = (props: PageProps) => {
             <table className="table-auto w-full border-collapse min-w-max">
               <thead>
                 <tr className="bg-gray-100 text-left">
-                  <th className="border px-4 py-2 text-sm text-dark">Trip</th>
+                  <th className="border px-4 py-2 text-sm text-dark">Destination</th>
                   <th className="border px-4 py-2 text-sm text-dark">Assets</th>
                   <th className="border px-4 py-2 text-sm text-dark">
                     Category

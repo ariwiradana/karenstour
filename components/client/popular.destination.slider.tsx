@@ -9,29 +9,30 @@ import CardShimmer from "./elements/card.shimmer";
 import Link from "next/link";
 import ButtonText from "./elements/button.text";
 import { Destination } from "@/constants/types";
-import { useDestinationDetailStore } from "@/store/useDestinationDetailStore";
 
-interface PopularTripSliderProps {
+interface PopularDestinationSliderProps {
   title: string;
   description: string;
   link: string;
   actionTitle?: string;
   destinations: Destination[];
   isLoading?: boolean;
-  categoryId: number;
+  exceptionId: number;
 }
-const PopularTripSlider: FC<PopularTripSliderProps> = (props) => {
+const PopularDestinationSlider: FC<PopularDestinationSliderProps> = (props) => {
   const { state, actions } = usePopularDestination();
-  const data = props?.destinations?.slice(0, 6) || [];
+  const data =
+    props?.destinations
+      ?.slice(0, 6)
+      .filter((dest) => dest.id !== props.exceptionId) || [];
 
   const indicators = Array(Math.ceil(data.length / state.slidesPerView)).fill(
     0
   );
-  const { setCategoryFilterId } = useDestinationDetailStore();
 
   return (
     <Container className="flex flex-col divide-y lg:divide-y-0">
-      <div className="md:pt-20 pt-12">
+      <div className="md:pb-20 pb-12">
         <div className="flex flex-col md:flex-row justify-between items-start gap-3 mb-6 md:mb-0">
           <Title
             action={false}
@@ -40,10 +41,7 @@ const PopularTripSlider: FC<PopularTripSliderProps> = (props) => {
             description={props.description}
           />
           <Link href={props.link}>
-            <ButtonText
-              title="Show More"
-              onClick={() => setCategoryFilterId(props.categoryId)}
-            />
+            <ButtonText title="Show More" />
           </Link>
         </div>
 
@@ -133,4 +131,4 @@ const PopularTripSlider: FC<PopularTripSliderProps> = (props) => {
   );
 };
 
-export default PopularTripSlider;
+export default PopularDestinationSlider;

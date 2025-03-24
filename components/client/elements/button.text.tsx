@@ -14,7 +14,7 @@ const ButtonText: FC<ButtonTextProps> = (props) => {
       id={id}
       aria-label={id}
       onClick={props.onClick}
-      className={`${unbounded.className} ${props.className} h-auto text-nowrap outline-none font-medium underline text-sm md:text-base text-primary`}
+      className={`${unbounded.className} ${props.className} h-auto text-nowrap outline-none font-medium underline text-base text-primary`}
     >
       {props.title}
     </button>

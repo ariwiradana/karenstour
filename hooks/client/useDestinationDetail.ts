@@ -1,7 +1,6 @@
 import { Destination } from "@/constants/types";
 import { formatDate } from "@/utils/dateFormatter";
-import { useRouter } from "next/router";
-import { useState, useEffect, useCallback, FormEvent, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import emailjs from "@emailjs/browser";
 import { z, ZodSchema } from "zod";
 import { parseTaxRate } from "@/utils/parseRates";
@@ -10,6 +9,8 @@ import { generateIds } from "@/utils/generateIds";
 import { capitalizeWords } from "@/utils/capitalizeWords";
 import moment from "moment";
 import { calculateTotalPrice } from "@/utils/calculateTotalPrice";
+import useSWR from "swr";
+import { fetcher } from "@/lib/fetcher";
 
 interface FormData {
   nameTitle: string;
@@ -26,20 +27,21 @@ export interface UseDestinationDetail {
   state: {
     data: Destination | null;
     slug: string;
-    toggleImage: boolean;
     isExpanded: boolean;
     gridNumberImage: number;
     slicedImages: string[];
     remainingImages: string[];
     hasVideo: boolean;
-    loading: boolean;
-    loadingSubmit: boolean;
+    isLoadingOtherDestination: boolean;
+    isLoadingDestination: boolean;
+    isLoadingSubmit: boolean;
     formData: FormData;
     errors: Record<string, string>;
     images: string[];
     lightbox: boolean;
     lightboxIndex: number;
     isOpen: boolean;
+    otherDestinations: Destination[];
   };
   refs?: {
     brochureRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -71,10 +73,8 @@ const useDestinationDetail = (
   slug: string
 ): UseDestinationDetail => {
   const [data, setData] = useState<Destination | null>(null);
-  const [toggleImage, setToggleImage] = useState<boolean>(false);
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
-  const [loading, setLoading] = useState<boolean>(true);
-  const [loadingSubmit, setLoadingSubmit] = useState<boolean>(false);
+  const [isLoadingSubmit, setIsLoadingSubmit] = useState<boolean>(false);
   const [gridNumberImage, setGridNumberImage] = useState<number>(5);
 
   const [formData, setFormData] = useState<FormData>(initialFormData);
@@ -188,7 +188,7 @@ const useDestinationDetail = (
     };
 
     const toastId = toast.loading("Creating your booking...");
-    setLoadingSubmit(true);
+    setIsLoadingSubmit(true);
     try {
       schema.parse(formData);
       const templateId = "template_jtoz9nl";
@@ -240,7 +240,7 @@ const useDestinationDetail = (
           }
         });
         setErrors(formattedErrors);
-        setLoadingSubmit(false);
+        setIsLoadingSubmit(false);
         toast.dismiss(toastId);
       } else {
         console.error("Error sending email:", error);
@@ -249,7 +249,7 @@ const useDestinationDetail = (
         });
       }
     } finally {
-      setLoadingSubmit(false);
+      setIsLoadingSubmit(false);
     }
   };
 
@@ -278,43 +278,42 @@ const useDestinationDetail = (
     };
   }, []);
 
-  const fetchDestinationDetail = useCallback(async () => {
-    if (!slug) return;
-    try {
-      setLoading(true);
-      const response = await fetch(
-        `/api/client/destination?slug=${encodeURIComponent(slug)}`
-      );
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-      const result = await response.json();
-      if (result.success) {
-        const data = result?.data[0];
-        if ("review_images" in data) {
-          const flatReviewImages = data.review_images.flatMap(
-            (img: string) => img
-          );
+  const {
+    data: otherDestinationResponse,
+    isLoading: isLoadingOtherDestination,
+  } = useSWR<{
+    data: Destination[];
+    totalRows: number;
+  }>(
+    `/api/client/destination?page=1&limit=8&sort=average_rating&order=asc`,
+    fetcher
+  );
+  const otherDestinations: Destination[] = otherDestinationResponse?.data || [];
 
-          data["images"] = [...data["images"], ...flatReviewImages];
-        }
-        setData(data);
-        setFormData((prevFormData) => ({
-          ...prevFormData,
-          title: data?.title,
-          pax: data?.minimum_pax,
-        }));
-      }
-    } catch (error) {
-      console.error("Failed to fetch destination detail:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [slug]);
+  const {
+    data: destinationResponse,
+    isLoading: isLoadingDestination,
+    error,
+  } = useSWR<{
+    data: Destination[];
+    totalRows: number;
+  }>(slug ? `/api/client/destination?slug=${slug}` : undefined, fetcher);
+
+  const destination: Destination | null =
+    destinationResponse?.data && destinationResponse.data?.length !== 0
+      ? destinationResponse.data[0]
+      : null;
 
   useEffect(() => {
-    fetchDestinationDetail();
-  }, [fetchDestinationDetail]);
+    if (destination) {
+      setData(destination);
+      setFormData((prevFormData) => ({
+        ...prevFormData,
+        title: destination?.title,
+        pax: destination?.minimum_pax,
+      }));
+    }
+  }, [destination]);
 
   const handleToggleExpanded = () => {
     setIsExpanded((prev) => !prev);
@@ -337,20 +336,21 @@ const useDestinationDetail = (
     state: {
       errors,
       formData,
-      loading,
+      isLoadingDestination,
+      isLoadingOtherDestination,
       gridNumberImage,
       data,
       slug,
-      toggleImage,
       isExpanded,
       slicedImages,
       remainingImages,
       hasVideo,
-      loadingSubmit,
+      isLoadingSubmit,
       images,
       lightbox,
       lightboxIndex,
       isOpen,
+      otherDestinations,
     },
     refs: {
       brochureRef,

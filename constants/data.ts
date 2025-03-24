@@ -11,7 +11,7 @@ interface Destination {
   price: number;
 }
 
-export const popularTripData: Destination[] = [
+export const popularDestinationData: Destination[] = [
   {
     imageURL: "/images/raftings.jpg",
     path: "/",

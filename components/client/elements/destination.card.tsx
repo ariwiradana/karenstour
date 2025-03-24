@@ -13,7 +13,7 @@ interface DestinationCardProps {
 
 const DestinationCard: FC<DestinationCardProps> = (props) => {
   return (
-    <Link href={`/trip/${props.data.slug}`}>
+    <Link href={`/destination/${props.data.slug}`}>
       <div className={`group/item ${props.className ?? ""}`}>
         <div className="relative w-full h-52 lg:h-60 rounded-xl bg-gray-300 overflow-hidden">
           <ImageShimmer
@@ -35,27 +35,25 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
             </div>
           )}
         </div>
-        <div className="flex flex-col justify-between">
+        <div className="flex flex-col justify-between mt-3">
           <div>
             <h1
-              className={`font-medium text-dark text-lg 2xl:text-xl mb-3 line-clamp-2 mt-4 ${unbounded.className}`}
+              className={`font-medium text-dark text-lg 2xl:text-xl line-clamp-2 ${unbounded.className}`}
             >
               {props.data.title}
             </h1>
             <div
-              className={`flex flex-wrap gap-x-4 gap-y-2 mb-3 ${montserrat.className}`}
+              className={`flex flex-wrap gap-4 my-2 text-sm md:text-base text-primary font-medium ${montserrat.className}`}
             >
-              {props.data.minimum_pax > 0 && (
-                <h4 className="flex items-start gap-x-1 text-base font-medium text-dark">
-                  <BiSolidUser className="text-primary text-2xl min-w-7" />
-                  Min. {props.data.minimum_pax} Guest
-                  {props.data.minimum_pax > 1 && "s"}
-                </h4>
-              )}
-              <h4 className="flex items-center gap-x-1 text-base font-medium text-dark">
-                <BiSolidTime className="text-primary text-2xl min-w-7" />
-                {props.data.duration}
-              </h4>
+              <p className="flex items-center gap-x-2">
+                <BiSolidUser className="text-base md:text-lg" />
+                Min. {props.data.minimum_pax} Guest
+                {props.data.minimum_pax > 1 && "s"}
+              </p>
+              <p className="flex items-center gap-x-2">
+                <BiSolidTime className="text-base md:text-lg" />
+                {props.data?.duration}
+              </p>
             </div>
           </div>
           <p

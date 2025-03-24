@@ -49,11 +49,11 @@ export default async function handler(
 
     // Count query
     let countText = `
-    SELECT COUNT(DISTINCT d.id) AS total_count
-    FROM destination d
-    LEFT JOIN reviews r ON d.id = r.destination_id
-    WHERE d.title ILIKE $1
-  `;
+      SELECT COUNT(DISTINCT d.id) AS total_count
+      FROM destination d
+      LEFT JOIN reviews r ON d.id = r.destination_id
+      WHERE d.title ILIKE $1
+    `;
 
     // Add filters based on id, slug, and category_names
     if (id) {

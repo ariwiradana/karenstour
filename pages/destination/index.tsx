@@ -22,7 +22,7 @@ interface Props {
   category: string;
 }
 
-const TripList: FC<Props> = ({ category }) => {
+const DestinationList: FC<Props> = ({ category }) => {
   const { ref, state, actions } = useDestination(category);
   const { destinations } = useDestinationStore();
   const { categories } = useCategoryStore();
@@ -33,24 +33,25 @@ const TripList: FC<Props> = ({ category }) => {
       <SEO
         keywords={destinations.length > 0 ? destinations[0].category_name : ""}
         url={
-          typeof window !== "undefined" ? `${window.location.origin}/trip` : ""
+          typeof window !== "undefined"
+            ? `${window.location.origin}/destination`
+            : ""
         }
         image="/images/logo.png"
         title="Bali Tour Experience | Karens Tour"
         description="Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali."
       />
       <Breadcrumb
-        title="Trip"
+        title="Destination"
         navigations={[
           { title: "Home", path: "/" },
-          { title: "Trip", path: "/trip" },
+          { title: "Destination", path: "/destination" },
         ]}
       />
       <Container className={`py-12 lg:py-24 ${unbounded.className}`}>
         <div className="lg:mb-10" ref={ref.topRef}>
           <Title
-            title={"Discover Bali with Our Trip Packages"}
-            description={`Experience Bali with ease through our ${state.service} trip.`}
+            title={"Discover Bali with Our Trip Destinations"}
             action={false}
           />
         </div>
@@ -169,7 +170,7 @@ const TripList: FC<Props> = ({ category }) => {
               <CardShimmer />
               <CardShimmer />
               <CardShimmer />
-              <CardShimmer className="md:hidden lg:flex" />
+              <CardShimmer />
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
@@ -205,4 +206,4 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   };
 };
 
-export default TripList;
+export default DestinationList;

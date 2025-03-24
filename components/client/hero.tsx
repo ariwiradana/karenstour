@@ -51,7 +51,7 @@ const Hero: FC = () => {
             </span>
           </div>
           <div className="md:mt-8 mt-5">
-            <Link href="/trip">
+            <Link href="/destination">
               <ButtonPrimary
                 id="button-explore-destination"
                 icon={<MdArrowOutward />}
