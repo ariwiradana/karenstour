@@ -2,7 +2,6 @@ import Breadcrumb from "@/components/client/breadcrumb";
 import Container from "@/components/client/container";
 import Accordion from "@/components/client/elements/accordion.button";
 import ImageShimmer from "@/components/client/elements/image.shimmer";
-import Title from "@/components/client/elements/title";
 import FormBooking from "@/components/client/form.booking";
 import Inclusion from "@/components/client/inclusion";
 import Layout from "@/components/client/layout";
@@ -11,14 +10,7 @@ import useDestinationDetail from "@/hooks/client/useDestinationDetail";
 import { GetServerSideProps } from "next";
 import Link from "next/link";
 import React, { FC, memo } from "react";
-import {
-  BiCheck,
-  BiSolidCompass,
-  BiSolidMap,
-  BiSolidTime,
-  BiSolidUser,
-} from "react-icons/bi";
-import VideoPlayer from "@/components/admin/elements/video.player";
+import { BiCheck, BiSolidTime, BiSolidUser } from "react-icons/bi";
 import { currencyIDR } from "@/utils/currencyFormatter";
 import ReviewForm from "@/components/client/review.form";
 import { contact } from "@/constants/data";
@@ -31,6 +23,8 @@ import Inventory from "@/components/client/inventory";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
 import Modal from "@/components/client/elements/modal";
 import PopularDestinationSlider from "@/components/client/popular.destination.slider";
+import { DestinationIcons } from "@/constants/icons";
+import { Destination } from "@/constants/types";
 
 interface PageProps {
   serviceId: string;
@@ -110,7 +104,11 @@ const DestinationDetail: FC<PageProps> = (props) => {
           )}
           <Container className="py-10 lg:py-16">
             {state.data && (
-              <Title title={state.data?.title ?? ""} action={false} />
+              <h1
+                className={`text-xl md:text-2xl lg:text-3xl font-bold text-dark ${unbounded.className}`}
+              >
+                {state.data?.title ?? ""}
+              </h1>
             )}
 
             <GalleryDetail />
@@ -125,16 +123,15 @@ const DestinationDetail: FC<PageProps> = (props) => {
                     <span
                       className={`text-xs text-darkgray ${montserrat.className}`}
                     >
-                      / guest
+                      / Pax
                     </span>
                   </h1>
                   <p className="text-sm lg:text-base description text-darkgray mt-1 italic">
-                    The price are includes transportation, admission fees, and
-                    all other relevant costs.
+                    The price are includes all other relevant costs.
                   </p>
                   <div className="flex flex-wrap gap-2 md:gap-3 mt-3 md:mt-4">
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
-                      <BiSolidCompass />
+                      {DestinationIcons[state.data.category_slug]}
                       {state.data?.category_name}
                     </p>
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
@@ -178,7 +175,7 @@ const DestinationDetail: FC<PageProps> = (props) => {
               link="/destination"
               exceptionId={state.data.id}
               destinations={state.otherDestinations}
-              title="Other Popular Destinations"
+              title="Other Destinations"
               description="Discover Bali with our featured destinations"
             />
           )}
@@ -196,12 +193,12 @@ const DestinationDetail: FC<PageProps> = (props) => {
         <p
           className={`text-lg md:text-xl uppercase font-bold ${unbounded.className}`}
         >
-          Description
+          Overview
         </p>
         <div className={`flex flex-col items-start ${montserrat.className}`}>
           <p
             dangerouslySetInnerHTML={{ __html: state.data?.description }}
-            className={`text-base font-medium mt-3 leading-8 description ${
+            className={`text-base font-medium mt-3 leading-6 lg:leading-7 text-justify description ${
               state.isExpanded
                 ? "line-clamp-none"
                 : "line-clamp-[8] md:line-clamp-[12]"
@@ -249,119 +246,52 @@ const DestinationDetail: FC<PageProps> = (props) => {
   }
 
   function GalleryDetail() {
+    const { images } = state.data as Destination;
+    const mainImage = images[0] as string;
+    const childImages = images.slice(1, 5);
+    const leftImages = images.slice(5);
+
     return (
-      <div
-        className={`grid grid-rows-2 grid-cols-4 gap-1 my-6 md:my-8 lg:my-10 rounded-xl overflow-hidden relative ${montserrat.className}`}
-      >
-        {state.isLoadingDestination ? (
-          <>
-            <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 shine w-full h-full aspect-video"></div>
-            <div>
-              <div className="shine h-full w-full aspect-square md:aspect-video"></div>
-            </div>
-            <div>
-              <div className="shine h-full w-full aspect-square md:aspect-video"></div>
-            </div>
-            <div className="md:hidden lg:block">
-              <div className="shine h-full w-full aspect-square md:aspect-video"></div>
-            </div>
-            <div className="md:hidden lg:block">
-              <div className="shine h-full w-full aspect-square md:aspect-video"></div>
-            </div>
-          </>
-        ) : (
-          <>
-            {state.hasVideo ? (
-              <div className="row-span-2 col-span-4 md:col-span-3 lg:col-span-2 relative">
-                <VideoPlayer
-                  className="aspect-video h-full"
-                  videoUrl={state.data?.video_url ?? ""}
-                />
-                <div className="absolute bottom-4 left-4 z-10">
-                  <button
-                    aria-label="btn-open-map"
-                    className="flex gap-x-2 items-center backdrop-blur-md px-3 py-2 rounded-lg transition-all ease-in-out duration-500 hover:scale-[1.02] transform"
-                  >
-                    <BiSolidMap className="text-base text-white" />
-                    <div className="text-left">
-                      <Link
-                        target="_blank"
-                        href={`https://www.google.com/maps/search/?api=1&query=${
-                          state.data?.title ?? state.data?.location
-                        }`}
-                      >
-                        <p className="text-xs text-white font-medium">
-                          Show on Map
-                        </p>
-                      </Link>
-                    </div>
-                  </button>
+      <div className="grid grid-cols-4 row-span-4 gap-1 my-4 md:my-6 lg:my-8 rounded-xl overflow-hidden">
+        <div className="col-span-4 md:col-span-3 lg:col-span-2 row-span-2 md:row-span-4 relative aspect-video md:aspect-[4/3] lg:aspect-[5/3] overflow-hidden">
+          <ImageShimmer
+            sizes="600px"
+            onClick={() => actions.handleToggleLightbox(mainImage)}
+            priority
+            alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
+            className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
+            fill
+            src={mainImage}
+          />
+        </div>
+        {childImages.map((image, index) => (
+          <div
+            className="relative overflow-hidden aspect-square md:aspect-auto lg:row-span-2"
+            key={`image-${index + 1}`}
+          >
+            <ImageShimmer
+              sizes="600px"
+              onClick={() => actions.handleToggleLightbox(image)}
+              priority
+              alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
+              className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
+              fill
+              src={image}
+            />
+            {index === 3 && leftImages.length > 0 ? (
+              <div
+                onClick={() => actions.handleToggleLightbox(image)}
+                className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex justify-center items-center cursor-pointer"
+              >
+                <div className="text-white text-xs md:text-base font-light p-2 text-center">
+                  <p className={unbounded.className}>
+                    + {leftImages.length + 1} Photos
+                  </p>
                 </div>
               </div>
-            ) : (
-              <div className="overflow-hidden relative row-span-2 col-span-4 md:col-span-3 lg:col-span-2 h-full aspect-video">
-                <ImageShimmer
-                  sizes="600px"
-                  onClick={() =>
-                    actions.handleToggleLightbox(
-                      state.data?.thumbnail_image ??
-                        (state.data?.images[0] as string)
-                    )
-                  }
-                  priority
-                  alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
-                  className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
-                  fill
-                  src={
-                    state.data?.thumbnail_image ??
-                    (state.data?.images[0] as string)
-                  }
-                />
-              </div>
-            )}
-            {state.slicedImages?.map((image, index) => {
-              const isLastImage =
-                index === (state.slicedImages.length ?? 0) - 1;
-              return (
-                <div
-                  key={index}
-                  className="overflow-hidden relative aspect-square md:aspect-auto"
-                >
-                  <ImageShimmer
-                    sizes="400px"
-                    onClick={() => actions.handleToggleLightbox(image)}
-                    priority
-                    alt={`image-${index + 1}-${state.data?.slug}`}
-                    className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
-                    fill
-                    src={image}
-                  />
-                  {isLastImage && (
-                    <button
-                      aria-label="btn-toggle-lightbox"
-                      onClick={() => actions.handleToggleLightbox(image)}
-                    >
-                      <div className="absolute inset-0 bg-black bg-opacity-50 hover:bg-opacity-70 transition-all ease-in-out duration-500 flex items-center justify-center cursor-pointer">
-                        <div className="text-white text-xs md:text-base font-light p-2 text-center">
-                          <p className={unbounded.className}>
-                            +{" "}
-                            {(state.data?.images as string[]).length -
-                              state.slicedImages.length -
-                              (state.data?.thumbnail_image &&
-                              !state.data.video_url
-                                ? 1
-                                : 0)}{" "}
-                            Photos
-                          </p>
-                        </div>
-                      </div>
-                    </button>
-                  )}
-                </div>
-              );
-            })}
-          </>
-        )}
+            ) : null}
+          </div>
+        ))}
       </div>
     );
   }

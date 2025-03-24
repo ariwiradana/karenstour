@@ -11,7 +11,7 @@ const Inventory: React.FC<UseDestinationDetail> = (props) => {
       <h1
         className={`text-lg md:text-xl uppercase font-bold ${unbounded.className}`}
       >
-        What to Bring
+        What to Bring?
       </h1>
       <ul className={`space-y-2 mt-3 ${montserrat.className}`}>
         {props.state.data.inventory?.map((item, index) => (

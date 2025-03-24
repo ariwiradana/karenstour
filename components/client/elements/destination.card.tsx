@@ -3,8 +3,9 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { Destination } from "@/constants/types";
 import ImageShimmer from "./image.shimmer";
-import { BiSolidStar, BiSolidTime, BiSolidUser } from "react-icons/bi";
+import { BiSolidStar, BiSolidTime } from "react-icons/bi";
 import { currencyIDR } from "@/utils/currencyFormatter";
+import { DestinationIcons } from "@/constants/icons";
 
 interface DestinationCardProps {
   data: Destination;
@@ -43,12 +44,13 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
               {props.data.title}
             </h1>
             <div
-              className={`flex flex-wrap gap-4 my-2 text-sm md:text-base text-primary font-medium ${montserrat.className}`}
+              className={`flex flex-wrap gap-x-4 gap-y-1 my-2 text-sm md:text-base text-primary font-medium ${montserrat.className}`}
             >
               <p className="flex items-center gap-x-2">
-                <BiSolidUser className="text-base md:text-lg" />
-                Min. {props.data.minimum_pax} Guest
-                {props.data.minimum_pax > 1 && "s"}
+                <div className="text-base md:text-lg">
+                  {DestinationIcons[props.data.category_slug]}
+                </div>
+                {props.data?.category_name}
               </p>
               <p className="flex items-center gap-x-2">
                 <BiSolidTime className="text-base md:text-lg" />
@@ -64,7 +66,10 @@ const DestinationCard: FC<DestinationCardProps> = (props) => {
           <h2
             className={`text-lg md:text-xl text-dark font-semibold ${unbounded.className}`}
           >
-            {currencyIDR(props.data.price)}
+            {currencyIDR(props.data.price)}{" "}
+            <span className={`${montserrat.className} text-xs font-normal`}>
+              / Pax
+            </span>
           </h2>
         </div>
       </div>

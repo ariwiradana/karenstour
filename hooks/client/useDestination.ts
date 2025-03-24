@@ -23,7 +23,6 @@ interface UseDestination {
     error: string | null;
     isLoading: boolean;
     service: string | string[] | undefined;
-    totalRows: number;
     sortBy: SortBy;
     sortOrder: SortOrder;
     search: string;
@@ -42,9 +41,8 @@ interface UseDestination {
   };
 }
 
-const useDestination = (category?: string): UseDestination => {
-  const { setDestinations } = useDestinationStore();
-  const { setCategories } = useCategoryStore();
+const useDestination = (): UseDestination => {
+  const { setDestinations, setTotalRows } = useDestinationStore();
   const { categoryFilterId, setCategoryFilterId } = useDestinationDetailStore();
 
   const [firstSlide, setFirstSlide] = useState<boolean>(true);
@@ -60,23 +58,6 @@ const useDestination = (category?: string): UseDestination => {
     setSearch(q);
   };
 
-  const { data: categoriesResponse } = useSWR<{ data: Category[] }>(
-    `/api/client/category`,
-    fetcher
-  );
-  const categories: Category[] = categoriesResponse?.data || [];
-  useEffect(() => {
-    if (categories.length > 0) {
-      setCategories(categories);
-      if (category) {
-        const categoryFilterInit = categories.find(
-          (cat) => cat.slug === category
-        );
-        if (categoryFilterInit) setCategoryFilterId(categoryFilterInit?.id);
-      }
-    }
-  }, [categories, category, setCategories]);
-
   const {
     data: destinationResponse,
     error,
@@ -90,16 +71,14 @@ const useDestination = (category?: string): UseDestination => {
     )}&order=${encodeURIComponent(sortOrder)}&category_id=${
       categoryFilterId || ""
     }&search=${searchDebounced}`,
-    fetcher
-  );
-  const destinations: Destination[] = destinationResponse?.data || [];
-  const totalRows: number = destinationResponse?.totalRows || 0;
-
-  useEffect(() => {
-    if (destinations.length > 0) {
-      setDestinations(destinations);
+    fetcher,
+    {
+      onSuccess: (data) => {
+        setDestinations(data?.data);
+        setTotalRows(data?.totalRows);
+      },
     }
-  }, [destinations, setDestinations]);
+  );
 
   const topRef = useRef<HTMLDivElement>(null);
 
@@ -152,7 +131,6 @@ const useDestination = (category?: string): UseDestination => {
       service,
       page,
       limit,
-      totalRows,
       error,
       isLoading,
       sortBy,

@@ -14,18 +14,18 @@ import { BsFilter } from "react-icons/bs";
 import CustomSelect from "@/components/client/elements/select";
 import SEO from "@/components/client/seo";
 import { useDestinationStore } from "@/store/useDestinationStore";
-import { GetServerSideProps } from "next";
-import { useCategoryStore } from "@/store/useCategoryStore";
 import { useDestinationDetailStore } from "@/store/useDestinationDetailStore";
+import useCategories from "@/hooks/client/useCategories";
+import { DestinationIcons } from "@/constants/icons";
 
 interface Props {
   category: string;
 }
 
-const DestinationList: FC<Props> = ({ category }) => {
-  const { ref, state, actions } = useDestination(category);
-  const { destinations } = useDestinationStore();
-  const { categories } = useCategoryStore();
+const DestinationList: FC<Props> = () => {
+  const { ref, state, actions } = useDestination();
+  const { destinations, totalRows } = useDestinationStore();
+  const { categories } = useCategories();
   const { categoryFilterId } = useDestinationDetailStore();
 
   return (
@@ -129,19 +129,21 @@ const DestinationList: FC<Props> = ({ category }) => {
                         )
                       }
                       key={category.name}
-                      className={`flex items-center justify-start gap-x-1 p-2 rounded-lg ${
+                      className={`flex items-center justify-start gap-x-1 py-2 px-3 rounded-lg ${
                         categoryFilterId === category.id
                           ? "bg-primary text-white border-primary"
                           : "bg-white text-dark border-gray-100"
                       }`}
                     >
-                      <BiCheck
+                      <div
                         className={`text-xs md:text-sm ${
                           categoryFilterId === category.id
                             ? "text-white"
                             : "text-darkgray"
                         }`}
-                      />
+                      >
+                        {DestinationIcons[category.slug] || <BiCheck />}
+                      </div>
                       <p className="text-xs md:text-sm lg:text-sm font-medium line-clamp-1 text-left">
                         {category.name}
                       </p>
@@ -157,11 +159,11 @@ const DestinationList: FC<Props> = ({ category }) => {
           className={`text-base text-dark font-semibold mt-8 ${montserrat.className}`}
         >
           Showing{" "}
-          {state.totalRows > 0
+          {totalRows > 0
             ? Math.max(state.page * state.limit - state.limit + 1, 1)
             : 0}{" "}
-          - {Math.min(state.page * state.limit, state.totalRows ?? 0)} of{" "}
-          {state.totalRows} results
+          - {Math.min(state.page * state.limit, totalRows ?? 0)} of {totalRows}{" "}
+          results
         </p>
 
         <div className="mt-4 md:mt-6">
@@ -181,11 +183,11 @@ const DestinationList: FC<Props> = ({ category }) => {
           )}
         </div>
 
-        {Math.ceil(state.totalRows / state.limit) > 1 && (
+        {Math.ceil(totalRows / state.limit) > 1 && (
           <div className="flex justify-center mt-12">
             <Pagination
               onChange={actions.handleChangePagination}
-              count={Math.ceil(state.totalRows / state.limit)}
+              count={Math.ceil(totalRows / state.limit)}
               page={state.page}
               shape="rounded"
             />
@@ -194,16 +196,6 @@ const DestinationList: FC<Props> = ({ category }) => {
       </Container>
     </Layout>
   );
-};
-
-export const getServerSideProps: GetServerSideProps = async ({ params }) => {
-  const category = (params?.category as string) || "";
-
-  return {
-    props: {
-      category,
-    },
-  };
 };
 
 export default DestinationList;
