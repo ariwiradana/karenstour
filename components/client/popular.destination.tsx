@@ -39,6 +39,10 @@ const PopularDestination: FC<PopularDestinationProps> = (props) => {
             <CardShimmer />
             <CardShimmer />
             <CardShimmer />
+            <CardShimmer />
+            <CardShimmer />
+            <CardShimmer />
+            <CardShimmer />
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-5 lg:gap-8">
