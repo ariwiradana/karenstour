@@ -2,6 +2,7 @@ import { Review } from "@/constants/types";
 import { useState } from "react";
 import useSWR from "swr";
 import { fetcher } from "@/lib/fetcher";
+import { useRouter } from "next/router";
 
 export interface UseReviewsReturn {
   state: {
@@ -17,18 +18,16 @@ export interface UseReviewsReturn {
 const useReviews = (): UseReviewsReturn => {
   const [activeIndex, setActiveIndex] = useState<number>(0);
   const [slidesPerView, setSlidesPerView] = useState<number>(3);
+  const [reviews, setReviews] = useState<Review[]>([]);
 
   const handleActiveIndex = (index: number, slidesPerView: number) => {
     setActiveIndex(index);
     setSlidesPerView(slidesPerView);
   };
 
-  const { data } = useSWR<{ data: Review[] }>(
-    `/api/client/reviews?page=1&limit=10`,
-    fetcher
-  );
-  const reviews = data?.data || [];
-
+  useSWR<{ data: Review[] }>(`/api/client/reviews?page=1&limit=10`, fetcher, {
+    onSuccess: (data) => setReviews(data?.data || []),
+  });
   return {
     state: {
       reviews,

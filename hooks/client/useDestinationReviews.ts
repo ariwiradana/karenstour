@@ -1,7 +1,9 @@
 import { Review } from "@/constants/types";
+import { fetcher } from "@/lib/fetcher";
 import moment from "moment";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
+import useSWR from "swr";
 import { z, ZodSchema } from "zod";
 
 interface Form {
@@ -87,57 +89,43 @@ const useDestinationReviews = (
     }),
   });
 
-  const fetchReviews = useCallback(async () => {
-    try {
-      const url = `/api/client/reviews?destination_id=${destinationId}&page=${page}&limit=${limit}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        toast.error(`Error: ${response.status} ${response.statusText}`);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        setReviews(result.data);
-        setTotalRows(result.totalRows);
-      }
-    } catch (error: any) {
-      toast.error(`Failed to fetch reviews: ${error.message}`);
+  const { mutate: mutateReviews } = useSWR<{
+    data: Review[];
+    totalRows: number;
+  }>(
+    destinationId
+      ? `/api/client/reviews?destination_id=${destinationId}&page=${page}&limit=${limit}`
+      : undefined,
+    fetcher,
+    {
+      onSuccess: (data) => {
+        if (data) {
+          setReviews(data.data);
+          setTotalRows(data.totalRows);
+        }
+      },
     }
-  }, [page, limit]);
+  );
 
-  useEffect(() => {
-    fetchReviews();
-  }, [fetchReviews]);
-
-  const fetchReviewPhotos = useCallback(async () => {
-    try {
-      const url = `/api/client/reviews/photos?destination_id=${destinationId}`;
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        toast.error(`Error: ${response.status} ${response.statusText}`);
-        return;
-      }
-
-      const result = await response.json();
-
-      if (result.success) {
-        const photos = result.data.flatMap((r: Review) =>
-          r.photos ? r.photos.filter((photo) => photo) : []
-        );
-        setAllReviewPhotos(photos);
-      }
-    } catch (error: any) {
-      toast.error(`Failed to fetch reviews: ${error.message}`);
+  useSWR<{
+    data: Review[];
+    totalRows: number;
+  }>(
+    destinationId
+      ? `/api/client/reviews/photos?destination_id=${destinationId}`
+      : undefined,
+    fetcher,
+    {
+      onSuccess: (data) => {
+        if (data) {
+          const photos = data.data.flatMap((r: Review) =>
+            r.photos ? r.photos.filter((photo) => photo) : []
+          );
+          setAllReviewPhotos(photos);
+        }
+      },
     }
-  }, []);
-
-  useEffect(() => {
-    fetchReviewPhotos();
-  }, [fetchReviewPhotos]);
+  );
 
   const handleFileSelection = (photos: FileList | null) => {
     if (photos && photos.length > 0) {
@@ -223,7 +211,7 @@ const useDestinationReviews = (
         toast.success("Review submitted successfully!", {
           id: toastCreate,
         });
-        fetchReviews();
+        mutateReviews();
         setIsOpenForm(false);
       } else {
         toast.error(result.message);

@@ -25,7 +25,6 @@ interface FormData {
 
 export interface UseDestinationDetail {
   state: {
-    data: Destination | null;
     slug: string;
     isExpanded: boolean;
     gridNumberImage: number;
@@ -42,6 +41,7 @@ export interface UseDestinationDetail {
     lightboxIndex: number;
     isOpen: boolean;
     otherDestinations: Destination[];
+    destination: Destination | null;
   };
   refs?: {
     brochureRef: React.MutableRefObject<HTMLDivElement | null>;
@@ -82,6 +82,7 @@ const useDestinationDetail = (
   const [lightbox, setLightbox] = useState<boolean>(false);
   const [lightboxIndex, setLightboxIndex] = useState<number>(0);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [destination, setDestination] = useState<Destination | null>(null);
 
   const brochureRef = useRef<HTMLDivElement | null>(null);
 
@@ -290,19 +291,16 @@ const useDestinationDetail = (
   );
   const otherDestinations: Destination[] = otherDestinationResponse?.data || [];
 
-  const {
-    data: destinationResponse,
-    isLoading: isLoadingDestination,
-    error,
-  } = useSWR<{
+  const { isLoading: isLoadingDestination } = useSWR<{
     data: Destination[];
     totalRows: number;
-  }>(slug ? `/api/client/destination?slug=${slug}` : undefined, fetcher);
-
-  const destination: Destination | null =
-    destinationResponse?.data && destinationResponse.data?.length !== 0
-      ? destinationResponse.data[0]
-      : null;
+  }>(slug ? `/api/client/destination?slug=${slug}` : undefined, fetcher, {
+    onSuccess: (data) => {
+      if (data.data && data.data.length > 0) {
+        setDestination(data?.data[0]);
+      }
+    },
+  });
 
   useEffect(() => {
     if (destination) {
@@ -339,7 +337,6 @@ const useDestinationDetail = (
       isLoadingDestination,
       isLoadingOtherDestination,
       gridNumberImage,
-      data,
       slug,
       isExpanded,
       slicedImages,
@@ -351,6 +348,7 @@ const useDestinationDetail = (
       lightboxIndex,
       isOpen,
       otherDestinations,
+      destination,
     },
     refs: {
       brochureRef,

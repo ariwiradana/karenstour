@@ -17,7 +17,6 @@ import { contact } from "@/constants/data";
 import Lightbox from "@/components/client/elements/lightbox";
 import DestinationBrochure from "@/components/client/brochure";
 import SEO from "@/components/client/seo";
-import NotFound from "@/components/client/not.found";
 import { LoaderIcon } from "react-hot-toast";
 import Inventory from "@/components/client/inventory";
 import { removeHtmlTags } from "@/utils/removeHTMLTag";
@@ -49,19 +48,19 @@ const DestinationDetail: FC<PageProps> = (props) => {
   return (
     <>
       <SEO
-        keywords={state.data?.category_name as string}
+        keywords={state.destination?.category_name as string}
         url={
           typeof window !== "undefined"
-            ? `${window.location.origin}/destination/${state.data?.slug}`
+            ? `${window.location.origin}/destination/${state.destination?.slug}`
             : ""
         }
         image="/images/logo.png"
         title={`${
-          state.data ? state.data?.title : "Bali Trip Experience"
+          state.destination ? state.destination?.title : "Bali Trip Experience"
         } | Karens Tour`}
         description={
-          state.data
-            ? removeHtmlTags(state.data?.description)
+          state.destination
+            ? removeHtmlTags(state.destination?.description)
             : `Discover Bali's hidden gems with Karen's Tour. Let us guide you through an unforgettable trip in Bali.`
         }
       />
@@ -78,36 +77,36 @@ const DestinationDetail: FC<PageProps> = (props) => {
         <FormBooking state={state} actions={actions} />
       </Modal>
 
-      {state.data ? (
+      {state.destination && (
         <Layout still>
           <div ref={refs?.brochureRef} style={{ display: "none" }}>
-            <DestinationBrochure destination={state.data ?? undefined} />
+            <DestinationBrochure destination={state.destination ?? undefined} />
           </div>
           <Lightbox
             slideIndex={state.lightboxIndex}
             show={state.lightbox}
-            images={state.data?.images}
-            video={state.data?.video_url}
+            images={state.destination?.images}
+            video={state.destination?.video_url}
           />
-          {state.data?.slug && (
+          {state.destination?.slug && (
             <Breadcrumb
               title="Destination"
               navigations={[
                 { title: "Home", path: "/" },
                 { title: "Destination", path: "/destination" },
                 {
-                  title: state.data?.title ?? "",
-                  path: `/destination/${state.data?.slug ?? ""}`,
+                  title: state.destination?.title ?? "",
+                  path: `/destination/${state.destination?.slug ?? ""}`,
                 },
               ]}
             />
           )}
           <Container className="py-10 lg:py-16">
-            {state.data && (
+            {state.destination && (
               <h1
                 className={`text-xl md:text-2xl lg:text-3xl font-bold text-dark ${unbounded.className}`}
               >
-                {state.data?.title ?? ""}
+                {state.destination?.title ?? ""}
               </h1>
             )}
 
@@ -119,7 +118,7 @@ const DestinationDetail: FC<PageProps> = (props) => {
                   <h1
                     className={`text-3xl lg:text-4xl text-dark font-medium ${unbounded.className}`}
                   >
-                    {currencyIDR(state.data?.price ?? 0)}{" "}
+                    {currencyIDR(state.destination?.price ?? 0)}{" "}
                     <span
                       className={`text-xs text-darkgray ${montserrat.className}`}
                     >
@@ -131,17 +130,17 @@ const DestinationDetail: FC<PageProps> = (props) => {
                   </p>
                   <div className="flex flex-wrap gap-2 md:gap-3 mt-3 md:mt-4">
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
-                      {DestinationIcons[state.data.category_slug]}
-                      {state.data?.category_name}
+                      {DestinationIcons[state.destination.category_slug]}
+                      {state.destination?.category_name}
                     </p>
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
                       <BiSolidUser />
-                      Min. {state.data.minimum_pax} Guest
-                      {state.data.minimum_pax > 1 && "s"}
+                      Min. {state.destination.minimum_pax} Guest
+                      {state.destination.minimum_pax > 1 && "s"}
                     </p>
                     <p className="bg-primary/10 flex items-center gap-x-2 text-sm md:text-base py-1 md:py-2 px-2 md:px-3 text-primary rounded-lg font-medium">
                       <BiSolidTime />
-                      {state.data?.duration}
+                      {state.destination?.duration}
                     </p>
                   </div>
                 </div>
@@ -163,9 +162,9 @@ const DestinationDetail: FC<PageProps> = (props) => {
                 <BookingInfo />
               </div>
             </div>
-            {state.data && (
+            {state.destination && (
               <div className="mt-6 md:mt-8 lg:mt-10">
-                <ReviewForm destination={state.data} />
+                <ReviewForm destination={state.destination} />
               </div>
             )}
           </Container>
@@ -173,21 +172,19 @@ const DestinationDetail: FC<PageProps> = (props) => {
             <PopularDestinationSlider
               isLoading={state.isLoadingOtherDestination}
               link="/destination"
-              exceptionId={state.data.id}
+              exceptionId={state.destination.id}
               destinations={state.otherDestinations}
               title="Other Destinations"
               description="Discover Bali with our featured destinations"
             />
           )}
         </Layout>
-      ) : (
-        <NotFound />
       )}
     </>
   );
 
   function Description() {
-    if (!state.data) return <></>;
+    if (!state.destination) return <></>;
     return (
       <div>
         <p
@@ -197,7 +194,7 @@ const DestinationDetail: FC<PageProps> = (props) => {
         </p>
         <div className={`flex flex-col items-start ${montserrat.className}`}>
           <p
-            dangerouslySetInnerHTML={{ __html: state.data?.description }}
+            dangerouslySetInnerHTML={{ __html: state.destination?.description }}
             className={`text-base font-medium mt-3 leading-6 lg:leading-7 text-justify description ${
               state.isExpanded
                 ? "line-clamp-none"
@@ -246,7 +243,7 @@ const DestinationDetail: FC<PageProps> = (props) => {
   }
 
   function GalleryDetail() {
-    const { images } = state.data as Destination;
+    const { images } = state.destination as Destination;
     const mainImage = images[0] as string;
     const childImages = images.slice(1, 5);
     const leftImages = images.slice(5);
@@ -258,7 +255,11 @@ const DestinationDetail: FC<PageProps> = (props) => {
             sizes="600px"
             onClick={() => actions.handleToggleLightbox(mainImage)}
             priority
-            alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
+            alt={
+              state.destination?.slug
+                ? `image-main-${state.destination?.slug}`
+                : ""
+            }
             className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
             fill
             src={mainImage}
@@ -273,7 +274,11 @@ const DestinationDetail: FC<PageProps> = (props) => {
               sizes="600px"
               onClick={() => actions.handleToggleLightbox(image)}
               priority
-              alt={state.data?.slug ? `image-main-${state.data?.slug}` : ""}
+              alt={
+                state.destination?.slug
+                  ? `image-main-${state.destination?.slug}`
+                  : ""
+              }
               className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
               fill
               src={image}
@@ -281,7 +286,7 @@ const DestinationDetail: FC<PageProps> = (props) => {
             {index === 3 && leftImages.length > 0 ? (
               <div
                 onClick={() => actions.handleToggleLightbox(image)}
-                className="absolute inset-0 z-10 bg-black/50 backdrop-blur-sm flex justify-center items-center cursor-pointer"
+                className="absolute inset-0 z-10 bg-black/50 flex justify-center items-center cursor-pointer"
               >
                 <div className="text-white text-xs md:text-base font-light p-2 text-center">
                   <p className={unbounded.className}>
