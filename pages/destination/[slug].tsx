@@ -250,9 +250,15 @@ const DestinationDetail: FC<PageProps> = (props) => {
 
     return (
       <div className="grid grid-cols-4 row-span-4 gap-1 my-4 md:my-6 lg:my-8 rounded-xl overflow-hidden">
-        <div className="col-span-4 md:col-span-3 lg:col-span-2 row-span-2 md:row-span-4 relative aspect-video md:aspect-[4/3] lg:aspect-[5/3] overflow-hidden">
+        <div
+          className={`col-span-4 md:col-span-3 ${
+            images.length === 1
+              ? "lg:col-span-4 lg:aspect-[6/2]"
+              : "lg:col-span-2 lg:aspect-[5/3]"
+          } row-span-2 md:row-span-4 relative aspect-video md:aspect-[4/3] overflow-hidden`}
+        >
           <ImageShimmer
-            sizes="600px"
+            sizes="1080px"
             onClick={() => actions.handleToggleLightbox(mainImage)}
             priority
             alt={
@@ -260,14 +266,14 @@ const DestinationDetail: FC<PageProps> = (props) => {
                 ? `image-main-${state.destination?.slug}`
                 : ""
             }
-            className="object-cover transform hover:scale-105 transition-transform ease-in-out duration-500"
+            className="object-cover transform hover:scale-105 cursor-pointer transition-transform ease-in-out duration-500"
             fill
             src={mainImage}
           />
         </div>
         {childImages.map((image, index) => (
           <div
-            className="relative overflow-hidden aspect-square md:aspect-auto lg:row-span-2"
+            className="relative overflow-hidden aspect-square md:aspect-auto lg:row-span-2 bg-red-100"
             key={`image-${index + 1}`}
           >
             <ImageShimmer

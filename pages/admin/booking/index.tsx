@@ -161,7 +161,7 @@ const BookingPage: FC<PageProps> = (props) => {
                               booking.payment_proof
                             )
                           }
-                          className="relative w-full aspect-[4/3] p-4 rounded overflow-hidden"
+                          className="relative w-10 h-10 aspect-square rounded overflow-hidden"
                         >
                           <ImageShimmer
                             priority

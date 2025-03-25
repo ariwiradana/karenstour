@@ -58,11 +58,7 @@ const useDestination = (): UseDestination => {
     setSearch(q);
   };
 
-  const {
-    data: destinationResponse,
-    error,
-    isLoading,
-  } = useSWR<{
+  const { error, isLoading } = useSWR<{
     data: Destination[];
     totalRows: number;
   }>(
@@ -111,6 +107,12 @@ const useDestination = (): UseDestination => {
       });
     }
   }, []);
+
+  useEffect(() => {
+    if (router.pathname === "/") {
+      setCategoryFilterId(null);
+    }
+  }, [router]);
 
   const handleChangeFilterCategory = (id: number, slug: string) => {
     if (categoryFilterId === id) {

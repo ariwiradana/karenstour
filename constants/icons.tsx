@@ -1,5 +1,4 @@
 import {
-  BiRun,
   BiSolidBackpack,
   BiSolidCar,
   BiSolidChart,

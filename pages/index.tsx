@@ -14,7 +14,6 @@ interface Props {}
 const Home: FC<Props> = () => {
   const { state } = useDestination();
   const { destinations } = useDestinationStore();
-
   return (
     <>
       <SEO
