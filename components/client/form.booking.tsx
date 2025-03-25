@@ -24,7 +24,7 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
             className={`font-bold text-dark text-2xl md:text-3xl whitespace-nowrap ${montserrat.className}`}
           >
             {currencyIDR(
-              props.state.formData.pax * (props.state.data?.price ?? 0)
+              props.state.formData.pax * (props.state.destination?.price ?? 0)
             )}
           </h1>
         </div>
@@ -68,15 +68,15 @@ const FormBooking: FC<UseDestinationDetail> = (props) => {
           onChange={(e) =>
             props.actions.handleChange(Number(e.target.value), "pax")
           }
-          min={props.state.data?.minimum_pax}
+          min={props.state.destination?.minimum_pax}
           max={10}
           name="pax"
           type="number"
           label="Guest(s)"
           value={props.state.formData.pax}
           error={props.state.errors.pax}
-          info={`A minimum of ${props.state.data?.minimum_pax} guest${
-            Number(props.state.data?.minimum_pax) > 1 && "s"
+          info={`A minimum of ${props.state.destination?.minimum_pax} guest${
+            Number(props.state.destination?.minimum_pax) > 1 && "s"
           } is required for this trip. Please note that only children aged 6 years and above will be counted as participants`}
         />
       </div>

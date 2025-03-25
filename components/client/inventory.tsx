@@ -4,7 +4,7 @@ import React from "react";
 import { BiCheck } from "react-icons/bi";
 
 const Inventory: React.FC<UseDestinationDetail> = (props) => {
-  if (!props.state.data) return <></>;
+  if (!props.state.destination) return <></>;
 
   return (
     <div>
@@ -14,7 +14,7 @@ const Inventory: React.FC<UseDestinationDetail> = (props) => {
         What to Bring?
       </h1>
       <ul className={`space-y-2 mt-3 ${montserrat.className}`}>
-        {props.state.data.inventory?.map((item, index) => (
+        {props.state.destination.inventory?.map((item, index) => (
           <li key={index} className="text-darkgray font-medium flex gap-x-4">
             <BiCheck className="text-primary text-xl md:text-2xl min-w-5" />
             <span> {item}</span>
