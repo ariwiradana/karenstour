@@ -7,7 +7,7 @@ import {
 } from "react-icons/bi";
 
 export const DestinationIcons: Record<string, JSX.Element> = {
-  transport: <BiSolidCar />,
+  transfer: <BiSolidCar />,
   tour: <BiSolidDirections />,
   activity: <BiSolidChart />,
   adventure: <BiSolidBackpack />,
