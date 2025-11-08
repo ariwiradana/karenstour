@@ -65,8 +65,8 @@ export const bookingSteps: string[] = [
 export const contact: Contact = {
   address: "Br. Ayah, Kelusa, Kec. Payangan, Gianyar, Bali, 80572",
   email: "mailto:karenstourtravel@gmail.com",
-  phone: "+6281246768627",
-  whatsapp: "https://wa.me/+6281246768627",
+  phone: "+62 8123 9863 16",
+  whatsapp: "https://wa.me/+628123986316",
   instagram: "https://www.instagram.com/karenstourtravel",
   copyright: "© 2025 Karen's Tour Bali. All Rights Reserved.",
   company: "Karen's Tour",

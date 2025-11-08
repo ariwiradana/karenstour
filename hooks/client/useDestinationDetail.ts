@@ -192,7 +192,6 @@ const useDestinationDetail = (
     setIsLoadingSubmit(true);
     try {
       schema.parse(formData);
-      const templateId = "template_jtoz9nl";
       if (serviceId && publicKey) {
         const createBooking = await fetch("/api/client/booking", {
           method: "POST",
@@ -204,7 +203,7 @@ const useDestinationDetail = (
 
         const emailResponse = await emailjs.send(
           "service_r0xd3fi",
-          templateId,
+          "template_jtoz9nl",
           emailPayload,
           {
             publicKey: "fvGCXf4WbE1tRZUcz",
